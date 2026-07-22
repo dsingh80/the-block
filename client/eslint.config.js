@@ -16,5 +16,14 @@ export default tseslint.config(
       },
     },
   },
+  {
+    rules: {
+      // TS/vue-tsc already fully type-checks identifier resolution
+      // (including DOM lib globals like HTMLElement/MouseEvent in type
+      // positions) — no-undef is redundant here and has known false
+      // positives on TS-only syntax, per typescript-eslint's own docs.
+      'no-undef': 'off',
+    },
+  },
   eslintConfigPrettier,
 )
