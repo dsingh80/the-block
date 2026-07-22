@@ -52,10 +52,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 2.7,
     "condition_report": "Rough condition with notable damage. Suitable for buyer comfortable with repairs. Core mechanical systems operational.",
-    "damage_notes": [
-      "Curb rash on front-right wheel",
-      "Minor scratches on front bumper"
-    ],
+    "damage_notes": ["Curb rash on front-right wheel", "Minor scratches on front bumper"],
     "title_status": "clean",
     "province": "Ontario",
     "city": "London",
@@ -93,10 +90,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 2.1,
     "condition_report": "Below-average condition. Visible damage present. May require immediate maintenance to address noted issues.",
-    "damage_notes": [
-      "Dent on tailgate",
-      "Dent on rear quarter panel"
-    ],
+    "damage_notes": ["Dent on tailgate", "Dent on rear quarter panel"],
     "title_status": "clean",
     "province": "Ontario",
     "city": "Markham",
@@ -133,9 +127,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 3.8,
     "condition_report": "Fair condition overall. Interior has some wear but no major damage. A few exterior blemishes. Drives well.",
-    "damage_notes": [
-      "Light hail damage on roof"
-    ],
+    "damage_notes": ["Light hail damage on roof"],
     "title_status": "clean",
     "province": "British Columbia",
     "city": "Surrey",
@@ -494,10 +486,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 3.2,
     "condition_report": "Moderate wear throughout. Previous daily driver. Runs and drives without issue. Cosmetic touch-ups recommended.",
-    "damage_notes": [
-      "Small tear in rear seat upholstery",
-      "Dent on rear quarter panel"
-    ],
+    "damage_notes": ["Small tear in rear seat upholstery", "Dent on rear quarter panel"],
     "title_status": "clean",
     "province": "Quebec",
     "city": "Quebec City",
@@ -534,10 +523,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 3.2,
     "condition_report": "Average condition. Has some visible wear on high-touch surfaces. Engine and transmission perform within normal parameters.",
-    "damage_notes": [
-      "Cracked front grille",
-      "Scuff marks on door sill plates"
-    ],
+    "damage_notes": ["Cracked front grille", "Scuff marks on door sill plates"],
     "title_status": "clean",
     "province": "Quebec",
     "city": "Sherbrooke",
@@ -734,9 +720,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 3.5,
     "condition_report": "Average condition. Has some visible wear on high-touch surfaces. Engine and transmission perform within normal parameters.",
-    "damage_notes": [
-      "Dent on rear quarter panel"
-    ],
+    "damage_notes": ["Dent on rear quarter panel"],
     "title_status": "clean",
     "province": "Ontario",
     "city": "Mississauga",
@@ -846,10 +830,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 3.8,
     "condition_report": "Fair condition overall. Interior has some wear but no major damage. A few exterior blemishes. Drives well.",
-    "damage_notes": [
-      "Small dent on driver-side door",
-      "Scratch on liftgate"
-    ],
+    "damage_notes": ["Small dent on driver-side door", "Scratch on liftgate"],
     "title_status": "clean",
     "province": "Quebec",
     "city": "Quebec City",
@@ -957,9 +938,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 3.3,
     "condition_report": "Fair condition overall. Interior has some wear but no major damage. A few exterior blemishes. Drives well.",
-    "damage_notes": [
-      "Worn leather on driver seat bolster"
-    ],
+    "damage_notes": ["Worn leather on driver seat bolster"],
     "title_status": "rebuilt",
     "province": "Quebec",
     "city": "Laval",
@@ -994,10 +973,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 3,
     "condition_report": "Average condition. Has some visible wear on high-touch surfaces. Engine and transmission perform within normal parameters.",
-    "damage_notes": [
-      "Curb rash on front-right wheel",
-      "Scratch on rear bumper from parking"
-    ],
+    "damage_notes": ["Curb rash on front-right wheel", "Scratch on rear bumper from parking"],
     "title_status": "clean",
     "province": "Alberta",
     "city": "Edmonton",
@@ -1077,10 +1053,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 2.2,
     "condition_report": "Rough condition with notable damage. Suitable for buyer comfortable with repairs. Core mechanical systems operational.",
-    "damage_notes": [
-      "Scratch on rear bumper from parking",
-      "Crack in rear taillight housing"
-    ],
+    "damage_notes": ["Scratch on rear bumper from parking", "Crack in rear taillight housing"],
     "title_status": "clean",
     "province": "Saskatchewan",
     "city": "Saskatoon",
@@ -1276,9 +1249,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 3.5,
     "condition_report": "Reasonable condition with expected wear. Would benefit from detailing. No major mechanical concerns identified.",
-    "damage_notes": [
-      "Missing wheel center cap"
-    ],
+    "damage_notes": ["Missing wheel center cap"],
     "title_status": "clean",
     "province": "Ontario",
     "city": "Kitchener",
@@ -1672,10 +1643,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 2.1,
     "condition_report": "Vehicle shows significant wear. Multiple cosmetic issues noted. Mechanical inspection recommended before purchase.",
-    "damage_notes": [
-      "Curb rash on front-right wheel",
-      "Minor scrape on passenger-side mirror"
-    ],
+    "damage_notes": ["Curb rash on front-right wheel", "Minor scrape on passenger-side mirror"],
     "title_status": "clean",
     "province": "Ontario",
     "city": "Vaughan",
@@ -1786,9 +1754,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 4.1,
     "condition_report": "Above-average condition for year and mileage. All mechanical systems functioning properly. Recently serviced with new tires.",
-    "damage_notes": [
-      "Small tear in rear seat upholstery"
-    ],
+    "damage_notes": ["Small tear in rear seat upholstery"],
     "title_status": "clean",
     "province": "Ontario",
     "city": "London",
@@ -1896,9 +1862,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 4.3,
     "condition_report": "Very clean vehicle inside and out. Minor cosmetic wear only. All electronics and features fully functional.",
-    "damage_notes": [
-      "Chip in windshield (passenger side)"
-    ],
+    "damage_notes": ["Chip in windshield (passenger side)"],
     "title_status": "clean",
     "province": "Alberta",
     "city": "Lethbridge",
@@ -1977,10 +1941,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 2.6,
     "condition_report": "Rough condition with notable damage. Suitable for buyer comfortable with repairs. Core mechanical systems operational.",
-    "damage_notes": [
-      "Missing wheel center cap",
-      "Faded headlight lenses"
-    ],
+    "damage_notes": ["Missing wheel center cap", "Faded headlight lenses"],
     "title_status": "clean",
     "province": "Ontario",
     "city": "Hamilton",
@@ -2017,11 +1978,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 2.1,
     "condition_report": "Below-average condition. Visible damage present. May require immediate maintenance to address noted issues.",
-    "damage_notes": [
-      "Dent on tailgate",
-      "Minor rust on wheel wells",
-      "Light hail damage on roof"
-    ],
+    "damage_notes": ["Dent on tailgate", "Minor rust on wheel wells", "Light hail damage on roof"],
     "title_status": "clean",
     "province": "British Columbia",
     "city": "Kelowna",
@@ -2099,10 +2056,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 3.3,
     "condition_report": "Vehicle shows average wear for its age and mileage. Some cosmetic imperfections noted. Mechanically sound.",
-    "damage_notes": [
-      "Light hail damage on roof",
-      "Scratch on liftgate"
-    ],
+    "damage_notes": ["Light hail damage on roof", "Scratch on liftgate"],
     "title_status": "rebuilt",
     "province": "Alberta",
     "city": "Edmonton",
@@ -2475,10 +2429,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 3.8,
     "condition_report": "Vehicle shows average wear for its age and mileage. Some cosmetic imperfections noted. Mechanically sound.",
-    "damage_notes": [
-      "Scratch along driver-side fender",
-      "Minor rust on wheel wells"
-    ],
+    "damage_notes": ["Scratch along driver-side fender", "Minor rust on wheel wells"],
     "title_status": "clean",
     "province": "Ontario",
     "city": "Markham",
@@ -2555,10 +2506,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 2.8,
     "condition_report": "Rough condition with notable damage. Suitable for buyer comfortable with repairs. Core mechanical systems operational.",
-    "damage_notes": [
-      "Crack in rear taillight housing",
-      "Missing wheel center cap"
-    ],
+    "damage_notes": ["Crack in rear taillight housing", "Missing wheel center cap"],
     "title_status": "clean",
     "province": "British Columbia",
     "city": "Abbotsford",
@@ -2595,10 +2543,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 2.4,
     "condition_report": "Rough condition with notable damage. Suitable for buyer comfortable with repairs. Core mechanical systems operational.",
-    "damage_notes": [
-      "Scratch on rear bumper from parking",
-      "Scratch along driver-side fender"
-    ],
+    "damage_notes": ["Scratch on rear bumper from parking", "Scratch along driver-side fender"],
     "title_status": "clean",
     "province": "Saskatchewan",
     "city": "Regina",
@@ -2756,9 +2701,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 4.5,
     "condition_report": "Exceptional condition. Single previous owner. Garage kept. No mechanical issues reported.",
-    "damage_notes": [
-      "Scratch on rear bumper from parking"
-    ],
+    "damage_notes": ["Scratch on rear bumper from parking"],
     "title_status": "clean",
     "province": "Ontario",
     "city": "Toronto",
@@ -2834,9 +2777,7 @@
     "fuel_type": "diesel",
     "condition_grade": 3.7,
     "condition_report": "Vehicle shows average wear for its age and mileage. Some cosmetic imperfections noted. Mechanically sound.",
-    "damage_notes": [
-      "Small tear in rear seat upholstery"
-    ],
+    "damage_notes": ["Small tear in rear seat upholstery"],
     "title_status": "clean",
     "province": "Ontario",
     "city": "Windsor",
@@ -2871,9 +2812,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 3.4,
     "condition_report": "Fair condition overall. Interior has some wear but no major damage. A few exterior blemishes. Drives well.",
-    "damage_notes": [
-      "Small tear in rear seat upholstery"
-    ],
+    "damage_notes": ["Small tear in rear seat upholstery"],
     "title_status": "clean",
     "province": "British Columbia",
     "city": "Burnaby",
@@ -3105,9 +3044,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 3,
     "condition_report": "Vehicle shows average wear for its age and mileage. Some cosmetic imperfections noted. Mechanically sound.",
-    "damage_notes": [
-      "Cracked front grille"
-    ],
+    "damage_notes": ["Cracked front grille"],
     "title_status": "clean",
     "province": "Quebec",
     "city": "Laval",
@@ -3343,10 +3280,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 2.8,
     "condition_report": "Rough condition with notable damage. Suitable for buyer comfortable with repairs. Core mechanical systems operational.",
-    "damage_notes": [
-      "Paint peeling on roof rack",
-      "Worn leather on driver seat bolster"
-    ],
+    "damage_notes": ["Paint peeling on roof rack", "Worn leather on driver seat bolster"],
     "title_status": "clean",
     "province": "Quebec",
     "city": "Quebec City",
@@ -3382,10 +3316,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 1.2,
     "condition_report": "Vehicle has substantial damage. Sold as-is. Recommended for parts or significant rebuild only.",
-    "damage_notes": [
-      "Airbag deployed - replaced with OEM parts",
-      "Paint peeling on roof rack"
-    ],
+    "damage_notes": ["Airbag deployed - replaced with OEM parts", "Paint peeling on roof rack"],
     "title_status": "salvage",
     "province": "British Columbia",
     "city": "Kelowna",
@@ -3535,10 +3466,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 3.2,
     "condition_report": "Moderate wear throughout. Previous daily driver. Runs and drives without issue. Cosmetic touch-ups recommended.",
-    "damage_notes": [
-      "Minor rust on wheel wells",
-      "Dent on rear quarter panel"
-    ],
+    "damage_notes": ["Minor rust on wheel wells", "Dent on rear quarter panel"],
     "title_status": "clean",
     "province": "Ontario",
     "city": "Vaughan",
@@ -3940,10 +3868,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 3.8,
     "condition_report": "Fair condition overall. Interior has some wear but no major damage. A few exterior blemishes. Drives well.",
-    "damage_notes": [
-      "Small tear in rear seat upholstery",
-      "Chip in windshield (passenger side)"
-    ],
+    "damage_notes": ["Small tear in rear seat upholstery", "Chip in windshield (passenger side)"],
     "title_status": "clean",
     "province": "Ontario",
     "city": "Barrie",
@@ -4067,10 +3992,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 2.3,
     "condition_report": "Vehicle shows significant wear. Multiple cosmetic issues noted. Mechanical inspection recommended before purchase.",
-    "damage_notes": [
-      "Damaged mud flap (rear left)",
-      "Minor scratches on front bumper"
-    ],
+    "damage_notes": ["Damaged mud flap (rear left)", "Minor scratches on front bumper"],
     "title_status": "clean",
     "province": "Ontario",
     "city": "Kitchener",
@@ -4141,10 +4063,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 3.7,
     "condition_report": "Vehicle shows average wear for its age and mileage. Some cosmetic imperfections noted. Mechanically sound.",
-    "damage_notes": [
-      "Cracked front grille",
-      "Faded headlight lenses"
-    ],
+    "damage_notes": ["Cracked front grille", "Faded headlight lenses"],
     "title_status": "clean",
     "province": "British Columbia",
     "city": "Kelowna",
@@ -4262,9 +4181,7 @@
     "fuel_type": "electric",
     "condition_grade": 3.8,
     "condition_report": "Vehicle shows average wear for its age and mileage. Some cosmetic imperfections noted. Mechanically sound.",
-    "damage_notes": [
-      "Scratch on rear bumper from parking"
-    ],
+    "damage_notes": ["Scratch on rear bumper from parking"],
     "title_status": "clean",
     "province": "Ontario",
     "city": "Toronto",
@@ -4300,9 +4217,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 4.2,
     "condition_report": "Very clean vehicle inside and out. Minor cosmetic wear only. All electronics and features fully functional.",
-    "damage_notes": [
-      "Scratch along driver-side fender"
-    ],
+    "damage_notes": ["Scratch along driver-side fender"],
     "title_status": "clean",
     "province": "Ontario",
     "city": "Mississauga",
@@ -4537,10 +4452,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 3.5,
     "condition_report": "Moderate wear throughout. Previous daily driver. Runs and drives without issue. Cosmetic touch-ups recommended.",
-    "damage_notes": [
-      "Dent on tailgate",
-      "Minor scrape on passenger-side mirror"
-    ],
+    "damage_notes": ["Dent on tailgate", "Minor scrape on passenger-side mirror"],
     "title_status": "clean",
     "province": "Ontario",
     "city": "Mississauga",
@@ -4770,10 +4682,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 2.9,
     "condition_report": "Vehicle shows significant wear. Multiple cosmetic issues noted. Mechanical inspection recommended before purchase.",
-    "damage_notes": [
-      "Dent on rear quarter panel",
-      "Paint peeling on roof rack"
-    ],
+    "damage_notes": ["Dent on rear quarter panel", "Paint peeling on roof rack"],
     "title_status": "rebuilt",
     "province": "Quebec",
     "city": "Quebec City",
@@ -4926,11 +4835,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 2.3,
     "condition_report": "Below-average condition. Visible damage present. May require immediate maintenance to address noted issues.",
-    "damage_notes": [
-      "Dent on tailgate",
-      "Light hail damage on roof",
-      "Cracked front grille"
-    ],
+    "damage_notes": ["Dent on tailgate", "Light hail damage on roof", "Cracked front grille"],
     "title_status": "clean",
     "province": "British Columbia",
     "city": "Burnaby",
@@ -5012,9 +4917,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 3.2,
     "condition_report": "Moderate wear throughout. Previous daily driver. Runs and drives without issue. Cosmetic touch-ups recommended.",
-    "damage_notes": [
-      "Scratch on liftgate"
-    ],
+    "damage_notes": ["Scratch on liftgate"],
     "title_status": "clean",
     "province": "Nova Scotia",
     "city": "Halifax",
@@ -5086,9 +4989,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 3.2,
     "condition_report": "Average condition. Has some visible wear on high-touch surfaces. Engine and transmission perform within normal parameters.",
-    "damage_notes": [
-      "Light hail damage on roof"
-    ],
+    "damage_notes": ["Light hail damage on roof"],
     "title_status": "clean",
     "province": "Ontario",
     "city": "Vaughan",
@@ -5125,9 +5026,7 @@
     "fuel_type": "hybrid",
     "condition_grade": 3.7,
     "condition_report": "Vehicle shows average wear for its age and mileage. Some cosmetic imperfections noted. Mechanically sound.",
-    "damage_notes": [
-      "Curb rash on front-right wheel"
-    ],
+    "damage_notes": ["Curb rash on front-right wheel"],
     "title_status": "clean",
     "province": "Quebec",
     "city": "Montreal",
@@ -5354,9 +5253,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 4.2,
     "condition_report": "Above-average condition for year and mileage. All mechanical systems functioning properly. Recently serviced with new tires.",
-    "damage_notes": [
-      "Worn leather on driver seat bolster"
-    ],
+    "damage_notes": ["Worn leather on driver seat bolster"],
     "title_status": "clean",
     "province": "Quebec",
     "city": "Sherbrooke",
@@ -5503,10 +5400,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 3.6,
     "condition_report": "Vehicle shows average wear for its age and mileage. Some cosmetic imperfections noted. Mechanically sound.",
-    "damage_notes": [
-      "Small dent on driver-side door",
-      "Curb rash on front-right wheel"
-    ],
+    "damage_notes": ["Small dent on driver-side door", "Curb rash on front-right wheel"],
     "title_status": "clean",
     "province": "Ontario",
     "city": "Markham",
@@ -5738,10 +5632,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 3.1,
     "condition_report": "Vehicle shows average wear for its age and mileage. Some cosmetic imperfections noted. Mechanically sound.",
-    "damage_notes": [
-      "Crack in rear taillight housing",
-      "Minor scratches on front bumper"
-    ],
+    "damage_notes": ["Crack in rear taillight housing", "Minor scratches on front bumper"],
     "title_status": "clean",
     "province": "Ontario",
     "city": "Hamilton",
@@ -5779,9 +5670,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 3.3,
     "condition_report": "Reasonable condition with expected wear. Would benefit from detailing. No major mechanical concerns identified.",
-    "damage_notes": [
-      "Small tear in rear seat upholstery"
-    ],
+    "damage_notes": ["Small tear in rear seat upholstery"],
     "title_status": "clean",
     "province": "Ontario",
     "city": "Vaughan",
@@ -5818,10 +5707,7 @@
     "fuel_type": "hybrid",
     "condition_grade": 3.7,
     "condition_report": "Reasonable condition with expected wear. Would benefit from detailing. No major mechanical concerns identified.",
-    "damage_notes": [
-      "Faded headlight lenses",
-      "Scratch on liftgate"
-    ],
+    "damage_notes": ["Faded headlight lenses", "Scratch on liftgate"],
     "title_status": "clean",
     "province": "Alberta",
     "city": "Red Deer",
@@ -5935,9 +5821,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 4.2,
     "condition_report": "Above-average condition for year and mileage. All mechanical systems functioning properly. Recently serviced with new tires.",
-    "damage_notes": [
-      "Scratch along driver-side fender"
-    ],
+    "damage_notes": ["Scratch along driver-side fender"],
     "title_status": "clean",
     "province": "Quebec",
     "city": "Quebec City",
@@ -6008,9 +5892,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 4.6,
     "condition_report": "Vehicle is in excellent condition overall. Interior is clean with minimal wear. Exterior shows only minor imperfections consistent with age.",
-    "damage_notes": [
-      "Minor scrape on passenger-side mirror"
-    ],
+    "damage_notes": ["Minor scrape on passenger-side mirror"],
     "title_status": "clean",
     "province": "Ontario",
     "city": "Markham",
@@ -6119,9 +6001,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 3.3,
     "condition_report": "Reasonable condition with expected wear. Would benefit from detailing. No major mechanical concerns identified.",
-    "damage_notes": [
-      "Curb rash on front-right wheel"
-    ],
+    "damage_notes": ["Curb rash on front-right wheel"],
     "title_status": "clean",
     "province": "British Columbia",
     "city": "Burnaby",
@@ -6284,10 +6164,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 3.8,
     "condition_report": "Vehicle shows average wear for its age and mileage. Some cosmetic imperfections noted. Mechanically sound.",
-    "damage_notes": [
-      "Worn leather on driver seat bolster",
-      "Dent on tailgate"
-    ],
+    "damage_notes": ["Worn leather on driver seat bolster", "Dent on tailgate"],
     "title_status": "clean",
     "province": "Quebec",
     "city": "Laval",
@@ -6436,9 +6313,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 3.5,
     "condition_report": "Reasonable condition with expected wear. Would benefit from detailing. No major mechanical concerns identified.",
-    "damage_notes": [
-      "Cracked front grille"
-    ],
+    "damage_notes": ["Cracked front grille"],
     "title_status": "clean",
     "province": "Alberta",
     "city": "Calgary",
@@ -6637,10 +6512,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 2.3,
     "condition_report": "Condition reflects heavy use. Several repairs recommended. Priced accordingly to account for needed work.",
-    "damage_notes": [
-      "Worn brake rotors - due for replacement",
-      "Scratch along driver-side fender"
-    ],
+    "damage_notes": ["Worn brake rotors - due for replacement", "Scratch along driver-side fender"],
     "title_status": "clean",
     "province": "British Columbia",
     "city": "Surrey",
@@ -6789,9 +6661,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 4.5,
     "condition_report": "Very clean vehicle inside and out. Minor cosmetic wear only. All electronics and features fully functional.",
-    "damage_notes": [
-      "Scratch on rear bumper from parking"
-    ],
+    "damage_notes": ["Scratch on rear bumper from parking"],
     "title_status": "clean",
     "province": "Alberta",
     "city": "Airdrie",
@@ -6827,10 +6697,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 2.4,
     "condition_report": "Rough condition with notable damage. Suitable for buyer comfortable with repairs. Core mechanical systems operational.",
-    "damage_notes": [
-      "Light hail damage on roof",
-      "Dent on tailgate"
-    ],
+    "damage_notes": ["Light hail damage on roof", "Dent on tailgate"],
     "title_status": "clean",
     "province": "Alberta",
     "city": "Edmonton",
@@ -7254,10 +7121,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 2.5,
     "condition_report": "Vehicle shows significant wear. Multiple cosmetic issues noted. Mechanical inspection recommended before purchase.",
-    "damage_notes": [
-      "Minor rust on wheel wells",
-      "Minor scrape on passenger-side mirror"
-    ],
+    "damage_notes": ["Minor rust on wheel wells", "Minor scrape on passenger-side mirror"],
     "title_status": "rebuilt",
     "province": "Quebec",
     "city": "Montreal",
@@ -7531,10 +7395,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 2.5,
     "condition_report": "Rough condition with notable damage. Suitable for buyer comfortable with repairs. Core mechanical systems operational.",
-    "damage_notes": [
-      "Dent on rear quarter panel",
-      "Small tear in rear seat upholstery"
-    ],
+    "damage_notes": ["Dent on rear quarter panel", "Small tear in rear seat upholstery"],
     "title_status": "clean",
     "province": "Manitoba",
     "city": "Brandon",
@@ -7569,10 +7430,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 1.9,
     "condition_report": "Major mechanical and cosmetic issues present. Not roadworthy in current state. For experienced rebuilders.",
-    "damage_notes": [
-      "AC compressor intermittent - needs diagnosis",
-      "Scratch on liftgate"
-    ],
+    "damage_notes": ["AC compressor intermittent - needs diagnosis", "Scratch on liftgate"],
     "title_status": "salvage",
     "province": "Quebec",
     "city": "Laval",
@@ -7682,9 +7540,7 @@
     "fuel_type": "gasoline",
     "condition_grade": 3.1,
     "condition_report": "Fair condition overall. Interior has some wear but no major damage. A few exterior blemishes. Drives well.",
-    "damage_notes": [
-      "Light hail damage on roof"
-    ],
+    "damage_notes": ["Light hail damage on roof"],
     "title_status": "clean",
     "province": "Ontario",
     "city": "Markham",
