@@ -9,3 +9,7 @@ export function formatKm(odometerKm: number): string {
 export function formatGrade(grade: number): string {
   return grade.toFixed(1)
 }
+
+export function capitalize(value: string): string {
+  return value.charAt(0).toUpperCase() + value.slice(1)
+}
