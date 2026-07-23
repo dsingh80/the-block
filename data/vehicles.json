@@ -1,6 +1,6 @@
 [
   {
-    "id": "4e3cd74f-bb88-4efe-b234-bcb2f7474b40",
+    "id": "af22b65b-5b9c-4318-8e51-72f4d6d7b2a8",
     "vin": "CG2UAF4T8LRBBVWJY",
     "year": 2025,
     "make": "Mazda",
@@ -20,7 +20,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Mississauga",
-    "auction_start": "2026-04-05T19:00:00",
+    "auction_start": "2026-07-28T19:00:00",
     "starting_bid": 20500,
     "reserve_price": 29000,
     "buy_now_price": null,
@@ -36,7 +36,7 @@
     "bid_count": 11
   },
   {
-    "id": "0d6607da-d827-4da6-bfbb-ecab5dbd77c5",
+    "id": "a535d8d0-2a1a-4113-995b-62b4a7c0a9c7",
     "vin": "D9V7RWMW31KR4Z96R",
     "year": 2019,
     "make": "Chevrolet",
@@ -59,7 +59,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "London",
-    "auction_start": "2026-03-31T17:00:00",
+    "auction_start": "2026-07-23T17:00:00",
     "starting_bid": 9500,
     "reserve_price": null,
     "buy_now_price": null,
@@ -77,7 +77,7 @@
     "bid_count": 13
   },
   {
-    "id": "c42d7e04-4ae5-4ad4-b638-67f11789f269",
+    "id": "2dfbefae-5943-4cdd-8450-4450fcd4f71c",
     "vin": "56GWTGB07KKMAH9V9",
     "year": 2017,
     "make": "Volkswagen",
@@ -100,7 +100,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Markham",
-    "auction_start": "2026-04-03T12:00:00",
+    "auction_start": "2026-07-26T12:00:00",
     "starting_bid": 8500,
     "reserve_price": 10500,
     "buy_now_price": null,
@@ -117,7 +117,7 @@
     "bid_count": 1
   },
   {
-    "id": "1dfa77c7-854a-4ada-bf95-6220eeb28d01",
+    "id": "f7347a0d-2a28-4800-8e18-e77c5b4a018b",
     "vin": "73RF5U464EX3GNV9T",
     "year": 2023,
     "make": "Ram",
@@ -139,7 +139,7 @@
     "title_status": "clean",
     "province": "British Columbia",
     "city": "Surrey",
-    "auction_start": "2026-04-05T09:00:00",
+    "auction_start": "2026-07-28T09:00:00",
     "starting_bid": 26500,
     "reserve_price": 41000,
     "buy_now_price": 51500,
@@ -156,7 +156,7 @@
     "bid_count": 9
   },
   {
-    "id": "dc3de592-b252-469d-853f-4e792323b665",
+    "id": "a4922954-7a38-4c42-b3c0-528f5e4d3988",
     "vin": "86S0EKEB2RV032GYU",
     "year": 2023,
     "make": "Ford",
@@ -176,7 +176,7 @@
     "title_status": "clean",
     "province": "British Columbia",
     "city": "Burnaby",
-    "auction_start": "2026-04-03T14:00:00",
+    "auction_start": "2026-07-26T14:00:00",
     "starting_bid": 18000,
     "reserve_price": null,
     "buy_now_price": 33500,
@@ -193,7 +193,7 @@
     "bid_count": 2
   },
   {
-    "id": "7d173c88-92ed-4d22-9b71-2eec3fc43092",
+    "id": "1196eca4-8028-400c-aed6-d9f68b841eaf",
     "vin": "FCDBJZZV9APMK4UG8",
     "year": 2021,
     "make": "BMW",
@@ -220,7 +220,7 @@
     "title_status": "salvage",
     "province": "British Columbia",
     "city": "Kelowna",
-    "auction_start": "2026-04-03T19:00:00",
+    "auction_start": "2026-07-26T19:00:00",
     "starting_bid": 10500,
     "reserve_price": 14500,
     "buy_now_price": null,
@@ -237,7 +237,7 @@
     "bid_count": 0
   },
   {
-    "id": "64dd7819-a112-41ef-8826-0f7edc8999ad",
+    "id": "70abf107-0c29-4bc8-8f3e-aa304a6c749b",
     "vin": "MU4X5ZEK9TKX210G4",
     "year": 2024,
     "make": "Subaru",
@@ -257,7 +257,7 @@
     "title_status": "clean",
     "province": "British Columbia",
     "city": "Burnaby",
-    "auction_start": "2026-04-03T09:00:00",
+    "auction_start": "2026-07-26T09:00:00",
     "starting_bid": 22000,
     "reserve_price": 29500,
     "buy_now_price": null,
@@ -273,7 +273,7 @@
     "bid_count": 0
   },
   {
-    "id": "1e5fa504-2dae-44ad-862e-3f24aeb85c29",
+    "id": "9e5f4653-69d3-4f0a-97ea-a102dc84a6f9",
     "vin": "0UTWD2Z71BBMHH9W4",
     "year": 2020,
     "make": "Jeep",
@@ -299,7 +299,7 @@
     "title_status": "rebuilt",
     "province": "Ontario",
     "city": "Windsor",
-    "auction_start": "2026-03-31T17:00:00",
+    "auction_start": "2026-07-23T17:00:00",
     "starting_bid": 15000,
     "reserve_price": 18000,
     "buy_now_price": null,
@@ -315,7 +315,7 @@
     "bid_count": 9
   },
   {
-    "id": "dc698185-c2c8-47c9-b042-884ec9f48bc5",
+    "id": "d8b3ce0d-e158-48ef-a451-e3d9c837a0e3",
     "vin": "7U1B8WKB302J5SGYT",
     "year": 2024,
     "make": "Tesla",
@@ -335,7 +335,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Ottawa",
-    "auction_start": "2026-03-31T10:00:00",
+    "auction_start": "2026-07-23T10:00:00",
     "starting_bid": 27000,
     "reserve_price": null,
     "buy_now_price": null,
@@ -350,7 +350,7 @@
     "bid_count": 12
   },
   {
-    "id": "1e9da018-4bac-4154-a00a-421a3cf4bb66",
+    "id": "f1ee542c-eafb-47b7-ad16-d841e5d9c214",
     "vin": "3BWVSTSR5A0AZGN07",
     "year": 2021,
     "make": "Chevrolet",
@@ -376,7 +376,7 @@
     "title_status": "clean",
     "province": "Alberta",
     "city": "Edmonton",
-    "auction_start": "2026-04-06T14:00:00",
+    "auction_start": "2026-07-29T14:00:00",
     "starting_bid": 9000,
     "reserve_price": 13500,
     "buy_now_price": 17000,
@@ -393,7 +393,7 @@
     "bid_count": 0
   },
   {
-    "id": "0d92938b-e078-448b-93a6-ad2cf43223c8",
+    "id": "b894e710-1fa2-4d4c-8d43-0cdfa2dfefc4",
     "vin": "FC9BT5Z234R7YJFN0",
     "year": 2020,
     "make": "Kia",
@@ -419,7 +419,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Sherbrooke",
-    "auction_start": "2026-04-01T16:00:00",
+    "auction_start": "2026-07-24T16:00:00",
     "starting_bid": 15000,
     "reserve_price": null,
     "buy_now_price": null,
@@ -437,7 +437,7 @@
     "bid_count": 0
   },
   {
-    "id": "e9979e45-f71f-49ac-b2bc-d28220e9c091",
+    "id": "66484475-63ba-4865-90a6-cfe55d63916d",
     "vin": "4NWF9FZ05VX62ABD7",
     "year": 2020,
     "make": "Mazda",
@@ -461,7 +461,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Sherbrooke",
-    "auction_start": "2026-04-03T09:00:00",
+    "auction_start": "2026-07-26T09:00:00",
     "starting_bid": 8500,
     "reserve_price": 12500,
     "buy_now_price": null,
@@ -478,7 +478,7 @@
     "bid_count": 0
   },
   {
-    "id": "619113d9-6207-406e-9baf-015ca103f8f6",
+    "id": "3b6542e1-49e5-4b18-a375-281d8a63d285",
     "vin": "MY96ZM7T9HEL9T9AY",
     "year": 2020,
     "make": "Mazda",
@@ -501,7 +501,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Quebec City",
-    "auction_start": "2026-04-01T20:00:00",
+    "auction_start": "2026-07-24T20:00:00",
     "starting_bid": 14000,
     "reserve_price": 20000,
     "buy_now_price": null,
@@ -518,7 +518,7 @@
     "bid_count": 0
   },
   {
-    "id": "047128d1-44da-44f3-8259-e6af732ffb15",
+    "id": "dfb4eb6a-365d-4ba6-b912-ff53dceb5f8d",
     "vin": "PFA0NLAE6KBS0E0HK",
     "year": 2021,
     "make": "Nissan",
@@ -541,7 +541,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Sherbrooke",
-    "auction_start": "2026-04-02T16:00:00",
+    "auction_start": "2026-07-25T16:00:00",
     "starting_bid": 14500,
     "reserve_price": 21500,
     "buy_now_price": null,
@@ -558,7 +558,7 @@
     "bid_count": 0
   },
   {
-    "id": "629d5ba0-3a11-4d6f-b34f-841de887888a",
+    "id": "e0f4f834-a682-479e-85aa-b7fdc4779475",
     "vin": "U66CH7N05RLNMY56H",
     "year": 2018,
     "make": "GMC",
@@ -584,7 +584,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Toronto",
-    "auction_start": "2026-04-03T17:00:00",
+    "auction_start": "2026-07-26T17:00:00",
     "starting_bid": 12000,
     "reserve_price": 17500,
     "buy_now_price": null,
@@ -601,7 +601,7 @@
     "bid_count": 0
   },
   {
-    "id": "ab4c783d-9f1a-4147-88b4-a24a7ae356f5",
+    "id": "a9be3c3d-e620-4da7-9198-eb80742c812c",
     "vin": "VCX5G4H94PAPBNSPA",
     "year": 2018,
     "make": "Ram",
@@ -625,7 +625,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Kitchener",
-    "auction_start": "2026-04-01T10:00:00",
+    "auction_start": "2026-07-24T10:00:00",
     "starting_bid": 14500,
     "reserve_price": 24500,
     "buy_now_price": null,
@@ -643,7 +643,7 @@
     "bid_count": 18
   },
   {
-    "id": "e2f096b7-ae41-45f1-94bb-67990ce845c7",
+    "id": "37574d91-bdb3-4892-a3fe-003be0f9ad93",
     "vin": "XZ3A4HUN0K69VGB3B",
     "year": 2026,
     "make": "Subaru",
@@ -663,7 +663,7 @@
     "title_status": "clean",
     "province": "Manitoba",
     "city": "Brandon",
-    "auction_start": "2026-04-06T20:00:00",
+    "auction_start": "2026-07-29T20:00:00",
     "starting_bid": 18000,
     "reserve_price": null,
     "buy_now_price": null,
@@ -678,7 +678,7 @@
     "bid_count": 0
   },
   {
-    "id": "dc6f1a25-5b0e-4919-b816-eb41d3b5e581",
+    "id": "776333bd-83e7-4f48-95aa-9a45b104fadb",
     "vin": "R0CXYY5542ESYPG97",
     "year": 2019,
     "make": "Ford",
@@ -702,7 +702,7 @@
     "title_status": "salvage",
     "province": "Ontario",
     "city": "Barrie",
-    "auction_start": "2026-04-06T10:00:00",
+    "auction_start": "2026-07-29T10:00:00",
     "starting_bid": 4000,
     "reserve_price": 5500,
     "buy_now_price": null,
@@ -718,7 +718,7 @@
     "bid_count": 0
   },
   {
-    "id": "13ba6ca1-67c1-4a2f-8f5d-01ef55cc7bc6",
+    "id": "b2e9826f-cf51-4485-9f37-c6c65c0426ee",
     "vin": "MYWK251Y4NW9KPPKZ",
     "year": 2021,
     "make": "GMC",
@@ -740,7 +740,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Mississauga",
-    "auction_start": "2026-04-04T18:00:00",
+    "auction_start": "2026-07-27T18:00:00",
     "starting_bid": 20500,
     "reserve_price": 32500,
     "buy_now_price": null,
@@ -756,7 +756,7 @@
     "bid_count": 14
   },
   {
-    "id": "aafb1dad-0c45-4456-a39e-4dd52edecc25",
+    "id": "841d8845-544b-4527-9058-b12854f8f857",
     "vin": "3J4NJB018TJXXK63X",
     "year": 2025,
     "make": "Nissan",
@@ -776,7 +776,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Mississauga",
-    "auction_start": "2026-04-06T13:00:00",
+    "auction_start": "2026-07-29T13:00:00",
     "starting_bid": 13500,
     "reserve_price": null,
     "buy_now_price": null,
@@ -794,7 +794,7 @@
     "bid_count": 0
   },
   {
-    "id": "ae71e698-1d72-4bea-95c5-9c5a4c7ff556",
+    "id": "6c4ebdb5-dd18-4d6e-bfca-3185029018a3",
     "vin": "K9YJLGH69YN1FWSWM",
     "year": 2025,
     "make": "GMC",
@@ -814,7 +814,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Montreal",
-    "auction_start": "2026-04-03T16:00:00",
+    "auction_start": "2026-07-26T16:00:00",
     "starting_bid": 49000,
     "reserve_price": 61000,
     "buy_now_price": 68500,
@@ -830,7 +830,7 @@
     "bid_count": 0
   },
   {
-    "id": "599e7dbe-377c-4b84-958f-06167459bfcf",
+    "id": "5a58759d-1a72-440e-b74e-f54885d47a02",
     "vin": "CJH3SEKX718T5705M",
     "year": 2022,
     "make": "Subaru",
@@ -853,7 +853,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Quebec City",
-    "auction_start": "2026-04-03T16:00:00",
+    "auction_start": "2026-07-26T16:00:00",
     "starting_bid": 17500,
     "reserve_price": null,
     "buy_now_price": null,
@@ -870,7 +870,7 @@
     "bid_count": 1
   },
   {
-    "id": "18183763-79d8-43b0-be01-7242477cf0da",
+    "id": "a8610b7d-6813-4472-a905-b9db53f5ff7d",
     "vin": "NG1GZH2K0EG88ML61",
     "year": 2023,
     "make": "Nissan",
@@ -890,7 +890,7 @@
     "title_status": "clean",
     "province": "Alberta",
     "city": "Airdrie",
-    "auction_start": "2026-04-01T15:00:00",
+    "auction_start": "2026-07-24T15:00:00",
     "starting_bid": 18000,
     "reserve_price": 24000,
     "buy_now_price": null,
@@ -905,7 +905,7 @@
     "bid_count": 0
   },
   {
-    "id": "620ff36e-df82-4574-8225-36103ca43dcb",
+    "id": "e59539bf-959d-42e4-aaf6-3cc1f26b8d2f",
     "vin": "4CBXNEX52CBGJ76PT",
     "year": 2025,
     "make": "Subaru",
@@ -925,7 +925,7 @@
     "title_status": "clean",
     "province": "Alberta",
     "city": "Edmonton",
-    "auction_start": "2026-04-01T12:00:00",
+    "auction_start": "2026-07-24T12:00:00",
     "starting_bid": 31000,
     "reserve_price": 40000,
     "buy_now_price": null,
@@ -941,7 +941,7 @@
     "bid_count": 0
   },
   {
-    "id": "a1a67541-dfb2-412e-925a-508e13dde1fe",
+    "id": "62a6ee4d-c620-4eff-a7dd-debfd8a3234e",
     "vin": "R75XPXH71Z4UXMYVJ",
     "year": 2026,
     "make": "Hyundai",
@@ -963,7 +963,7 @@
     "title_status": "rebuilt",
     "province": "Quebec",
     "city": "Laval",
-    "auction_start": "2026-04-02T14:00:00",
+    "auction_start": "2026-07-25T14:00:00",
     "starting_bid": 12500,
     "reserve_price": 18500,
     "buy_now_price": null,
@@ -978,7 +978,7 @@
     "bid_count": 1
   },
   {
-    "id": "07e6b39c-da56-4979-93b3-af10e339502d",
+    "id": "bf805648-48cf-4e3c-bf67-f5bd8874d919",
     "vin": "XNHZ77236GGE70SVK",
     "year": 2018,
     "make": "Hyundai",
@@ -1001,7 +1001,7 @@
     "title_status": "clean",
     "province": "Alberta",
     "city": "Edmonton",
-    "auction_start": "2026-04-02T13:00:00",
+    "auction_start": "2026-07-25T13:00:00",
     "starting_bid": 7500,
     "reserve_price": null,
     "buy_now_price": null,
@@ -1019,7 +1019,7 @@
     "bid_count": 0
   },
   {
-    "id": "26955807-abf7-43c9-9023-09ecb60bf678",
+    "id": "1640b53d-3e26-4051-8805-038755bc5dc7",
     "vin": "7X1KFBA20BCKTRD18",
     "year": 2016,
     "make": "Jeep",
@@ -1044,7 +1044,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "London",
-    "auction_start": "2026-04-02T10:00:00",
+    "auction_start": "2026-07-25T10:00:00",
     "starting_bid": 12500,
     "reserve_price": 15500,
     "buy_now_price": 19500,
@@ -1061,7 +1061,7 @@
     "bid_count": 14
   },
   {
-    "id": "91cd2d52-0c56-4084-8124-271850793086",
+    "id": "5389b9fc-069c-43bc-ba3e-58998d1b5781",
     "vin": "PPD3ZF776RK0HGY7N",
     "year": 2017,
     "make": "Kia",
@@ -1084,7 +1084,7 @@
     "title_status": "clean",
     "province": "Saskatchewan",
     "city": "Saskatoon",
-    "auction_start": "2026-04-06T13:00:00",
+    "auction_start": "2026-07-29T13:00:00",
     "starting_bid": 4000,
     "reserve_price": null,
     "buy_now_price": null,
@@ -1100,7 +1100,7 @@
     "bid_count": 0
   },
   {
-    "id": "abf672d7-5178-4dd7-84a7-e86d616776ef",
+    "id": "5163e499-8f6e-448e-8399-c10587f4c4bb",
     "vin": "82VGRF6858JF0VDFU",
     "year": 2021,
     "make": "Tesla",
@@ -1120,7 +1120,7 @@
     "title_status": "rebuilt",
     "province": "British Columbia",
     "city": "Victoria",
-    "auction_start": "2026-04-06T15:00:00",
+    "auction_start": "2026-07-29T15:00:00",
     "starting_bid": 17000,
     "reserve_price": null,
     "buy_now_price": 28500,
@@ -1137,7 +1137,7 @@
     "bid_count": 0
   },
   {
-    "id": "fa9e3dfc-40f4-40dd-b890-7b5213369713",
+    "id": "8f2c1130-a6a0-4e1a-8aed-1079e4098141",
     "vin": "LV1G87BM8UHB382GL",
     "year": 2018,
     "make": "Ram",
@@ -1162,7 +1162,7 @@
     "title_status": "salvage",
     "province": "Quebec",
     "city": "Montreal",
-    "auction_start": "2026-04-01T20:00:00",
+    "auction_start": "2026-07-24T20:00:00",
     "starting_bid": 6000,
     "reserve_price": null,
     "buy_now_price": null,
@@ -1178,7 +1178,7 @@
     "bid_count": 0
   },
   {
-    "id": "18dfa2fb-2d22-4580-96d5-5748a402b879",
+    "id": "9e4ddbdd-4603-404b-989b-6d5f707cd561",
     "vin": "D4LLZSME6W00ALSZD",
     "year": 2018,
     "make": "Tesla",
@@ -1203,7 +1203,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Kitchener",
-    "auction_start": "2026-04-05T16:00:00",
+    "auction_start": "2026-07-28T16:00:00",
     "starting_bid": 10000,
     "reserve_price": 19000,
     "buy_now_price": null,
@@ -1219,7 +1219,7 @@
     "bid_count": 14
   },
   {
-    "id": "6d1b93a8-47a6-4581-8e99-c3f54b20bc5e",
+    "id": "957feea9-2073-4a2a-9feb-f6fb439a530b",
     "vin": "7T7F490H86TVKD48A",
     "year": 2016,
     "make": "Nissan",
@@ -1242,7 +1242,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Vaughan",
-    "auction_start": "2026-04-03T17:00:00",
+    "auction_start": "2026-07-26T17:00:00",
     "starting_bid": 5500,
     "reserve_price": null,
     "buy_now_price": null,
@@ -1260,7 +1260,7 @@
     "bid_count": 16
   },
   {
-    "id": "eb28fe31-646c-4aa7-9f60-654408232fb5",
+    "id": "886c6e0e-e078-49f4-a33e-c8ae893c92f6",
     "vin": "NXSCX8FB93HBVZT2C",
     "year": 2023,
     "make": "Mazda",
@@ -1282,7 +1282,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Kitchener",
-    "auction_start": "2026-03-31T20:00:00",
+    "auction_start": "2026-07-23T20:00:00",
     "starting_bid": 13500,
     "reserve_price": 22000,
     "buy_now_price": null,
@@ -1299,7 +1299,7 @@
     "bid_count": 0
   },
   {
-    "id": "a4872199-050b-400c-8298-e0194969b3ba",
+    "id": "9d2e000c-f750-4ae7-9333-e6f33cf7be6d",
     "vin": "XCKUDEG41F1RLBWY0",
     "year": 2022,
     "make": "Subaru",
@@ -1323,7 +1323,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Windsor",
-    "auction_start": "2026-04-05T10:00:00",
+    "auction_start": "2026-07-28T10:00:00",
     "starting_bid": 11500,
     "reserve_price": 20500,
     "buy_now_price": null,
@@ -1339,7 +1339,7 @@
     "bid_count": 0
   },
   {
-    "id": "b0ddeb15-baca-4e77-b936-5fb55e41cda3",
+    "id": "f3e4ece3-3b11-4c43-b167-8e39a4bc2c5b",
     "vin": "RKTM6KJ35G0LZX7PG",
     "year": 2020,
     "make": "Toyota",
@@ -1359,7 +1359,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Sherbrooke",
-    "auction_start": "2026-04-05T18:00:00",
+    "auction_start": "2026-07-28T18:00:00",
     "starting_bid": 9000,
     "reserve_price": null,
     "buy_now_price": null,
@@ -1376,7 +1376,7 @@
     "bid_count": 8
   },
   {
-    "id": "2d937ed0-b8f5-4513-bca9-b80fd75ede22",
+    "id": "5c90cba8-5372-47f0-94a0-6606366b6e08",
     "vin": "3B60YA8F0FG85JBA9",
     "year": 2016,
     "make": "Jeep",
@@ -1400,7 +1400,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Vaughan",
-    "auction_start": "2026-04-06T13:00:00",
+    "auction_start": "2026-07-29T13:00:00",
     "starting_bid": 8500,
     "reserve_price": 12000,
     "buy_now_price": 14000,
@@ -1416,7 +1416,7 @@
     "bid_count": 17
   },
   {
-    "id": "1361d151-34c6-4ca0-bc0f-903a11e23a23",
+    "id": "bb3a172e-e89f-491e-88ef-b9cddf68fd23",
     "vin": "PYZS55D894GTLTZTK",
     "year": 2018,
     "make": "Nissan",
@@ -1441,7 +1441,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Gatineau",
-    "auction_start": "2026-04-03T10:00:00",
+    "auction_start": "2026-07-26T10:00:00",
     "starting_bid": 6000,
     "reserve_price": 10000,
     "buy_now_price": null,
@@ -1459,7 +1459,7 @@
     "bid_count": 5
   },
   {
-    "id": "e2d7b07f-37e2-48cc-aa61-ffa34018b9af",
+    "id": "db028c2f-d7c2-4d68-8480-8f899ecbab0e",
     "vin": "7NGFG1K91R4ZXR6BY",
     "year": 2017,
     "make": "Ford",
@@ -1484,7 +1484,7 @@
     "title_status": "rebuilt",
     "province": "Alberta",
     "city": "Edmonton",
-    "auction_start": "2026-04-06T19:00:00",
+    "auction_start": "2026-07-29T19:00:00",
     "starting_bid": 5500,
     "reserve_price": 9000,
     "buy_now_price": null,
@@ -1500,7 +1500,7 @@
     "bid_count": 5
   },
   {
-    "id": "31b7298a-557c-4cdb-969b-7e835d7d066b",
+    "id": "934ff116-a647-4abc-8448-a8f1fd037ed0",
     "vin": "ZLE7EHEJ7AY78VHXH",
     "year": 2019,
     "make": "Chevrolet",
@@ -1526,7 +1526,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Laval",
-    "auction_start": "2026-04-01T13:00:00",
+    "auction_start": "2026-07-24T13:00:00",
     "starting_bid": 6500,
     "reserve_price": 10000,
     "buy_now_price": null,
@@ -1541,7 +1541,7 @@
     "bid_count": 0
   },
   {
-    "id": "b25d0c2a-5f56-4e00-9f61-3c5b18edf7ef",
+    "id": "eb12d70f-31b2-41af-90dc-6cbcb00ac1fa",
     "vin": "LJS99SU10DAE5U6NH",
     "year": 2022,
     "make": "Nissan",
@@ -1561,7 +1561,7 @@
     "title_status": "clean",
     "province": "Nova Scotia",
     "city": "Dartmouth",
-    "auction_start": "2026-04-03T12:00:00",
+    "auction_start": "2026-07-26T12:00:00",
     "starting_bid": 15500,
     "reserve_price": null,
     "buy_now_price": null,
@@ -1578,7 +1578,7 @@
     "bid_count": 0
   },
   {
-    "id": "041b2f83-f77f-4ebd-8539-18aab4fc7647",
+    "id": "ecac4de5-df1d-4c07-b1dd-91ba25dfe628",
     "vin": "XXFSLCZ80H2E74NJ9",
     "year": 2022,
     "make": "Hyundai",
@@ -1602,7 +1602,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Kitchener",
-    "auction_start": "2026-03-31T12:00:00",
+    "auction_start": "2026-07-23T12:00:00",
     "starting_bid": 15500,
     "reserve_price": null,
     "buy_now_price": null,
@@ -1619,7 +1619,7 @@
     "bid_count": 0
   },
   {
-    "id": "5b7bba8e-8e5d-4579-a408-1301e8fca316",
+    "id": "205c4c61-e793-4634-9180-ea554511f916",
     "vin": "4CJYUZS54GRG9BXZZ",
     "year": 2025,
     "make": "Mazda",
@@ -1639,7 +1639,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "London",
-    "auction_start": "2026-04-02T11:00:00",
+    "auction_start": "2026-07-25T11:00:00",
     "starting_bid": 23000,
     "reserve_price": null,
     "buy_now_price": null,
@@ -1656,7 +1656,7 @@
     "bid_count": 0
   },
   {
-    "id": "a83d8694-96e4-4ee0-91f0-b22443a3fa92",
+    "id": "ebdd51bb-c6cb-4a6f-8db1-91fc3a03d56e",
     "vin": "7H56HBSE9BKWU39LU",
     "year": 2016,
     "make": "Kia",
@@ -1679,7 +1679,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Vaughan",
-    "auction_start": "2026-03-31T17:00:00",
+    "auction_start": "2026-07-23T17:00:00",
     "starting_bid": 5000,
     "reserve_price": 6500,
     "buy_now_price": 7000,
@@ -1695,7 +1695,7 @@
     "bid_count": 0
   },
   {
-    "id": "c35ce472-2d9d-4d87-a03c-56abbe63b720",
+    "id": "718cdd93-e586-40e2-ad48-2d717370dfc5",
     "vin": "6SXGWHG43XW8ZA75V",
     "year": 2022,
     "make": "Mazda",
@@ -1715,7 +1715,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Brampton",
-    "auction_start": "2026-04-03T15:00:00",
+    "auction_start": "2026-07-26T15:00:00",
     "starting_bid": 9500,
     "reserve_price": null,
     "buy_now_price": null,
@@ -1733,7 +1733,7 @@
     "bid_count": 0
   },
   {
-    "id": "f8c0d9bb-8222-4446-93c1-43bcd61175e8",
+    "id": "a2759478-6ac0-4b81-8893-453017273276",
     "vin": "YGYZ7DLZ6N02CM9LD",
     "year": 2026,
     "make": "Jeep",
@@ -1753,7 +1753,7 @@
     "title_status": "clean",
     "province": "Alberta",
     "city": "Edmonton",
-    "auction_start": "2026-04-06T15:00:00",
+    "auction_start": "2026-07-29T15:00:00",
     "starting_bid": 33000,
     "reserve_price": null,
     "buy_now_price": null,
@@ -1770,7 +1770,7 @@
     "bid_count": 0
   },
   {
-    "id": "426a36b7-ab4e-4558-94d9-c48476925c8f",
+    "id": "0465bc73-ff5e-4417-9782-77a2009aab40",
     "vin": "A31YZLJL14TE9RAMC",
     "year": 2023,
     "make": "Kia",
@@ -1792,7 +1792,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "London",
-    "auction_start": "2026-03-31T14:00:00",
+    "auction_start": "2026-07-23T14:00:00",
     "starting_bid": 13000,
     "reserve_price": 16500,
     "buy_now_price": null,
@@ -1808,7 +1808,7 @@
     "bid_count": 0
   },
   {
-    "id": "2827dcd5-9cf1-483a-a53d-30c39ac750da",
+    "id": "081e9589-d009-4cb8-950d-1b36cafefb72",
     "vin": "9DAX8BWE9ZPKZ5S8E",
     "year": 2025,
     "make": "Honda",
@@ -1828,7 +1828,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Sherbrooke",
-    "auction_start": "2026-04-05T15:00:00",
+    "auction_start": "2026-07-28T15:00:00",
     "starting_bid": 26500,
     "reserve_price": null,
     "buy_now_price": null,
@@ -1845,7 +1845,7 @@
     "bid_count": 0
   },
   {
-    "id": "845c3157-0810-4bd4-9abd-37c39bb34123",
+    "id": "056a1a8c-513e-4e73-ba63-8c933d553ae4",
     "vin": "BC5YPRKP5FUEEHKGN",
     "year": 2024,
     "make": "Subaru",
@@ -1865,7 +1865,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Barrie",
-    "auction_start": "2026-04-02T12:00:00",
+    "auction_start": "2026-07-25T12:00:00",
     "starting_bid": 17000,
     "reserve_price": 21500,
     "buy_now_price": null,
@@ -1880,7 +1880,7 @@
     "bid_count": 0
   },
   {
-    "id": "5401d32e-e90a-4e09-b0fd-544d009eb9fd",
+    "id": "25b99037-68d4-4e15-83d7-baf747cbc71d",
     "vin": "G0UCL53H58NSTV433",
     "year": 2025,
     "make": "Nissan",
@@ -1902,7 +1902,7 @@
     "title_status": "clean",
     "province": "Alberta",
     "city": "Lethbridge",
-    "auction_start": "2026-04-05T18:00:00",
+    "auction_start": "2026-07-28T18:00:00",
     "starting_bid": 19500,
     "reserve_price": null,
     "buy_now_price": null,
@@ -1918,7 +1918,7 @@
     "bid_count": 0
   },
   {
-    "id": "0afe1c4d-4ce1-423f-8976-5b8078d4bb45",
+    "id": "dc38f536-e918-477c-998f-59216900d574",
     "vin": "BMYB60NH9EHLCZJ0R",
     "year": 2018,
     "make": "Mazda",
@@ -1943,7 +1943,7 @@
     "title_status": "salvage",
     "province": "Quebec",
     "city": "Quebec City",
-    "auction_start": "2026-04-05T17:00:00",
+    "auction_start": "2026-07-28T17:00:00",
     "starting_bid": 3000,
     "reserve_price": null,
     "buy_now_price": null,
@@ -1961,7 +1961,7 @@
     "bid_count": 0
   },
   {
-    "id": "330014a7-c6dc-40ac-b52d-3f83c7d4339d",
+    "id": "4a2f0ae5-a3a6-4805-91a2-cfe186a5bf7f",
     "vin": "6LN1B7KN0V2N7KV60",
     "year": 2017,
     "make": "Nissan",
@@ -1984,7 +1984,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Hamilton",
-    "auction_start": "2026-04-04T19:00:00",
+    "auction_start": "2026-07-27T19:00:00",
     "starting_bid": 5500,
     "reserve_price": 9000,
     "buy_now_price": 11000,
@@ -2001,7 +2001,7 @@
     "bid_count": 6
   },
   {
-    "id": "5f275cda-08fc-4c21-874e-18c0425c976c",
+    "id": "987dc94d-7471-4c31-be9d-25f50e97180c",
     "vin": "41WAJZMW9ST5PPTK3",
     "year": 2018,
     "make": "Volkswagen",
@@ -2025,7 +2025,7 @@
     "title_status": "clean",
     "province": "British Columbia",
     "city": "Kelowna",
-    "auction_start": "2026-04-03T18:00:00",
+    "auction_start": "2026-07-26T18:00:00",
     "starting_bid": 8500,
     "reserve_price": null,
     "buy_now_price": 15000,
@@ -2041,7 +2041,7 @@
     "bid_count": 0
   },
   {
-    "id": "02fcc151-d1a2-4d55-b205-109f69028741",
+    "id": "3de379e8-8e98-453d-8397-48aab4f7a3b5",
     "vin": "N9BGYF358ACY47DL1",
     "year": 2016,
     "make": "Subaru",
@@ -2067,7 +2067,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Windsor",
-    "auction_start": "2026-03-31T14:00:00",
+    "auction_start": "2026-07-23T14:00:00",
     "starting_bid": 6000,
     "reserve_price": 8500,
     "buy_now_price": 10000,
@@ -2083,7 +2083,7 @@
     "bid_count": 0
   },
   {
-    "id": "30541fbc-0752-4865-abb5-99d242a0cd85",
+    "id": "65088a9f-5599-405f-b2f4-1cf624a96ee3",
     "vin": "KGDBD8DM827UDYY6V",
     "year": 2025,
     "make": "Subaru",
@@ -2106,7 +2106,7 @@
     "title_status": "rebuilt",
     "province": "Alberta",
     "city": "Edmonton",
-    "auction_start": "2026-03-31T15:00:00",
+    "auction_start": "2026-07-23T15:00:00",
     "starting_bid": 11000,
     "reserve_price": 15000,
     "buy_now_price": null,
@@ -2121,7 +2121,7 @@
     "bid_count": 18
   },
   {
-    "id": "8c0d975e-62a8-481c-a0c2-37c312705c65",
+    "id": "ec36a508-7abd-4523-90f5-12d1e46f2724",
     "vin": "HZU0U29D1X9ND2EBG",
     "year": 2020,
     "make": "BMW",
@@ -2146,7 +2146,7 @@
     "title_status": "rebuilt",
     "province": "Alberta",
     "city": "Calgary",
-    "auction_start": "2026-04-01T12:00:00",
+    "auction_start": "2026-07-24T12:00:00",
     "starting_bid": 14000,
     "reserve_price": null,
     "buy_now_price": null,
@@ -2162,7 +2162,7 @@
     "bid_count": 0
   },
   {
-    "id": "35129fef-d80e-44c0-a11d-a82ebb61f293",
+    "id": "2e71d2af-b032-454c-9cac-56d0c476756c",
     "vin": "LZTN40K861WVANJBZ",
     "year": 2024,
     "make": "Subaru",
@@ -2182,7 +2182,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Windsor",
-    "auction_start": "2026-04-03T11:00:00",
+    "auction_start": "2026-07-26T11:00:00",
     "starting_bid": 22500,
     "reserve_price": 28500,
     "buy_now_price": null,
@@ -2198,7 +2198,7 @@
     "bid_count": 0
   },
   {
-    "id": "f6ee850f-d655-4d7d-b171-be16b528d5a9",
+    "id": "4c5ee9e5-40a9-44ce-8778-d97d782b2af0",
     "vin": "1KJRWW3A8LCK2J3HR",
     "year": 2018,
     "make": "GMC",
@@ -2224,7 +2224,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Markham",
-    "auction_start": "2026-04-06T14:00:00",
+    "auction_start": "2026-07-29T14:00:00",
     "starting_bid": 8500,
     "reserve_price": 14000,
     "buy_now_price": 15500,
@@ -2239,7 +2239,7 @@
     "bid_count": 9
   },
   {
-    "id": "f2e39568-53d8-494c-ae23-b9182658baab",
+    "id": "6d522817-d320-47c6-ac11-2c421932e1e1",
     "vin": "331ZTJ31422V3XSNJ",
     "year": 2026,
     "make": "GMC",
@@ -2259,7 +2259,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Brampton",
-    "auction_start": "2026-04-04T13:00:00",
+    "auction_start": "2026-07-27T13:00:00",
     "starting_bid": 21000,
     "reserve_price": 32000,
     "buy_now_price": null,
@@ -2277,7 +2277,7 @@
     "bid_count": 7
   },
   {
-    "id": "d36b5211-c003-41c9-87d4-9179a5b2ecf2",
+    "id": "f6642bfb-413a-42ed-8bcd-3547c2070ef9",
     "vin": "JWLKST580LN43AXUZ",
     "year": 2020,
     "make": "Tesla",
@@ -2297,7 +2297,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Kitchener",
-    "auction_start": "2026-04-01T20:00:00",
+    "auction_start": "2026-07-24T20:00:00",
     "starting_bid": 24000,
     "reserve_price": null,
     "buy_now_price": null,
@@ -2314,7 +2314,7 @@
     "bid_count": 0
   },
   {
-    "id": "87f7343a-cb17-425c-8f41-0c63223bef5c",
+    "id": "9a7ea63c-609e-426f-9e56-5d4634eb0101",
     "vin": "W68U754S8GW8M90BK",
     "year": 2021,
     "make": "Mazda",
@@ -2334,7 +2334,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "London",
-    "auction_start": "2026-04-05T09:00:00",
+    "auction_start": "2026-07-28T09:00:00",
     "starting_bid": 10000,
     "reserve_price": 18000,
     "buy_now_price": null,
@@ -2349,7 +2349,7 @@
     "bid_count": 0
   },
   {
-    "id": "fbc1bbdf-9bb6-4279-9c69-029968bcaefb",
+    "id": "bd903e09-43c6-4bee-baa8-59f941fc03e8",
     "vin": "RJ37EJR24ULPML38E",
     "year": 2024,
     "make": "Jeep",
@@ -2369,7 +2369,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Hamilton",
-    "auction_start": "2026-04-03T16:00:00",
+    "auction_start": "2026-07-26T16:00:00",
     "starting_bid": 25500,
     "reserve_price": 35500,
     "buy_now_price": null,
@@ -2387,7 +2387,7 @@
     "bid_count": 12
   },
   {
-    "id": "32158e11-4df3-4252-ad4d-cd8c974c6303",
+    "id": "d2cfdd78-634b-4d90-b181-681a254c3eeb",
     "vin": "B6J8908L3PC3P4BFT",
     "year": 2025,
     "make": "Ford",
@@ -2407,7 +2407,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Laval",
-    "auction_start": "2026-04-06T16:00:00",
+    "auction_start": "2026-07-29T16:00:00",
     "starting_bid": 20500,
     "reserve_price": 30000,
     "buy_now_price": null,
@@ -2422,7 +2422,7 @@
     "bid_count": 6
   },
   {
-    "id": "e398d584-b10e-489c-a488-142178bb05a6",
+    "id": "c1a8882e-2b63-44e0-af9f-d8883d702726",
     "vin": "NSYJ3A7M3M2K2JPTU",
     "year": 2026,
     "make": "Mazda",
@@ -2442,7 +2442,7 @@
     "title_status": "clean",
     "province": "Alberta",
     "city": "Calgary",
-    "auction_start": "2026-04-01T09:00:00",
+    "auction_start": "2026-07-24T09:00:00",
     "starting_bid": 25500,
     "reserve_price": 46500,
     "buy_now_price": null,
@@ -2459,7 +2459,7 @@
     "bid_count": 0
   },
   {
-    "id": "fd1279c4-5cbb-4b4e-b908-9873d2fe9607",
+    "id": "d2097127-92d1-4223-9ffa-074b20eec2fb",
     "vin": "HPZ3MU1K2X3XNXWLN",
     "year": 2024,
     "make": "Honda",
@@ -2482,7 +2482,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Markham",
-    "auction_start": "2026-04-03T14:00:00",
+    "auction_start": "2026-07-26T14:00:00",
     "starting_bid": 10500,
     "reserve_price": null,
     "buy_now_price": null,
@@ -2500,7 +2500,7 @@
     "bid_count": 15
   },
   {
-    "id": "e3068dd8-0fed-440b-8c7d-70e7912bc0e8",
+    "id": "66803878-a905-4563-839f-ee9f6f8c2fe2",
     "vin": "8KAZ4X846XPA5R0DX",
     "year": 2016,
     "make": "Subaru",
@@ -2524,7 +2524,7 @@
     "title_status": "salvage",
     "province": "Ontario",
     "city": "Hamilton",
-    "auction_start": "2026-04-04T11:00:00",
+    "auction_start": "2026-07-27T11:00:00",
     "starting_bid": 3500,
     "reserve_price": 4500,
     "buy_now_price": null,
@@ -2539,7 +2539,7 @@
     "bid_count": 0
   },
   {
-    "id": "2f99ad9e-1bdf-4869-8e8e-395b8d66b406",
+    "id": "20659b12-1e42-4e11-8b8a-490052875ed0",
     "vin": "7LWYZDL84DSPD3UYY",
     "year": 2017,
     "make": "Volkswagen",
@@ -2562,7 +2562,7 @@
     "title_status": "clean",
     "province": "British Columbia",
     "city": "Abbotsford",
-    "auction_start": "2026-04-06T10:00:00",
+    "auction_start": "2026-07-29T10:00:00",
     "starting_bid": 10500,
     "reserve_price": 14000,
     "buy_now_price": null,
@@ -2579,7 +2579,7 @@
     "bid_count": 18
   },
   {
-    "id": "24b86ff2-dad1-40d9-af6b-b08c92b0b996",
+    "id": "63f94566-be0d-4e35-b5db-19f4b22c0378",
     "vin": "MHGX0RTP5ATWBKMRB",
     "year": 2019,
     "make": "Hyundai",
@@ -2602,7 +2602,7 @@
     "title_status": "clean",
     "province": "Saskatchewan",
     "city": "Regina",
-    "auction_start": "2026-04-03T17:00:00",
+    "auction_start": "2026-07-26T17:00:00",
     "starting_bid": 8500,
     "reserve_price": 12500,
     "buy_now_price": null,
@@ -2620,7 +2620,7 @@
     "bid_count": 0
   },
   {
-    "id": "4aaba9e2-6884-4672-a0f5-be08df00d666",
+    "id": "46cb4220-5688-4404-8c72-ca6f9d0d24c8",
     "vin": "GRA266J4596KLVKA3",
     "year": 2025,
     "make": "Tesla",
@@ -2640,7 +2640,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Quebec City",
-    "auction_start": "2026-04-05T20:00:00",
+    "auction_start": "2026-07-28T20:00:00",
     "starting_bid": 35500,
     "reserve_price": 47000,
     "buy_now_price": null,
@@ -2658,7 +2658,7 @@
     "bid_count": 8
   },
   {
-    "id": "7ac5e28a-8bf8-4063-883c-905cde04508c",
+    "id": "0c109e9a-2649-47ed-82dd-dcbc24f00305",
     "vin": "KNGMWKJU84JB2SWTY",
     "year": 2019,
     "make": "Volkswagen",
@@ -2684,7 +2684,7 @@
     "title_status": "clean",
     "province": "British Columbia",
     "city": "Victoria",
-    "auction_start": "2026-04-05T16:00:00",
+    "auction_start": "2026-07-28T16:00:00",
     "starting_bid": 7500,
     "reserve_price": null,
     "buy_now_price": null,
@@ -2701,7 +2701,7 @@
     "bid_count": 0
   },
   {
-    "id": "5533456e-2b71-445f-a910-f35342c7a2d4",
+    "id": "34752215-1007-458d-8206-98c9050addd9",
     "vin": "MZZSB4KC1M0H69X4G",
     "year": 2022,
     "make": "Volkswagen",
@@ -2725,7 +2725,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Kitchener",
-    "auction_start": "2026-04-04T20:00:00",
+    "auction_start": "2026-07-27T20:00:00",
     "starting_bid": 13500,
     "reserve_price": null,
     "buy_now_price": null,
@@ -2740,7 +2740,7 @@
     "bid_count": 0
   },
   {
-    "id": "0f7fac8d-fdb9-40eb-a9d0-15cbfa942adc",
+    "id": "582a2aae-56cf-4e97-9a5c-3d17c8e175df",
     "vin": "5S0L8WWT56K5V27BB",
     "year": 2026,
     "make": "Ford",
@@ -2762,7 +2762,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Toronto",
-    "auction_start": "2026-04-04T15:00:00",
+    "auction_start": "2026-07-27T15:00:00",
     "starting_bid": 23000,
     "reserve_price": 39500,
     "buy_now_price": null,
@@ -2780,7 +2780,7 @@
     "bid_count": 0
   },
   {
-    "id": "ac60d7c8-27f7-46a6-a24e-52cbda3938e8",
+    "id": "7c6dad5f-480d-4762-b6ae-c19b4d472385",
     "vin": "Z6ZST7ES570NSUE2N",
     "year": 2022,
     "make": "Toyota",
@@ -2800,7 +2800,7 @@
     "title_status": "clean",
     "province": "Alberta",
     "city": "Lethbridge",
-    "auction_start": "2026-04-02T20:00:00",
+    "auction_start": "2026-07-25T20:00:00",
     "starting_bid": 9000,
     "reserve_price": 15000,
     "buy_now_price": 18000,
@@ -2818,7 +2818,7 @@
     "bid_count": 10
   },
   {
-    "id": "5fb2eb3d-4f72-49de-8e1a-2eaa5dd2b7fc",
+    "id": "284c40c3-af2d-4257-b2fc-052f5d0bf5a9",
     "vin": "V2CKBE3G7AXSML4KK",
     "year": 2021,
     "make": "Ram",
@@ -2840,7 +2840,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Windsor",
-    "auction_start": "2026-04-05T19:00:00",
+    "auction_start": "2026-07-28T19:00:00",
     "starting_bid": 18000,
     "reserve_price": null,
     "buy_now_price": null,
@@ -2855,7 +2855,7 @@
     "bid_count": 0
   },
   {
-    "id": "c01f21a9-1adb-43d2-9dd4-ddd328d38fda",
+    "id": "8853e31c-63e2-411b-8e9b-7f4ce8955f3c",
     "vin": "0883FKSF8V0M10V65",
     "year": 2023,
     "make": "BMW",
@@ -2877,7 +2877,7 @@
     "title_status": "clean",
     "province": "British Columbia",
     "city": "Burnaby",
-    "auction_start": "2026-04-05T18:00:00",
+    "auction_start": "2026-07-28T18:00:00",
     "starting_bid": 20500,
     "reserve_price": 27000,
     "buy_now_price": null,
@@ -2893,7 +2893,7 @@
     "bid_count": 3
   },
   {
-    "id": "ba5b49ae-212a-48dc-908c-c02d33a82360",
+    "id": "d34df04d-a747-4dc2-8dc0-0167d2cda54f",
     "vin": "CEZZHMYK94KPFNXNT",
     "year": 2023,
     "make": "Ford",
@@ -2917,7 +2917,7 @@
     "title_status": "clean",
     "province": "Alberta",
     "city": "Calgary",
-    "auction_start": "2026-04-05T10:00:00",
+    "auction_start": "2026-07-28T10:00:00",
     "starting_bid": 26000,
     "reserve_price": 30000,
     "buy_now_price": null,
@@ -2933,7 +2933,7 @@
     "bid_count": 0
   },
   {
-    "id": "f6a1fe2c-c11e-4046-987c-564855e7ea68",
+    "id": "75d66944-fab5-4a38-a167-2a65508ea889",
     "vin": "RT40S14R6DZ6D19Z1",
     "year": 2026,
     "make": "Hyundai",
@@ -2953,7 +2953,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "London",
-    "auction_start": "2026-04-03T10:00:00",
+    "auction_start": "2026-07-26T10:00:00",
     "starting_bid": 27500,
     "reserve_price": 37500,
     "buy_now_price": null,
@@ -2969,7 +2969,7 @@
     "bid_count": 4
   },
   {
-    "id": "62a63e05-93a8-432b-8ad4-06589bd51da5",
+    "id": "c0d8bb1e-23ae-40d9-8d50-facb15012e8b",
     "vin": "DUWSGWPF8GUA5GYG9",
     "year": 2020,
     "make": "Jeep",
@@ -2993,7 +2993,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Quebec City",
-    "auction_start": "2026-04-05T14:00:00",
+    "auction_start": "2026-07-28T14:00:00",
     "starting_bid": 14500,
     "reserve_price": 22500,
     "buy_now_price": null,
@@ -3008,7 +3008,7 @@
     "bid_count": 0
   },
   {
-    "id": "f8224c61-c93e-425b-b1c4-b581172b158c",
+    "id": "44a90638-8894-4215-ac6c-eff22e6487bf",
     "vin": "GSR1XW964U101J04R",
     "year": 2020,
     "make": "Honda",
@@ -3032,7 +3032,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Ottawa",
-    "auction_start": "2026-04-05T13:00:00",
+    "auction_start": "2026-07-28T13:00:00",
     "starting_bid": 9000,
     "reserve_price": 13500,
     "buy_now_price": null,
@@ -3048,7 +3048,7 @@
     "bid_count": 18
   },
   {
-    "id": "126354f5-84f1-4a83-bcec-a08c2b354b4a",
+    "id": "0805302c-b0d1-49a5-b8c5-022b3c6bee72",
     "vin": "KLPNPHXV33TDE22YC",
     "year": 2016,
     "make": "Subaru",
@@ -3074,7 +3074,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Vaughan",
-    "auction_start": "2026-04-05T09:00:00",
+    "auction_start": "2026-07-28T09:00:00",
     "starting_bid": 5500,
     "reserve_price": 8000,
     "buy_now_price": null,
@@ -3089,7 +3089,7 @@
     "bid_count": 0
   },
   {
-    "id": "5d6572c9-e1aa-4b02-8c6b-e312757d2624",
+    "id": "9dba0f46-a9b5-4519-8b85-a048befea49a",
     "vin": "9SMTEHBG9JBCPJ5LK",
     "year": 2019,
     "make": "Jeep",
@@ -3111,7 +3111,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Laval",
-    "auction_start": "2026-04-04T18:00:00",
+    "auction_start": "2026-07-27T18:00:00",
     "starting_bid": 14000,
     "reserve_price": 20000,
     "buy_now_price": null,
@@ -3128,7 +3128,7 @@
     "bid_count": 11
   },
   {
-    "id": "c282aa0f-c138-4ee6-9cad-5ce5187d37d7",
+    "id": "520a9db6-fbd8-4840-a38e-c83eaf6f0f45",
     "vin": "3MPRZJBB9FA1E40HD",
     "year": 2026,
     "make": "BMW",
@@ -3153,7 +3153,7 @@
     "title_status": "rebuilt",
     "province": "Ontario",
     "city": "London",
-    "auction_start": "2026-04-05T19:00:00",
+    "auction_start": "2026-07-28T19:00:00",
     "starting_bid": 27500,
     "reserve_price": 40000,
     "buy_now_price": null,
@@ -3171,7 +3171,7 @@
     "bid_count": 0
   },
   {
-    "id": "21960a78-393a-4207-b23b-1fa4ae6e37ea",
+    "id": "acbf6263-04cb-4669-9984-ffc1dc147781",
     "vin": "HU7T4H8X95WHH9VEP",
     "year": 2024,
     "make": "Subaru",
@@ -3191,7 +3191,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Longueuil",
-    "auction_start": "2026-04-04T12:00:00",
+    "auction_start": "2026-07-27T12:00:00",
     "starting_bid": 12000,
     "reserve_price": 20000,
     "buy_now_price": null,
@@ -3208,7 +3208,7 @@
     "bid_count": 0
   },
   {
-    "id": "5675434b-47b8-4c36-902d-b9d3a8c8bacb",
+    "id": "0005c003-9b2b-4dbc-99ae-ce975f47e8c1",
     "vin": "E1FPDCW44R2EXC120",
     "year": 2017,
     "make": "Chevrolet",
@@ -3232,7 +3232,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Gatineau",
-    "auction_start": "2026-04-02T11:00:00",
+    "auction_start": "2026-07-25T11:00:00",
     "starting_bid": 9500,
     "reserve_price": 15000,
     "buy_now_price": null,
@@ -3247,7 +3247,7 @@
     "bid_count": 0
   },
   {
-    "id": "44a3db7b-7ebb-4a42-b0a8-92996fb3ec42",
+    "id": "0f435029-b206-4dd5-a8ce-05a2380ccc2e",
     "vin": "TE6G1HDH10N44PFUY",
     "year": 2023,
     "make": "Mazda",
@@ -3267,7 +3267,7 @@
     "title_status": "clean",
     "province": "Nova Scotia",
     "city": "Halifax",
-    "auction_start": "2026-04-04T13:00:00",
+    "auction_start": "2026-07-27T13:00:00",
     "starting_bid": 19500,
     "reserve_price": null,
     "buy_now_price": null,
@@ -3284,7 +3284,7 @@
     "bid_count": 16
   },
   {
-    "id": "245c51ef-1e4d-46f7-9617-0eaeacc83c54",
+    "id": "41eb1007-ecbf-49c3-bf47-2b4249a8286b",
     "vin": "G7BAS3L66U8XUDPR0",
     "year": 2019,
     "make": "Honda",
@@ -3309,7 +3309,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Hamilton",
-    "auction_start": "2026-03-31T19:00:00",
+    "auction_start": "2026-07-23T19:00:00",
     "starting_bid": 8000,
     "reserve_price": 13000,
     "buy_now_price": null,
@@ -3327,7 +3327,7 @@
     "bid_count": 0
   },
   {
-    "id": "2ad9266a-0a7b-4717-a19b-e13fed157927",
+    "id": "1f79ec75-29dd-4237-99fd-fac89ebd49ad",
     "vin": "BR8BK7GA3WZ5VE569",
     "year": 2021,
     "make": "Ram",
@@ -3350,7 +3350,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Quebec City",
-    "auction_start": "2026-04-04T20:00:00",
+    "auction_start": "2026-07-27T20:00:00",
     "starting_bid": 25500,
     "reserve_price": null,
     "buy_now_price": null,
@@ -3366,7 +3366,7 @@
     "bid_count": 12
   },
   {
-    "id": "8bf6ff33-eb45-4fbc-b37e-d2fe3ed13dd1",
+    "id": "4c15f25e-6b2a-46fb-852a-5c3fd3d520b5",
     "vin": "1KN9V5330BFZ5KB4K",
     "year": 2026,
     "make": "Ram",
@@ -3389,7 +3389,7 @@
     "title_status": "salvage",
     "province": "British Columbia",
     "city": "Kelowna",
-    "auction_start": "2026-04-04T12:00:00",
+    "auction_start": "2026-07-27T12:00:00",
     "starting_bid": 15500,
     "reserve_price": null,
     "buy_now_price": null,
@@ -3404,7 +3404,7 @@
     "bid_count": 6
   },
   {
-    "id": "c4491bcf-a310-4f36-b89a-015a32ce7f1d",
+    "id": "06cb01ec-3185-4e67-bd4f-fd46ae71786c",
     "vin": "GH1FTH4956YP94GR0",
     "year": 2021,
     "make": "Subaru",
@@ -3424,7 +3424,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Gatineau",
-    "auction_start": "2026-04-02T10:00:00",
+    "auction_start": "2026-07-25T10:00:00",
     "starting_bid": 11500,
     "reserve_price": null,
     "buy_now_price": 21500,
@@ -3439,7 +3439,7 @@
     "bid_count": 0
   },
   {
-    "id": "56708c56-eb20-4c5f-af2c-ae3f9c3ad8ca",
+    "id": "47edda91-592d-44fe-aa7b-dcc8b54d0c64",
     "vin": "73YNDPER219A98HRS",
     "year": 2020,
     "make": "GMC",
@@ -3465,7 +3465,7 @@
     "title_status": "rebuilt",
     "province": "Ontario",
     "city": "Markham",
-    "auction_start": "2026-04-06T15:00:00",
+    "auction_start": "2026-07-29T15:00:00",
     "starting_bid": 7500,
     "reserve_price": 10500,
     "buy_now_price": null,
@@ -3483,7 +3483,7 @@
     "bid_count": 0
   },
   {
-    "id": "d5eb3d31-91f3-4919-bdcb-227826787250",
+    "id": "14ae9b30-a777-4162-95cc-3ad60b8d4c2c",
     "vin": "J0KPREVU4N1VWN166",
     "year": 2021,
     "make": "BMW",
@@ -3503,7 +3503,7 @@
     "title_status": "clean",
     "province": "Alberta",
     "city": "Red Deer",
-    "auction_start": "2026-04-02T13:00:00",
+    "auction_start": "2026-07-25T13:00:00",
     "starting_bid": 29000,
     "reserve_price": null,
     "buy_now_price": null,
@@ -3519,7 +3519,7 @@
     "bid_count": 0
   },
   {
-    "id": "82f0a77b-0191-47b9-b21d-7186c912b44c",
+    "id": "6b612d0d-26bb-4f9f-9f33-8ca1cc43f496",
     "vin": "ZD1THVKP7MC0X5CA5",
     "year": 2022,
     "make": "Toyota",
@@ -3542,7 +3542,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Vaughan",
-    "auction_start": "2026-04-05T17:00:00",
+    "auction_start": "2026-07-28T17:00:00",
     "starting_bid": 19000,
     "reserve_price": 27500,
     "buy_now_price": null,
@@ -3557,7 +3557,7 @@
     "bid_count": 15
   },
   {
-    "id": "bfb04c5e-e23f-4426-b02a-3ce67c694590",
+    "id": "5541d3af-2ea8-4a33-8a7d-23147795289e",
     "vin": "12VACC2A72WV4M18T",
     "year": 2019,
     "make": "Volkswagen",
@@ -3583,7 +3583,7 @@
     "title_status": "clean",
     "province": "Nova Scotia",
     "city": "Halifax",
-    "auction_start": "2026-04-06T10:00:00",
+    "auction_start": "2026-07-29T10:00:00",
     "starting_bid": 8500,
     "reserve_price": 13000,
     "buy_now_price": null,
@@ -3600,7 +3600,7 @@
     "bid_count": 16
   },
   {
-    "id": "37a60b36-82bd-4ed9-b361-78a1d06c7d36",
+    "id": "23c942bb-bac4-4c64-a0a6-5fddd8ddf8da",
     "vin": "JK8V5D0E7C775YNFP",
     "year": 2018,
     "make": "Honda",
@@ -3626,7 +3626,7 @@
     "title_status": "salvage",
     "province": "Quebec",
     "city": "Montreal",
-    "auction_start": "2026-04-01T19:00:00",
+    "auction_start": "2026-07-24T19:00:00",
     "starting_bid": 5500,
     "reserve_price": null,
     "buy_now_price": null,
@@ -3644,7 +3644,7 @@
     "bid_count": 0
   },
   {
-    "id": "994ee446-ca13-4aec-9a21-797307742f2c",
+    "id": "6f8e92db-f3fb-4a32-ad44-e7d49da7f154",
     "vin": "J6H0BG4A3KSSU5UTK",
     "year": 2019,
     "make": "Jeep",
@@ -3669,7 +3669,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Mississauga",
-    "auction_start": "2026-04-05T19:00:00",
+    "auction_start": "2026-07-28T19:00:00",
     "starting_bid": 14000,
     "reserve_price": 21000,
     "buy_now_price": null,
@@ -3684,7 +3684,7 @@
     "bid_count": 0
   },
   {
-    "id": "a2a483de-eb38-496f-b3ec-f3bf9270b03f",
+    "id": "a6a6a976-5ef5-47e3-9f0e-55bf6fd2df62",
     "vin": "S138A6VC50NZBUAHW",
     "year": 2025,
     "make": "Ford",
@@ -3704,7 +3704,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Quebec City",
-    "auction_start": "2026-04-02T17:00:00",
+    "auction_start": "2026-07-25T17:00:00",
     "starting_bid": 23500,
     "reserve_price": 36500,
     "buy_now_price": null,
@@ -3719,7 +3719,7 @@
     "bid_count": 0
   },
   {
-    "id": "283bcc43-ba86-4f2e-8b35-eb95e2c137f2",
+    "id": "8298ec76-7705-40e8-b0f0-ed0eb3e92a0a",
     "vin": "R4EX8YHY4APBA5FAW",
     "year": 2021,
     "make": "Nissan",
@@ -3739,7 +3739,7 @@
     "title_status": "clean",
     "province": "British Columbia",
     "city": "Vancouver",
-    "auction_start": "2026-04-02T10:00:00",
+    "auction_start": "2026-07-25T10:00:00",
     "starting_bid": 10000,
     "reserve_price": 14500,
     "buy_now_price": null,
@@ -3757,7 +3757,7 @@
     "bid_count": 0
   },
   {
-    "id": "9f1bfd72-71f3-4857-9e2c-9b9fe4ccdbd9",
+    "id": "9bcbba73-5070-4495-b608-05f05cffc8a4",
     "vin": "KVVAZMG453BDY7BEC",
     "year": 2018,
     "make": "Nissan",
@@ -3781,7 +3781,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Montreal",
-    "auction_start": "2026-04-05T10:00:00",
+    "auction_start": "2026-07-28T10:00:00",
     "starting_bid": 7500,
     "reserve_price": 12000,
     "buy_now_price": null,
@@ -3797,7 +3797,7 @@
     "bid_count": 7
   },
   {
-    "id": "9f33bda8-c648-4384-8771-462d94d3b649",
+    "id": "111f827e-a075-4fd3-989e-a67acbd57fe9",
     "vin": "JBGZRGZD7LM5UFHH8",
     "year": 2020,
     "make": "Honda",
@@ -3821,7 +3821,7 @@
     "title_status": "clean",
     "province": "Alberta",
     "city": "Airdrie",
-    "auction_start": "2026-04-03T18:00:00",
+    "auction_start": "2026-07-26T18:00:00",
     "starting_bid": 22000,
     "reserve_price": 29500,
     "buy_now_price": 33500,
@@ -3838,7 +3838,7 @@
     "bid_count": 5
   },
   {
-    "id": "c4338fb0-b5a0-43aa-9eee-3be722a8aed4",
+    "id": "7e75613b-fb89-40b9-bfe4-c71e87e7e5da",
     "vin": "GNPPX2ZX4ZUGBBV8U",
     "year": 2018,
     "make": "Honda",
@@ -3864,7 +3864,7 @@
     "title_status": "salvage",
     "province": "Ontario",
     "city": "Hamilton",
-    "auction_start": "2026-04-04T13:00:00",
+    "auction_start": "2026-07-27T13:00:00",
     "starting_bid": 3000,
     "reserve_price": 4500,
     "buy_now_price": null,
@@ -3882,7 +3882,7 @@
     "bid_count": 14
   },
   {
-    "id": "43a5a06c-ea82-408c-8799-b6754f8b6bdc",
+    "id": "8196a722-4820-4bb9-947b-64d1df1a2160",
     "vin": "FR9V4Z1J31P9SU8UL",
     "year": 2018,
     "make": "Kia",
@@ -3906,7 +3906,7 @@
     "title_status": "clean",
     "province": "Alberta",
     "city": "Airdrie",
-    "auction_start": "2026-04-02T20:00:00",
+    "auction_start": "2026-07-25T20:00:00",
     "starting_bid": 6500,
     "reserve_price": null,
     "buy_now_price": null,
@@ -3924,7 +3924,7 @@
     "bid_count": 0
   },
   {
-    "id": "a001c6a5-a43d-4e34-a2e9-ca7b63a97a77",
+    "id": "7238c961-8aa4-49eb-86cf-b23516ca8ae9",
     "vin": "0169V129708KX8ZF5",
     "year": 2025,
     "make": "GMC",
@@ -3947,7 +3947,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Barrie",
-    "auction_start": "2026-04-06T19:00:00",
+    "auction_start": "2026-07-29T19:00:00",
     "starting_bid": 25000,
     "reserve_price": 37000,
     "buy_now_price": null,
@@ -3964,7 +3964,7 @@
     "bid_count": 0
   },
   {
-    "id": "34d67e45-eaf1-4470-8572-4617d9b5ee98",
+    "id": "b67fb0a2-45f9-4f01-8afb-17386331fe52",
     "vin": "39VA98EH0HSXC03HT",
     "year": 2016,
     "make": "Mazda",
@@ -3991,7 +3991,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Vaughan",
-    "auction_start": "2026-04-01T15:00:00",
+    "auction_start": "2026-07-24T15:00:00",
     "starting_bid": 3000,
     "reserve_price": 4500,
     "buy_now_price": null,
@@ -4009,7 +4009,7 @@
     "bid_count": 0
   },
   {
-    "id": "89365990-e2fd-43da-a5b3-0bb158fd2535",
+    "id": "1a6e9b14-367f-4b42-81d6-f94b49508b85",
     "vin": "60PP6JRU2EAHC11Y9",
     "year": 2016,
     "make": "Mazda",
@@ -4035,7 +4035,7 @@
     "title_status": "clean",
     "province": "Alberta",
     "city": "Edmonton",
-    "auction_start": "2026-04-01T18:00:00",
+    "auction_start": "2026-07-24T18:00:00",
     "starting_bid": 5000,
     "reserve_price": 9000,
     "buy_now_price": 10000,
@@ -4051,7 +4051,7 @@
     "bid_count": 0
   },
   {
-    "id": "a6bf9a0b-05dd-4112-bedc-6b651acc9748",
+    "id": "636c9f20-3f03-405a-8717-0e6a1a13d41b",
     "vin": "TNG1WUWK9E1DN72XA",
     "year": 2017,
     "make": "Volkswagen",
@@ -4074,7 +4074,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Kitchener",
-    "auction_start": "2026-03-31T16:00:00",
+    "auction_start": "2026-07-23T16:00:00",
     "starting_bid": 8000,
     "reserve_price": null,
     "buy_now_price": null,
@@ -4090,7 +4090,7 @@
     "bid_count": 0
   },
   {
-    "id": "37a5454a-8029-44cd-8315-5d8d0d2e13e9",
+    "id": "85ccb28f-3ba1-43a5-956b-dca274f9b2cb",
     "vin": "S0SU6YVV8DHD72E0K",
     "year": 2024,
     "make": "BMW",
@@ -4110,7 +4110,7 @@
     "title_status": "clean",
     "province": "British Columbia",
     "city": "Langley",
-    "auction_start": "2026-04-06T10:00:00",
+    "auction_start": "2026-07-29T10:00:00",
     "starting_bid": 30000,
     "reserve_price": null,
     "buy_now_price": 59000,
@@ -4125,7 +4125,7 @@
     "bid_count": 0
   },
   {
-    "id": "18c8ded5-29d2-497a-b4a0-f410b9fd4ec0",
+    "id": "711ee8a1-a952-4c26-b381-752d37255fd2",
     "vin": "T5GSPXZN213KBGVXB",
     "year": 2023,
     "make": "Kia",
@@ -4148,7 +4148,7 @@
     "title_status": "clean",
     "province": "British Columbia",
     "city": "Kelowna",
-    "auction_start": "2026-04-01T16:00:00",
+    "auction_start": "2026-07-24T16:00:00",
     "starting_bid": 16000,
     "reserve_price": 21000,
     "buy_now_price": null,
@@ -4163,7 +4163,7 @@
     "bid_count": 4
   },
   {
-    "id": "a4fb42cd-6c70-4c1f-8f1a-5d85469aa2d7",
+    "id": "36000aea-f4d5-4593-9b75-03b9f46b043f",
     "vin": "8204NEZY776LSCJNW",
     "year": 2022,
     "make": "Tesla",
@@ -4187,7 +4187,7 @@
     "title_status": "clean",
     "province": "Nova Scotia",
     "city": "Halifax",
-    "auction_start": "2026-04-03T12:00:00",
+    "auction_start": "2026-07-26T12:00:00",
     "starting_bid": 45000,
     "reserve_price": null,
     "buy_now_price": null,
@@ -4204,7 +4204,7 @@
     "bid_count": 14
   },
   {
-    "id": "57d81073-1244-415d-bd62-da82d033980b",
+    "id": "aa9f536c-94ae-43d3-b40c-16233fd406fe",
     "vin": "L4GWRY365AWESST2T",
     "year": 2021,
     "make": "Tesla",
@@ -4230,7 +4230,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Brampton",
-    "auction_start": "2026-04-03T17:00:00",
+    "auction_start": "2026-07-26T17:00:00",
     "starting_bid": 30500,
     "reserve_price": null,
     "buy_now_price": null,
@@ -4246,7 +4246,7 @@
     "bid_count": 7
   },
   {
-    "id": "ff3dcdc5-c992-4a7b-ad28-d6f15f842625",
+    "id": "9b8c961f-1552-46fb-a678-8b29827464a7",
     "vin": "L1SAYTVM4B109KAEX",
     "year": 2022,
     "make": "Hyundai",
@@ -4268,7 +4268,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Toronto",
-    "auction_start": "2026-04-06T13:00:00",
+    "auction_start": "2026-07-29T13:00:00",
     "starting_bid": 16000,
     "reserve_price": null,
     "buy_now_price": null,
@@ -4284,7 +4284,7 @@
     "bid_count": 0
   },
   {
-    "id": "bd1035eb-00ac-4797-9ca9-40a785457d0e",
+    "id": "d215d652-230d-496c-9712-fcac3ab832ca",
     "vin": "D4AUXHT46SDRCU3Y6",
     "year": 2026,
     "make": "Nissan",
@@ -4306,7 +4306,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Mississauga",
-    "auction_start": "2026-04-01T20:00:00",
+    "auction_start": "2026-07-24T20:00:00",
     "starting_bid": 23500,
     "reserve_price": null,
     "buy_now_price": null,
@@ -4323,7 +4323,7 @@
     "bid_count": 0
   },
   {
-    "id": "0941fb81-edcb-4cf4-bcae-6a2141847417",
+    "id": "22c0be11-a5bd-43c6-b2ae-8ef224c264da",
     "vin": "P27WMPEA3LLJZFMS4",
     "year": 2016,
     "make": "Subaru",
@@ -4347,7 +4347,7 @@
     "title_status": "clean",
     "province": "British Columbia",
     "city": "Langley",
-    "auction_start": "2026-04-04T11:00:00",
+    "auction_start": "2026-07-27T11:00:00",
     "starting_bid": 7000,
     "reserve_price": 9000,
     "buy_now_price": null,
@@ -4365,7 +4365,7 @@
     "bid_count": 0
   },
   {
-    "id": "ec259597-3a1a-426b-9032-b503f8ffec81",
+    "id": "15d0cb4f-d87e-4cf2-8b4f-2dc4f80b6c65",
     "vin": "CDXYDGM54YR0V3P12",
     "year": 2017,
     "make": "Kia",
@@ -4388,7 +4388,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "London",
-    "auction_start": "2026-03-31T15:00:00",
+    "auction_start": "2026-07-23T15:00:00",
     "starting_bid": 6500,
     "reserve_price": 11000,
     "buy_now_price": null,
@@ -4403,7 +4403,7 @@
     "bid_count": 13
   },
   {
-    "id": "da6394b2-87c3-4418-b29a-9d1a36bc0a0a",
+    "id": "46b41727-1d11-4164-a471-91b4592979c0",
     "vin": "PTMWY4X74C79V53R6",
     "year": 2020,
     "make": "BMW",
@@ -4430,7 +4430,7 @@
     "title_status": "salvage",
     "province": "Quebec",
     "city": "Quebec City",
-    "auction_start": "2026-04-06T10:00:00",
+    "auction_start": "2026-07-29T10:00:00",
     "starting_bid": 8500,
     "reserve_price": 12000,
     "buy_now_price": null,
@@ -4448,7 +4448,7 @@
     "bid_count": 11
   },
   {
-    "id": "f3e420ae-7673-4040-b4ef-2dbd76771e85",
+    "id": "1cd7edf7-2ad5-4634-8414-c31c6e032871",
     "vin": "7TNG57E64GC2HHS9D",
     "year": 2020,
     "make": "Honda",
@@ -4468,7 +4468,7 @@
     "title_status": "clean",
     "province": "Alberta",
     "city": "Lethbridge",
-    "auction_start": "2026-04-04T20:00:00",
+    "auction_start": "2026-07-27T20:00:00",
     "starting_bid": 16000,
     "reserve_price": 27500,
     "buy_now_price": null,
@@ -4483,7 +4483,7 @@
     "bid_count": 17
   },
   {
-    "id": "3ee250bd-3664-47f6-b67d-8edcdead179e",
+    "id": "d6284056-6ab4-4da9-b314-741ecf157ecf",
     "vin": "532LXT2337JZRMFRZ",
     "year": 2026,
     "make": "Ford",
@@ -4503,7 +4503,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Sherbrooke",
-    "auction_start": "2026-04-06T09:00:00",
+    "auction_start": "2026-07-29T09:00:00",
     "starting_bid": 25500,
     "reserve_price": 44000,
     "buy_now_price": null,
@@ -4521,7 +4521,7 @@
     "bid_count": 16
   },
   {
-    "id": "d0a7a1f6-5b75-4230-a2bd-551e73ef2960",
+    "id": "c8228440-d2f2-4b56-91bc-fa23abe9bb12",
     "vin": "LA22CLZ51K9G1K7U0",
     "year": 2023,
     "make": "Nissan",
@@ -4544,7 +4544,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Mississauga",
-    "auction_start": "2026-04-06T17:00:00",
+    "auction_start": "2026-07-29T17:00:00",
     "starting_bid": 12000,
     "reserve_price": 17500,
     "buy_now_price": null,
@@ -4559,7 +4559,7 @@
     "bid_count": 0
   },
   {
-    "id": "373a8434-183d-4373-8ccc-285e6d4f07ea",
+    "id": "6c894b54-d2c0-4431-bb73-bede24ab2f85",
     "vin": "CK00FWEE1CM1PK3GG",
     "year": 2021,
     "make": "Ford",
@@ -4585,7 +4585,7 @@
     "title_status": "rebuilt",
     "province": "Ontario",
     "city": "Barrie",
-    "auction_start": "2026-04-04T12:00:00",
+    "auction_start": "2026-07-27T12:00:00",
     "starting_bid": 10000,
     "reserve_price": null,
     "buy_now_price": null,
@@ -4603,7 +4603,7 @@
     "bid_count": 0
   },
   {
-    "id": "2caa31a5-7fac-456b-940e-27a6203363c5",
+    "id": "a239c625-5c9c-41f2-9627-c16e93f3631c",
     "vin": "3BHN9C8C4NNT603E7",
     "year": 2016,
     "make": "Toyota",
@@ -4627,7 +4627,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Longueuil",
-    "auction_start": "2026-04-01T11:00:00",
+    "auction_start": "2026-07-24T11:00:00",
     "starting_bid": 8500,
     "reserve_price": 14500,
     "buy_now_price": null,
@@ -4643,7 +4643,7 @@
     "bid_count": 5
   },
   {
-    "id": "7b2c2fbe-ea78-4cb7-9088-0382b3ec6306",
+    "id": "7674a059-8c3a-4f55-86e1-d0affe166d21",
     "vin": "B61TZARL81LSCUV8K",
     "year": 2022,
     "make": "GMC",
@@ -4663,7 +4663,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Barrie",
-    "auction_start": "2026-04-04T17:00:00",
+    "auction_start": "2026-07-27T17:00:00",
     "starting_bid": 27500,
     "reserve_price": 33500,
     "buy_now_price": null,
@@ -4680,7 +4680,7 @@
     "bid_count": 0
   },
   {
-    "id": "937cbe50-9dba-4597-90b6-b1ec429f3421",
+    "id": "9414c572-2856-46c6-a2ae-49767b3feb56",
     "vin": "DH9X28373HA7AJM8R",
     "year": 2026,
     "make": "Mazda",
@@ -4700,7 +4700,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Longueuil",
-    "auction_start": "2026-04-01T11:00:00",
+    "auction_start": "2026-07-24T11:00:00",
     "starting_bid": 25500,
     "reserve_price": 34000,
     "buy_now_price": null,
@@ -4715,7 +4715,7 @@
     "bid_count": 12
   },
   {
-    "id": "c6bdd0ba-b947-4095-b0c7-abd367d39f7f",
+    "id": "dc13b048-1d7f-4c0e-b6ba-e7c4ef858fed",
     "vin": "S682VV0G3AYEWF88R",
     "year": 2018,
     "make": "Kia",
@@ -4739,7 +4739,7 @@
     "title_status": "clean",
     "province": "Alberta",
     "city": "Lethbridge",
-    "auction_start": "2026-04-01T13:00:00",
+    "auction_start": "2026-07-24T13:00:00",
     "starting_bid": 7000,
     "reserve_price": 11500,
     "buy_now_price": null,
@@ -4754,7 +4754,7 @@
     "bid_count": 0
   },
   {
-    "id": "4ca82b47-b4a5-485f-aa2f-dfdf9a534e27",
+    "id": "3dccfd28-93e1-4b6f-9cfb-fd807a91f11a",
     "vin": "UPD4UBCE1C6J9RXR0",
     "year": 2019,
     "make": "Mazda",
@@ -4777,7 +4777,7 @@
     "title_status": "rebuilt",
     "province": "Quebec",
     "city": "Quebec City",
-    "auction_start": "2026-04-06T11:00:00",
+    "auction_start": "2026-07-29T11:00:00",
     "starting_bid": 4500,
     "reserve_price": 7500,
     "buy_now_price": null,
@@ -4794,7 +4794,7 @@
     "bid_count": 1
   },
   {
-    "id": "3c494f21-a296-4fc0-aad3-a6d4b5ddb1eb",
+    "id": "80cc136b-88ca-4027-b612-8457cc531ed9",
     "vin": "8R9X74R93S0V1LPXX",
     "year": 2023,
     "make": "Mazda",
@@ -4819,7 +4819,7 @@
     "title_status": "salvage",
     "province": "Quebec",
     "city": "Laval",
-    "auction_start": "2026-04-02T17:00:00",
+    "auction_start": "2026-07-25T17:00:00",
     "starting_bid": 6000,
     "reserve_price": 7500,
     "buy_now_price": 8500,
@@ -4835,7 +4835,7 @@
     "bid_count": 0
   },
   {
-    "id": "96fbfcaa-0b4a-465f-8f9f-60472268f252",
+    "id": "2f3f8bc6-d967-464c-b193-a98199d2d2d5",
     "vin": "4LAVN5MM6BWA97T5C",
     "year": 2022,
     "make": "BMW",
@@ -4855,7 +4855,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Markham",
-    "auction_start": "2026-04-04T17:00:00",
+    "auction_start": "2026-07-27T17:00:00",
     "starting_bid": 19500,
     "reserve_price": 36000,
     "buy_now_price": null,
@@ -4873,7 +4873,7 @@
     "bid_count": 10
   },
   {
-    "id": "a599f402-81d4-4ae0-aa23-88abfbda11a4",
+    "id": "b0b81299-189b-430a-8804-5ca1259dd30b",
     "vin": "XTPFN39B4ZTRV3GXU",
     "year": 2021,
     "make": "BMW",
@@ -4893,7 +4893,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Sherbrooke",
-    "auction_start": "2026-04-05T12:00:00",
+    "auction_start": "2026-07-28T12:00:00",
     "starting_bid": 22500,
     "reserve_price": null,
     "buy_now_price": 41000,
@@ -4910,7 +4910,7 @@
     "bid_count": 1
   },
   {
-    "id": "f904c6c5-2946-483c-871c-0537ee423808",
+    "id": "fd423710-ed9f-408f-97bf-27916ce3ff62",
     "vin": "CDYD4BSU4HLFXTVD8",
     "year": 2018,
     "make": "Kia",
@@ -4934,7 +4934,7 @@
     "title_status": "clean",
     "province": "British Columbia",
     "city": "Burnaby",
-    "auction_start": "2026-04-03T20:00:00",
+    "auction_start": "2026-07-26T20:00:00",
     "starting_bid": 13500,
     "reserve_price": 19000,
     "buy_now_price": null,
@@ -4951,7 +4951,7 @@
     "bid_count": 15
   },
   {
-    "id": "a3e6bf55-d5b3-47eb-9855-273501d3eee5",
+    "id": "0a078613-cb0f-48be-8e7f-2a767b54891c",
     "vin": "2JHSLXKE2B11VZUR0",
     "year": 2022,
     "make": "GMC",
@@ -4978,7 +4978,7 @@
     "title_status": "salvage",
     "province": "Manitoba",
     "city": "Winnipeg",
-    "auction_start": "2026-04-05T13:00:00",
+    "auction_start": "2026-07-28T13:00:00",
     "starting_bid": 6000,
     "reserve_price": 9000,
     "buy_now_price": null,
@@ -4996,7 +4996,7 @@
     "bid_count": 12
   },
   {
-    "id": "6bb25006-b355-4442-b6ca-2e6683bd8b9b",
+    "id": "72e00440-f396-4f00-9d48-82579cbb0064",
     "vin": "Z06P4ACK5D9CMYMCB",
     "year": 2021,
     "make": "Nissan",
@@ -5018,7 +5018,7 @@
     "title_status": "clean",
     "province": "Nova Scotia",
     "city": "Halifax",
-    "auction_start": "2026-04-04T10:00:00",
+    "auction_start": "2026-07-27T10:00:00",
     "starting_bid": 11000,
     "reserve_price": null,
     "buy_now_price": 20500,
@@ -5033,7 +5033,7 @@
     "bid_count": 0
   },
   {
-    "id": "e793b96e-5c88-479a-a723-b42861a3dcf2",
+    "id": "9fe163ef-2b8b-4789-adcc-c767ff99aab6",
     "vin": "92SY4UM78B12YXW5R",
     "year": 2026,
     "make": "GMC",
@@ -5053,7 +5053,7 @@
     "title_status": "clean",
     "province": "British Columbia",
     "city": "Surrey",
-    "auction_start": "2026-03-31T16:00:00",
+    "auction_start": "2026-07-23T16:00:00",
     "starting_bid": 19500,
     "reserve_price": null,
     "buy_now_price": null,
@@ -5070,7 +5070,7 @@
     "bid_count": 15
   },
   {
-    "id": "aad545b5-eab9-4414-990e-4b868c231b20",
+    "id": "ae313b0a-ee59-4daf-8bfe-48a21b41212b",
     "vin": "7RRVTCGS4GWH5MC1T",
     "year": 2018,
     "make": "Kia",
@@ -5092,7 +5092,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Vaughan",
-    "auction_start": "2026-03-31T20:00:00",
+    "auction_start": "2026-07-23T20:00:00",
     "starting_bid": 9500,
     "reserve_price": 12000,
     "buy_now_price": null,
@@ -5109,7 +5109,7 @@
     "bid_count": 14
   },
   {
-    "id": "f694e8f2-c036-4d0d-aae5-0f0cf80daf38",
+    "id": "eaa252a1-b8b7-4c5f-88aa-69da1fb169ee",
     "vin": "JFMEF1FX6KDT694G3",
     "year": 2024,
     "make": "Honda",
@@ -5131,7 +5131,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Montreal",
-    "auction_start": "2026-04-02T16:00:00",
+    "auction_start": "2026-07-25T16:00:00",
     "starting_bid": 17000,
     "reserve_price": 22500,
     "buy_now_price": null,
@@ -5148,7 +5148,7 @@
     "bid_count": 0
   },
   {
-    "id": "75cd6795-baa7-46a8-8e7f-4b539878fac4",
+    "id": "6ad7525d-3416-4913-8deb-238a4ae3b2d1",
     "vin": "PS32PR2A3EUETEE1D",
     "year": 2022,
     "make": "Jeep",
@@ -5168,7 +5168,7 @@
     "title_status": "clean",
     "province": "Manitoba",
     "city": "Brandon",
-    "auction_start": "2026-04-04T18:00:00",
+    "auction_start": "2026-07-27T18:00:00",
     "starting_bid": 25000,
     "reserve_price": 29000,
     "buy_now_price": 37000,
@@ -5183,7 +5183,7 @@
     "bid_count": 14
   },
   {
-    "id": "e861ba56-2b8d-44f7-b02b-20194f429e51",
+    "id": "d216c010-7f8c-41c1-8770-1ee5cd117a87",
     "vin": "3T3LCBN31E1C5L2G1",
     "year": 2025,
     "make": "Jeep",
@@ -5203,7 +5203,7 @@
     "title_status": "clean",
     "province": "Alberta",
     "city": "Airdrie",
-    "auction_start": "2026-03-31T19:00:00",
+    "auction_start": "2026-07-23T19:00:00",
     "starting_bid": 25500,
     "reserve_price": 34500,
     "buy_now_price": null,
@@ -5220,7 +5220,7 @@
     "bid_count": 0
   },
   {
-    "id": "5f57472f-bbb4-400d-8eb5-34da661c19dc",
+    "id": "f1b2f0eb-b01d-4069-ae6e-9cb1a06a77a9",
     "vin": "L99VU30X7UE5VFG7T",
     "year": 2019,
     "make": "Ram",
@@ -5244,7 +5244,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Hamilton",
-    "auction_start": "2026-04-02T19:00:00",
+    "auction_start": "2026-07-25T19:00:00",
     "starting_bid": 14000,
     "reserve_price": null,
     "buy_now_price": null,
@@ -5262,7 +5262,7 @@
     "bid_count": 0
   },
   {
-    "id": "7ced750c-a9e6-4003-a974-658e4c151c68",
+    "id": "5baad35f-37d3-4e6c-aad6-69b70d23dbff",
     "vin": "92GFN0WM7JME8970W",
     "year": 2017,
     "make": "Ford",
@@ -5286,7 +5286,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Sherbrooke",
-    "auction_start": "2026-04-02T12:00:00",
+    "auction_start": "2026-07-25T12:00:00",
     "starting_bid": 10000,
     "reserve_price": 18000,
     "buy_now_price": 19500,
@@ -5301,7 +5301,7 @@
     "bid_count": 7
   },
   {
-    "id": "cefdecd3-0925-4654-9b02-7fb6612377bd",
+    "id": "871b2aeb-c508-46f2-8cf2-b685f2774bb0",
     "vin": "TXNJXSHK9R2XVN0MP",
     "year": 2025,
     "make": "GMC",
@@ -5321,7 +5321,7 @@
     "title_status": "clean",
     "province": "British Columbia",
     "city": "Richmond",
-    "auction_start": "2026-04-04T13:00:00",
+    "auction_start": "2026-07-27T13:00:00",
     "starting_bid": 17000,
     "reserve_price": 25500,
     "buy_now_price": null,
@@ -5338,7 +5338,7 @@
     "bid_count": 0
   },
   {
-    "id": "358a8fab-527f-4717-baa7-e382bbff6932",
+    "id": "b397fb7e-62b3-4576-9c4c-f3489f698ca1",
     "vin": "PT2PURJ94XDU2JF9W",
     "year": 2024,
     "make": "Honda",
@@ -5360,7 +5360,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Sherbrooke",
-    "auction_start": "2026-04-05T11:00:00",
+    "auction_start": "2026-07-28T11:00:00",
     "starting_bid": 25000,
     "reserve_price": 30500,
     "buy_now_price": null,
@@ -5375,7 +5375,7 @@
     "bid_count": 7
   },
   {
-    "id": "22272c75-4fd5-4a13-8859-29432f6ec45d",
+    "id": "c6d6cd0a-7970-438b-8c8c-e58ad7e3ab82",
     "vin": "0FYLWXYU9EZVU6EKD",
     "year": 2017,
     "make": "Chevrolet",
@@ -5398,7 +5398,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Windsor",
-    "auction_start": "2026-04-06T19:00:00",
+    "auction_start": "2026-07-29T19:00:00",
     "starting_bid": 7000,
     "reserve_price": 12000,
     "buy_now_price": null,
@@ -5415,7 +5415,7 @@
     "bid_count": 0
   },
   {
-    "id": "8246d7a9-efbc-4e87-9b80-121b9a1b28b6",
+    "id": "f6fe2994-d20b-49d9-9490-1ed29f26e5d7",
     "vin": "CCBVYE0M84BX5DBCM",
     "year": 2020,
     "make": "Nissan",
@@ -5435,7 +5435,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Hamilton",
-    "auction_start": "2026-04-01T15:00:00",
+    "auction_start": "2026-07-24T15:00:00",
     "starting_bid": 10500,
     "reserve_price": 14500,
     "buy_now_price": null,
@@ -5452,7 +5452,7 @@
     "bid_count": 0
   },
   {
-    "id": "01487b58-5187-4f6f-ad28-2f54696f5a44",
+    "id": "7794c616-bae8-43f4-af18-aa15331121a5",
     "vin": "88M90THE2JM2CDAM2",
     "year": 2018,
     "make": "Ram",
@@ -5472,7 +5472,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Quebec City",
-    "auction_start": "2026-04-03T09:00:00",
+    "auction_start": "2026-07-26T09:00:00",
     "starting_bid": 14500,
     "reserve_price": 19500,
     "buy_now_price": null,
@@ -5487,7 +5487,7 @@
     "bid_count": 1
   },
   {
-    "id": "b741b684-7033-402e-ad6b-a797e337a6c4",
+    "id": "b9c7798e-a205-479a-9d97-aa5bffdde4ab",
     "vin": "FLF13XRC21NCLNW80",
     "year": 2023,
     "make": "BMW",
@@ -5510,7 +5510,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Markham",
-    "auction_start": "2026-04-02T20:00:00",
+    "auction_start": "2026-07-25T20:00:00",
     "starting_bid": 26000,
     "reserve_price": 34500,
     "buy_now_price": null,
@@ -5527,7 +5527,7 @@
     "bid_count": 0
   },
   {
-    "id": "c77b4548-320b-4924-a097-f68052fdc454",
+    "id": "ce4e0f3c-2a9b-4e59-ab44-8085e4f212c1",
     "vin": "AHZ4JN6B491XFVSU9",
     "year": 2024,
     "make": "Kia",
@@ -5547,7 +5547,7 @@
     "title_status": "clean",
     "province": "British Columbia",
     "city": "Burnaby",
-    "auction_start": "2026-03-31T10:00:00",
+    "auction_start": "2026-07-23T10:00:00",
     "starting_bid": 13500,
     "reserve_price": 20500,
     "buy_now_price": null,
@@ -5562,7 +5562,7 @@
     "bid_count": 0
   },
   {
-    "id": "260f39b0-b354-4acd-a60c-f75df40922d9",
+    "id": "324c19d1-e709-477f-9649-f0a62e289158",
     "vin": "FSM02VBU11YBGS1UZ",
     "year": 2020,
     "make": "Tesla",
@@ -5586,7 +5586,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Vaughan",
-    "auction_start": "2026-04-06T17:00:00",
+    "auction_start": "2026-07-29T17:00:00",
     "starting_bid": 24500,
     "reserve_price": 31500,
     "buy_now_price": null,
@@ -5602,7 +5602,7 @@
     "bid_count": 6
   },
   {
-    "id": "c35f7485-7a2b-41d1-90ff-54994129e4ee",
+    "id": "d3b6442d-8f17-424c-bbe5-6346c9c580ba",
     "vin": "25VE3PTK2AMLSL7P5",
     "year": 2019,
     "make": "Ram",
@@ -5627,7 +5627,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Kitchener",
-    "auction_start": "2026-04-01T16:00:00",
+    "auction_start": "2026-07-24T16:00:00",
     "starting_bid": 15500,
     "reserve_price": 25000,
     "buy_now_price": 30000,
@@ -5643,7 +5643,7 @@
     "bid_count": 0
   },
   {
-    "id": "597e4ff0-bff1-4a70-b5c6-b774c74e9046",
+    "id": "2e962bbb-2d2d-4be0-9cac-c0c5bc2de519",
     "vin": "6YLWYUY48NHV2UDUH",
     "year": 2025,
     "make": "Jeep",
@@ -5663,7 +5663,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Kitchener",
-    "auction_start": "2026-04-02T18:00:00",
+    "auction_start": "2026-07-25T18:00:00",
     "starting_bid": 27000,
     "reserve_price": 40500,
     "buy_now_price": null,
@@ -5680,7 +5680,7 @@
     "bid_count": 0
   },
   {
-    "id": "893f2048-6326-465f-bfc8-bcc847df5185",
+    "id": "fbc219fb-c5c5-4e9c-b571-c52c6ada02ac",
     "vin": "0HHDF5AV751RHACU5",
     "year": 2017,
     "make": "Volkswagen",
@@ -5705,7 +5705,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Markham",
-    "auction_start": "2026-04-03T12:00:00",
+    "auction_start": "2026-07-26T12:00:00",
     "starting_bid": 7500,
     "reserve_price": 11000,
     "buy_now_price": 13500,
@@ -5722,7 +5722,7 @@
     "bid_count": 0
   },
   {
-    "id": "f06f0040-92e3-4bd6-8ffa-f407d43be14f",
+    "id": "0a114c47-2810-4824-96cd-80a320b9e010",
     "vin": "1R9PLSJR786A6803Z",
     "year": 2021,
     "make": "Ram",
@@ -5745,7 +5745,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Hamilton",
-    "auction_start": "2026-04-05T13:00:00",
+    "auction_start": "2026-07-28T13:00:00",
     "starting_bid": 29500,
     "reserve_price": 38000,
     "buy_now_price": null,
@@ -5763,7 +5763,7 @@
     "bid_count": 0
   },
   {
-    "id": "1502690f-c538-4083-b174-d50de78a936f",
+    "id": "c85afc8a-f189-4646-bd1e-cda1e057e42a",
     "vin": "FFXEGDLJ5R161PW5J",
     "year": 2023,
     "make": "Kia",
@@ -5785,7 +5785,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Vaughan",
-    "auction_start": "2026-04-03T12:00:00",
+    "auction_start": "2026-07-26T12:00:00",
     "starting_bid": 17500,
     "reserve_price": 26500,
     "buy_now_price": null,
@@ -5802,7 +5802,7 @@
     "bid_count": 0
   },
   {
-    "id": "1989bd9d-50e2-4132-a723-e9a733464172",
+    "id": "5c71cfba-a375-4a36-b146-8d69374a1dbf",
     "vin": "5HL2DCJG0B2CV4UVF",
     "year": 2021,
     "make": "Ford",
@@ -5825,7 +5825,7 @@
     "title_status": "clean",
     "province": "Alberta",
     "city": "Red Deer",
-    "auction_start": "2026-04-02T12:00:00",
+    "auction_start": "2026-07-25T12:00:00",
     "starting_bid": 24500,
     "reserve_price": 36000,
     "buy_now_price": null,
@@ -5840,7 +5840,7 @@
     "bid_count": 0
   },
   {
-    "id": "02930ad7-295f-4bff-811b-411c07b2f4b2",
+    "id": "91980850-b07c-4b9d-ba7d-69e1dc5a23ba",
     "vin": "6TVR2DFY5TEPTD4AW",
     "year": 2016,
     "make": "Ram",
@@ -5865,7 +5865,7 @@
     "title_status": "clean",
     "province": "British Columbia",
     "city": "Langley",
-    "auction_start": "2026-04-05T13:00:00",
+    "auction_start": "2026-07-28T13:00:00",
     "starting_bid": 12500,
     "reserve_price": 16000,
     "buy_now_price": null,
@@ -5882,7 +5882,7 @@
     "bid_count": 0
   },
   {
-    "id": "963400ae-d8f4-4305-a6c9-31a4a09ba1bf",
+    "id": "07fbfc9f-2c5d-462b-b3f2-ca89ed88dd35",
     "vin": "L9HTV723006H7KDWX",
     "year": 2026,
     "make": "Ford",
@@ -5902,7 +5902,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Barrie",
-    "auction_start": "2026-04-06T10:00:00",
+    "auction_start": "2026-07-29T10:00:00",
     "starting_bid": 18500,
     "reserve_price": 31500,
     "buy_now_price": null,
@@ -5919,7 +5919,7 @@
     "bid_count": 13
   },
   {
-    "id": "b0ff0755-a03b-4a73-b529-647a156c0293",
+    "id": "8a1bd9e0-fe5c-44e6-9cad-ff7a423043e2",
     "vin": "PVG51NLE01TDE16TU",
     "year": 2025,
     "make": "Volkswagen",
@@ -5941,7 +5941,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Quebec City",
-    "auction_start": "2026-03-31T14:00:00",
+    "auction_start": "2026-07-23T14:00:00",
     "starting_bid": 14000,
     "reserve_price": null,
     "buy_now_price": null,
@@ -5956,7 +5956,7 @@
     "bid_count": 7
   },
   {
-    "id": "ef70da5b-b50c-4d38-afa5-c9483ce65fd9",
+    "id": "2d9e6d01-25af-4b7d-bc8c-dd361d13bceb",
     "vin": "D1793GZD8WRX2FMRN",
     "year": 2026,
     "make": "Toyota",
@@ -5976,7 +5976,7 @@
     "title_status": "clean",
     "province": "Nova Scotia",
     "city": "Halifax",
-    "auction_start": "2026-04-06T13:00:00",
+    "auction_start": "2026-07-29T13:00:00",
     "starting_bid": 26000,
     "reserve_price": 37500,
     "buy_now_price": null,
@@ -5992,7 +5992,7 @@
     "bid_count": 0
   },
   {
-    "id": "54361815-636a-4ff4-a985-bef3fddddef8",
+    "id": "cc86bfcd-0ff9-4fea-bf92-26f1316e6d31",
     "vin": "Z9JN0PCU620CJ99EH",
     "year": 2026,
     "make": "Kia",
@@ -6014,7 +6014,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Markham",
-    "auction_start": "2026-04-05T13:00:00",
+    "auction_start": "2026-07-28T13:00:00",
     "starting_bid": 18500,
     "reserve_price": null,
     "buy_now_price": 39000,
@@ -6031,7 +6031,7 @@
     "bid_count": 0
   },
   {
-    "id": "3ea2ab4f-4da6-4320-bd9d-21b0855be01a",
+    "id": "36c1c772-73cd-4a03-9561-feb8cc6754f7",
     "vin": "CBV5A9RA3LU27L5KW",
     "year": 2024,
     "make": "GMC",
@@ -6051,7 +6051,7 @@
     "title_status": "clean",
     "province": "British Columbia",
     "city": "Surrey",
-    "auction_start": "2026-04-01T17:00:00",
+    "auction_start": "2026-07-24T17:00:00",
     "starting_bid": 18500,
     "reserve_price": 24500,
     "buy_now_price": null,
@@ -6066,7 +6066,7 @@
     "bid_count": 0
   },
   {
-    "id": "221c6186-84bf-4e9e-9c79-80b5ac7ffd0e",
+    "id": "d1a8bb1c-cef6-4fc0-9003-d69c7543f1bf",
     "vin": "0SVB45MA96SRAPN94",
     "year": 2022,
     "make": "Ford",
@@ -6086,7 +6086,7 @@
     "title_status": "clean",
     "province": "British Columbia",
     "city": "Burnaby",
-    "auction_start": "2026-04-04T11:00:00",
+    "auction_start": "2026-07-27T11:00:00",
     "starting_bid": 16500,
     "reserve_price": null,
     "buy_now_price": 24000,
@@ -6103,7 +6103,7 @@
     "bid_count": 11
   },
   {
-    "id": "8108f14a-c35b-4294-af6f-4f2f8a48187f",
+    "id": "9c644545-48bf-46f2-a306-1dd63c922a69",
     "vin": "36GX154047R7ZJEF2",
     "year": 2020,
     "make": "Volkswagen",
@@ -6125,7 +6125,7 @@
     "title_status": "clean",
     "province": "British Columbia",
     "city": "Burnaby",
-    "auction_start": "2026-04-04T18:00:00",
+    "auction_start": "2026-07-27T18:00:00",
     "starting_bid": 8500,
     "reserve_price": 15000,
     "buy_now_price": null,
@@ -6141,7 +6141,7 @@
     "bid_count": 0
   },
   {
-    "id": "879ceb97-67c2-443b-8194-fb67d9fa52f9",
+    "id": "c9d7116f-6eb5-4e68-b3ea-a92ca6e7f617",
     "vin": "BV22HVNS4KWVB1KVH",
     "year": 2026,
     "make": "BMW",
@@ -6167,7 +6167,7 @@
     "title_status": "rebuilt",
     "province": "Quebec",
     "city": "Longueuil",
-    "auction_start": "2026-04-02T13:00:00",
+    "auction_start": "2026-07-25T13:00:00",
     "starting_bid": 30500,
     "reserve_price": null,
     "buy_now_price": null,
@@ -6183,7 +6183,7 @@
     "bid_count": 0
   },
   {
-    "id": "018b5f78-79a2-4b18-ae47-ae4e53f1b40a",
+    "id": "41fe76c6-1f6b-4b0c-8a3d-46ab804d4a26",
     "vin": "LDGUF3Y912FM9SB01",
     "year": 2017,
     "make": "Toyota",
@@ -6208,7 +6208,7 @@
     "title_status": "clean",
     "province": "Alberta",
     "city": "Calgary",
-    "auction_start": "2026-03-31T17:00:00",
+    "auction_start": "2026-07-23T17:00:00",
     "starting_bid": 7000,
     "reserve_price": 10500,
     "buy_now_price": null,
@@ -6224,7 +6224,7 @@
     "bid_count": 0
   },
   {
-    "id": "bbf7eb0c-f86a-4c56-899e-200d98a51073",
+    "id": "b4af6121-013d-4cd8-b3f6-fc6c4343ff2e",
     "vin": "6VVBJ0D79GW4TW1DF",
     "year": 2016,
     "make": "Mazda",
@@ -6250,7 +6250,7 @@
     "title_status": "rebuilt",
     "province": "Ontario",
     "city": "Kitchener",
-    "auction_start": "2026-04-01T14:00:00",
+    "auction_start": "2026-07-24T14:00:00",
     "starting_bid": 2500,
     "reserve_price": 3500,
     "buy_now_price": null,
@@ -6268,7 +6268,7 @@
     "bid_count": 0
   },
   {
-    "id": "e299ab33-ea99-4dbb-a513-0cc5d2dc99b2",
+    "id": "f06c75b3-ff7e-44b7-9b3a-2eb173f37f2c",
     "vin": "SBH95Z6F5D4EBC7UD",
     "year": 2023,
     "make": "Ram",
@@ -6291,7 +6291,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Laval",
-    "auction_start": "2026-04-04T17:00:00",
+    "auction_start": "2026-07-27T17:00:00",
     "starting_bid": 33500,
     "reserve_price": null,
     "buy_now_price": 54500,
@@ -6308,7 +6308,7 @@
     "bid_count": 8
   },
   {
-    "id": "502334c0-42b8-4103-8220-151dbe66edb6",
+    "id": "c3e33bb8-6417-4d03-aea1-c05b1f8345f5",
     "vin": "8ZJU0XEU7M0AE7MUU",
     "year": 2016,
     "make": "Volkswagen",
@@ -6332,7 +6332,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Vaughan",
-    "auction_start": "2026-04-05T10:00:00",
+    "auction_start": "2026-07-28T10:00:00",
     "starting_bid": 9500,
     "reserve_price": 11500,
     "buy_now_price": null,
@@ -6349,7 +6349,7 @@
     "bid_count": 17
   },
   {
-    "id": "cf892585-b438-4f5f-8a08-f0880e87ee9e",
+    "id": "ebbba163-92c9-40a0-87b8-f713ac33d382",
     "vin": "4AYRUSAC3VFE0KMCB",
     "year": 2026,
     "make": "Chevrolet",
@@ -6369,7 +6369,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Sherbrooke",
-    "auction_start": "2026-03-31T13:00:00",
+    "auction_start": "2026-07-23T13:00:00",
     "starting_bid": 25500,
     "reserve_price": 29500,
     "buy_now_price": null,
@@ -6385,7 +6385,7 @@
     "bid_count": 17
   },
   {
-    "id": "9ed6baa0-2236-49b5-bc56-c4640af0ec8f",
+    "id": "f4e82bae-8a5f-4cd5-948d-249480b1ae38",
     "vin": "UDUA095P8U81D9BSN",
     "year": 2022,
     "make": "Hyundai",
@@ -6405,7 +6405,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Windsor",
-    "auction_start": "2026-04-02T15:00:00",
+    "auction_start": "2026-07-25T15:00:00",
     "starting_bid": 17500,
     "reserve_price": null,
     "buy_now_price": 25500,
@@ -6420,7 +6420,7 @@
     "bid_count": 0
   },
   {
-    "id": "03118bbb-a754-4654-ae36-ecdb0c722457",
+    "id": "be2a9f20-2d03-41ff-806d-3851c520331b",
     "vin": "A6CMXDF37X7XXDR3H",
     "year": 2020,
     "make": "Honda",
@@ -6442,7 +6442,7 @@
     "title_status": "clean",
     "province": "Alberta",
     "city": "Calgary",
-    "auction_start": "2026-04-06T16:00:00",
+    "auction_start": "2026-07-29T16:00:00",
     "starting_bid": 12000,
     "reserve_price": null,
     "buy_now_price": 19500,
@@ -6458,7 +6458,7 @@
     "bid_count": 0
   },
   {
-    "id": "f11ee887-c85a-4a9e-9104-4329ee532a58",
+    "id": "cc0e1572-abad-485e-a9f3-4d64bbb64973",
     "vin": "A8NYAM8T7KPZZHD22",
     "year": 2021,
     "make": "BMW",
@@ -6482,7 +6482,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Longueuil",
-    "auction_start": "2026-04-04T20:00:00",
+    "auction_start": "2026-07-27T20:00:00",
     "starting_bid": 19000,
     "reserve_price": null,
     "buy_now_price": 41000,
@@ -6500,7 +6500,7 @@
     "bid_count": 4
   },
   {
-    "id": "db563df3-61eb-4e87-9244-ca3819a674d3",
+    "id": "7d99a193-72d7-4168-969d-61368015e5d1",
     "vin": "59754R0G1L9NRATS3",
     "year": 2016,
     "make": "Ford",
@@ -6525,7 +6525,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "London",
-    "auction_start": "2026-04-06T12:00:00",
+    "auction_start": "2026-07-29T12:00:00",
     "starting_bid": 4500,
     "reserve_price": null,
     "buy_now_price": null,
@@ -6541,7 +6541,7 @@
     "bid_count": 0
   },
   {
-    "id": "7f236303-8db9-4dae-8d62-88889ea7771c",
+    "id": "26f7a795-e7e4-48a3-ace3-08a25af0a785",
     "vin": "3ULS67UN2202586LE",
     "year": 2017,
     "make": "Mazda",
@@ -6567,7 +6567,7 @@
     "title_status": "salvage",
     "province": "Ontario",
     "city": "Kitchener",
-    "auction_start": "2026-04-02T18:00:00",
+    "auction_start": "2026-07-25T18:00:00",
     "starting_bid": 2500,
     "reserve_price": 3000,
     "buy_now_price": null,
@@ -6585,7 +6585,7 @@
     "bid_count": 0
   },
   {
-    "id": "fafc5733-6237-4d2e-9c42-c02afa57ab62",
+    "id": "1378e6ce-99e4-48e2-87dc-c77adfea59d7",
     "vin": "JX5EYVFR7RJ7T4E0C",
     "year": 2025,
     "make": "Ram",
@@ -6605,7 +6605,7 @@
     "title_status": "clean",
     "province": "Manitoba",
     "city": "Brandon",
-    "auction_start": "2026-04-02T20:00:00",
+    "auction_start": "2026-07-25T20:00:00",
     "starting_bid": 24000,
     "reserve_price": null,
     "buy_now_price": null,
@@ -6621,7 +6621,7 @@
     "bid_count": 4
   },
   {
-    "id": "c57efc68-1e03-469a-93e7-f12fe51a1f10",
+    "id": "d977c48b-dd3b-443a-acea-ff8c2eba6299",
     "vin": "DUFJRX3K1P8CESNEE",
     "year": 2017,
     "make": "Ram",
@@ -6644,7 +6644,7 @@
     "title_status": "clean",
     "province": "British Columbia",
     "city": "Surrey",
-    "auction_start": "2026-04-03T11:00:00",
+    "auction_start": "2026-07-26T11:00:00",
     "starting_bid": 16000,
     "reserve_price": 21000,
     "buy_now_price": 24000,
@@ -6660,7 +6660,7 @@
     "bid_count": 5
   },
   {
-    "id": "e6f3733c-28f0-4829-9e04-7c508c489e8a",
+    "id": "7940f0cf-e28b-4334-bbb6-2763bb4830ba",
     "vin": "WWBW3MLK44YE1PLFA",
     "year": 2023,
     "make": "Hyundai",
@@ -6680,7 +6680,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Hamilton",
-    "auction_start": "2026-04-03T19:00:00",
+    "auction_start": "2026-07-26T19:00:00",
     "starting_bid": 13000,
     "reserve_price": 20000,
     "buy_now_price": null,
@@ -6695,7 +6695,7 @@
     "bid_count": 14
   },
   {
-    "id": "e7110b4a-b07b-4c43-aa1a-ffc435b379e6",
+    "id": "a23236a7-ed6e-4d16-ba14-200f34412e11",
     "vin": "0DC9XCMM66U5L8PSJ",
     "year": 2020,
     "make": "Subaru",
@@ -6721,7 +6721,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Montreal",
-    "auction_start": "2026-04-06T12:00:00",
+    "auction_start": "2026-07-29T12:00:00",
     "starting_bid": 9500,
     "reserve_price": 13000,
     "buy_now_price": 14500,
@@ -6738,7 +6738,7 @@
     "bid_count": 13
   },
   {
-    "id": "d8966200-67d2-432b-9df4-f87b98ed30a9",
+    "id": "8ccb3822-3fd5-44b8-a6ef-ba7009a78929",
     "vin": "M93TZBXW8FMZYM3KR",
     "year": 2025,
     "make": "Toyota",
@@ -6758,7 +6758,7 @@
     "title_status": "rebuilt",
     "province": "Ontario",
     "city": "Hamilton",
-    "auction_start": "2026-03-31T09:00:00",
+    "auction_start": "2026-07-23T09:00:00",
     "starting_bid": 13500,
     "reserve_price": 20500,
     "buy_now_price": 24500,
@@ -6773,7 +6773,7 @@
     "bid_count": 5
   },
   {
-    "id": "e028beee-9c4e-44e1-936f-0f8a775e1836",
+    "id": "f58a6ede-624b-4e2e-95a1-50e7b5b03d04",
     "vin": "AYWNRW4F0W7L0YLR5",
     "year": 2026,
     "make": "Mazda",
@@ -6795,7 +6795,7 @@
     "title_status": "clean",
     "province": "Alberta",
     "city": "Airdrie",
-    "auction_start": "2026-04-02T19:00:00",
+    "auction_start": "2026-07-25T19:00:00",
     "starting_bid": 21500,
     "reserve_price": 33000,
     "buy_now_price": null,
@@ -6811,7 +6811,7 @@
     "bid_count": 1
   },
   {
-    "id": "02d43bb2-96e6-4362-95dc-aea2ae0c3f65",
+    "id": "fadb17b2-6c53-43c0-9b5e-f85287dcadd1",
     "vin": "UG6XPYHC9D1KY29X1",
     "year": 2020,
     "make": "Jeep",
@@ -6834,7 +6834,7 @@
     "title_status": "clean",
     "province": "Alberta",
     "city": "Edmonton",
-    "auction_start": "2026-03-31T14:00:00",
+    "auction_start": "2026-07-23T14:00:00",
     "starting_bid": 10000,
     "reserve_price": 17500,
     "buy_now_price": null,
@@ -6850,7 +6850,7 @@
     "bid_count": 0
   },
   {
-    "id": "ba32a172-12d9-4dff-ab94-956fe6323470",
+    "id": "973fbcb9-30d4-4a13-9cce-6047219bb9cb",
     "vin": "BEBB13GS8KSECNMMH",
     "year": 2019,
     "make": "Nissan",
@@ -6875,7 +6875,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Montreal",
-    "auction_start": "2026-04-01T12:00:00",
+    "auction_start": "2026-07-24T12:00:00",
     "starting_bid": 8500,
     "reserve_price": 11500,
     "buy_now_price": 14000,
@@ -6892,7 +6892,7 @@
     "bid_count": 5
   },
   {
-    "id": "d5e524dc-350a-4499-975f-3b1300de4282",
+    "id": "4a5dab14-4f7a-4757-98bc-f2f287488a48",
     "vin": "L537FSX68Y25CU7LV",
     "year": 2017,
     "make": "BMW",
@@ -6918,7 +6918,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Ottawa",
-    "auction_start": "2026-04-03T11:00:00",
+    "auction_start": "2026-07-26T11:00:00",
     "starting_bid": 16000,
     "reserve_price": 22000,
     "buy_now_price": null,
@@ -6935,7 +6935,7 @@
     "bid_count": 3
   },
   {
-    "id": "335c856f-de1e-4cbb-8972-817d1dda5495",
+    "id": "a9885dc0-3fb4-4ecc-a479-c6714e1d4fd8",
     "vin": "5B9VS98U3JZBC95R9",
     "year": 2022,
     "make": "GMC",
@@ -6955,7 +6955,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Laval",
-    "auction_start": "2026-04-06T10:00:00",
+    "auction_start": "2026-07-29T10:00:00",
     "starting_bid": 13000,
     "reserve_price": 21500,
     "buy_now_price": null,
@@ -6971,7 +6971,7 @@
     "bid_count": 0
   },
   {
-    "id": "5c80170f-63e4-44fd-9130-4e3ecb265d42",
+    "id": "c2d4025f-9193-49ef-be8c-a2324b6446f6",
     "vin": "9VJ9XEE52GPMG0CFS",
     "year": 2025,
     "make": "Nissan",
@@ -6995,7 +6995,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Toronto",
-    "auction_start": "2026-04-01T16:00:00",
+    "auction_start": "2026-07-24T16:00:00",
     "starting_bid": 16500,
     "reserve_price": 24500,
     "buy_now_price": null,
@@ -7011,7 +7011,7 @@
     "bid_count": 0
   },
   {
-    "id": "493a149d-9407-4e29-a971-3bb724e83c7d",
+    "id": "06b4d5dc-ddb4-4cd5-b37c-c83b38404417",
     "vin": "X36LFSM05KDKN2NM2",
     "year": 2022,
     "make": "Ram",
@@ -7031,7 +7031,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Markham",
-    "auction_start": "2026-04-04T14:00:00",
+    "auction_start": "2026-07-27T14:00:00",
     "starting_bid": 20000,
     "reserve_price": 32000,
     "buy_now_price": null,
@@ -7048,7 +7048,7 @@
     "bid_count": 16
   },
   {
-    "id": "75688aa0-6a68-4486-889d-038890db4234",
+    "id": "d8fb8660-8db6-424c-bb20-ba623866552f",
     "vin": "D378VAWK3K0LPJM36",
     "year": 2020,
     "make": "GMC",
@@ -7068,7 +7068,7 @@
     "title_status": "clean",
     "province": "British Columbia",
     "city": "Victoria",
-    "auction_start": "2026-04-01T18:00:00",
+    "auction_start": "2026-07-24T18:00:00",
     "starting_bid": 20500,
     "reserve_price": 34000,
     "buy_now_price": null,
@@ -7084,7 +7084,7 @@
     "bid_count": 18
   },
   {
-    "id": "db7cd541-b78d-4fb3-9e54-37379edb143f",
+    "id": "de7583b8-0ad3-4c81-ad0d-e25b96ebb6ae",
     "vin": "0YTHTDNJ582J5T9R5",
     "year": 2023,
     "make": "Tesla",
@@ -7104,7 +7104,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Quebec City",
-    "auction_start": "2026-04-01T15:00:00",
+    "auction_start": "2026-07-24T15:00:00",
     "starting_bid": 24000,
     "reserve_price": 35000,
     "buy_now_price": null,
@@ -7120,7 +7120,7 @@
     "bid_count": 7
   },
   {
-    "id": "3c5f3a14-32a9-4cf2-8b65-77e250b5d3e0",
+    "id": "6ce86489-edaf-4de9-9edb-ffcc93e63285",
     "vin": "N9CU9G8X2S6YS6745",
     "year": 2017,
     "make": "BMW",
@@ -7146,7 +7146,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Mississauga",
-    "auction_start": "2026-03-31T13:00:00",
+    "auction_start": "2026-07-23T13:00:00",
     "starting_bid": 10500,
     "reserve_price": 16000,
     "buy_now_price": null,
@@ -7162,7 +7162,7 @@
     "bid_count": 14
   },
   {
-    "id": "72c7c573-8cac-4756-bd03-b5957bab9cb9",
+    "id": "0a1fdcd0-e56d-46e9-8ee3-fd5dc0f22261",
     "vin": "26MC7BD37EPNCTC39",
     "year": 2025,
     "make": "Honda",
@@ -7182,7 +7182,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Toronto",
-    "auction_start": "2026-04-05T17:00:00",
+    "auction_start": "2026-07-28T17:00:00",
     "starting_bid": 16500,
     "reserve_price": null,
     "buy_now_price": null,
@@ -7200,7 +7200,7 @@
     "bid_count": 1
   },
   {
-    "id": "154dcbc1-c3f8-4b71-a0e9-e80776c1f944",
+    "id": "cfe16c24-7e2f-4f10-bb12-163a083ba23a",
     "vin": "NM8MVPWA9D5Z48692",
     "year": 2019,
     "make": "Honda",
@@ -7223,7 +7223,7 @@
     "title_status": "clean",
     "province": "Manitoba",
     "city": "Winnipeg",
-    "auction_start": "2026-04-03T15:00:00",
+    "auction_start": "2026-07-26T15:00:00",
     "starting_bid": 7000,
     "reserve_price": 9500,
     "buy_now_price": null,
@@ -7238,7 +7238,7 @@
     "bid_count": 0
   },
   {
-    "id": "ea2f19bf-131e-4d96-956c-2a10a909b132",
+    "id": "49ae2604-c7af-48b6-8b61-d0d82982c1e6",
     "vin": "6SHX4WFJ6YYDUFJR5",
     "year": 2023,
     "make": "Chevrolet",
@@ -7261,7 +7261,7 @@
     "title_status": "rebuilt",
     "province": "Quebec",
     "city": "Montreal",
-    "auction_start": "2026-04-03T15:00:00",
+    "auction_start": "2026-07-26T15:00:00",
     "starting_bid": 5000,
     "reserve_price": 8000,
     "buy_now_price": null,
@@ -7278,7 +7278,7 @@
     "bid_count": 0
   },
   {
-    "id": "25090c56-ea41-4067-904d-d0da6854f69e",
+    "id": "edc2a828-d4cd-4544-85be-587586545434",
     "vin": "4D3B8CBA9711RHW9Y",
     "year": 2025,
     "make": "Volkswagen",
@@ -7298,7 +7298,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Quebec City",
-    "auction_start": "2026-04-04T16:00:00",
+    "auction_start": "2026-07-27T16:00:00",
     "starting_bid": 22000,
     "reserve_price": 35000,
     "buy_now_price": 42500,
@@ -7314,7 +7314,7 @@
     "bid_count": 16
   },
   {
-    "id": "e72d46ae-512c-41a4-b52d-7c866c149d4b",
+    "id": "152d4dcc-045f-4898-be0a-b1ed05d3da56",
     "vin": "3R9E02XT9DT6S745N",
     "year": 2021,
     "make": "Ford",
@@ -7334,7 +7334,7 @@
     "title_status": "rebuilt",
     "province": "British Columbia",
     "city": "Richmond",
-    "auction_start": "2026-04-02T09:00:00",
+    "auction_start": "2026-07-25T09:00:00",
     "starting_bid": 7000,
     "reserve_price": 10500,
     "buy_now_price": null,
@@ -7350,7 +7350,7 @@
     "bid_count": 0
   },
   {
-    "id": "031584ce-f351-4404-9dc3-765e9b68595d",
+    "id": "6fcf9cd9-77d9-4598-b963-15a5e3891591",
     "vin": "TXUX049V0AFN2H25Y",
     "year": 2024,
     "make": "Nissan",
@@ -7376,7 +7376,7 @@
     "title_status": "rebuilt",
     "province": "Ontario",
     "city": "Toronto",
-    "auction_start": "2026-04-04T13:00:00",
+    "auction_start": "2026-07-27T13:00:00",
     "starting_bid": 8500,
     "reserve_price": 11500,
     "buy_now_price": null,
@@ -7392,7 +7392,7 @@
     "bid_count": 0
   },
   {
-    "id": "ab69ea7d-1baf-49d1-b9b2-ef6c38b78540",
+    "id": "f74efc7c-8fdc-4937-ae96-6dfcc8bcd903",
     "vin": "UMJP9DHX8C2XZJY38",
     "year": 2026,
     "make": "Kia",
@@ -7419,7 +7419,7 @@
     "title_status": "salvage",
     "province": "Ontario",
     "city": "Kitchener",
-    "auction_start": "2026-04-04T11:00:00",
+    "auction_start": "2026-07-27T11:00:00",
     "starting_bid": 8000,
     "reserve_price": 14000,
     "buy_now_price": 18000,
@@ -7435,7 +7435,7 @@
     "bid_count": 0
   },
   {
-    "id": "04ee439e-0ada-4c1f-a9c2-4e70ad5d4dd4",
+    "id": "e9b81d66-5843-47a5-a697-bd8f206a32d5",
     "vin": "2PLSKYMF5UFTVYEPZ",
     "year": 2018,
     "make": "Volkswagen",
@@ -7460,7 +7460,7 @@
     "title_status": "clean",
     "province": "Quebec",
     "city": "Longueuil",
-    "auction_start": "2026-04-01T17:00:00",
+    "auction_start": "2026-07-24T17:00:00",
     "starting_bid": 11000,
     "reserve_price": 15000,
     "buy_now_price": null,
@@ -7478,7 +7478,7 @@
     "bid_count": 0
   },
   {
-    "id": "ddf89062-1b82-4428-8c18-f7406b0300be",
+    "id": "b9961ff3-8de5-41f3-9974-1f14a2c594d5",
     "vin": "HA562G0V0NWJ01N67",
     "year": 2023,
     "make": "GMC",
@@ -7498,7 +7498,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Hamilton",
-    "auction_start": "2026-03-31T13:00:00",
+    "auction_start": "2026-07-23T13:00:00",
     "starting_bid": 17000,
     "reserve_price": null,
     "buy_now_price": 33000,
@@ -7515,7 +7515,7 @@
     "bid_count": 9
   },
   {
-    "id": "e84c939c-b1f7-477f-9dab-d009a038e98d",
+    "id": "4092d2bf-dda7-4acd-b7ba-116554a2f169",
     "vin": "W5ZZL7FP02FFEAKU2",
     "year": 2019,
     "make": "Volkswagen",
@@ -7538,7 +7538,7 @@
     "title_status": "clean",
     "province": "Manitoba",
     "city": "Brandon",
-    "auction_start": "2026-04-01T12:00:00",
+    "auction_start": "2026-07-24T12:00:00",
     "starting_bid": 7500,
     "reserve_price": null,
     "buy_now_price": null,
@@ -7553,7 +7553,7 @@
     "bid_count": 0
   },
   {
-    "id": "919111e1-6b6a-4b83-9128-7cd3827b91d8",
+    "id": "def2de6f-854e-48c9-9cb4-df08ba0d744e",
     "vin": "86UXNVHD6SSVEPLER",
     "year": 2020,
     "make": "Kia",
@@ -7576,7 +7576,7 @@
     "title_status": "salvage",
     "province": "Quebec",
     "city": "Laval",
-    "auction_start": "2026-04-01T14:00:00",
+    "auction_start": "2026-07-24T14:00:00",
     "starting_bid": 8000,
     "reserve_price": 11500,
     "buy_now_price": null,
@@ -7591,7 +7591,7 @@
     "bid_count": 16
   },
   {
-    "id": "966f407a-9bb0-48f7-9791-962d14f0c9f4",
+    "id": "216a78f2-ef87-4637-a21e-294c9d7e82ad",
     "vin": "61AZAYLK9UZ7W78ZW",
     "year": 2025,
     "make": "Ram",
@@ -7611,7 +7611,7 @@
     "title_status": "clean",
     "province": "British Columbia",
     "city": "Abbotsford",
-    "auction_start": "2026-04-06T13:00:00",
+    "auction_start": "2026-07-29T13:00:00",
     "starting_bid": 29000,
     "reserve_price": 49500,
     "buy_now_price": null,
@@ -7626,7 +7626,7 @@
     "bid_count": 4
   },
   {
-    "id": "aa1dc6da-d76c-4be0-9ba3-56fbfcf51044",
+    "id": "ecb6c201-896a-445e-896f-3d940bd033fb",
     "vin": "6BGJ8JNY0PM78D8EH",
     "year": 2017,
     "make": "Chevrolet",
@@ -7651,7 +7651,7 @@
     "title_status": "clean",
     "province": "Alberta",
     "city": "Airdrie",
-    "auction_start": "2026-03-31T15:00:00",
+    "auction_start": "2026-07-23T15:00:00",
     "starting_bid": 6000,
     "reserve_price": 9000,
     "buy_now_price": null,
@@ -7666,7 +7666,7 @@
     "bid_count": 14
   },
   {
-    "id": "ba888a6f-04b5-413c-8d87-0f29ba30a2eb",
+    "id": "99045da5-fb74-4f8b-878d-a7667eef30f9",
     "vin": "B46MSVX22ZF1KLW1Y",
     "year": 2020,
     "make": "Ford",
@@ -7688,7 +7688,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Markham",
-    "auction_start": "2026-04-06T15:00:00",
+    "auction_start": "2026-07-29T15:00:00",
     "starting_bid": 11000,
     "reserve_price": 17500,
     "buy_now_price": null,
@@ -7703,7 +7703,7 @@
     "bid_count": 0
   },
   {
-    "id": "62eb822a-a238-4a88-b718-942b8fca86aa",
+    "id": "8ceafa9a-c7e4-4818-a940-5ab9279fa087",
     "vin": "EZ73RMG76X31G4JN4",
     "year": 2024,
     "make": "Ram",
@@ -7723,7 +7723,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Ottawa",
-    "auction_start": "2026-03-31T11:00:00",
+    "auction_start": "2026-07-23T11:00:00",
     "starting_bid": 27000,
     "reserve_price": 40000,
     "buy_now_price": 50000,
@@ -7738,7 +7738,7 @@
     "bid_count": 10
   },
   {
-    "id": "435df02e-2afa-4f26-9caa-45956583f6c7",
+    "id": "1a2e7103-5b79-442f-91ff-a4f1d5ed2261",
     "vin": "2A4XMBJP2FK5KU8FB",
     "year": 2017,
     "make": "Ram",
@@ -7764,7 +7764,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Barrie",
-    "auction_start": "2026-04-01T16:00:00",
+    "auction_start": "2026-07-24T16:00:00",
     "starting_bid": 12500,
     "reserve_price": null,
     "buy_now_price": 19000,
@@ -7780,7 +7780,7 @@
     "bid_count": 3
   },
   {
-    "id": "e4be9cf8-7794-46a7-82c2-b3510f11bff3",
+    "id": "3bb6c2e7-ebb9-4e63-ad10-f8d54bda7bd4",
     "vin": "M8JEVXS42P63U30F6",
     "year": 2023,
     "make": "GMC",
@@ -7800,7 +7800,7 @@
     "title_status": "clean",
     "province": "Ontario",
     "city": "Kitchener",
-    "auction_start": "2026-03-31T14:00:00",
+    "auction_start": "2026-07-23T14:00:00",
     "starting_bid": 23000,
     "reserve_price": 31500,
     "buy_now_price": null,
