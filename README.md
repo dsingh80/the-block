@@ -53,6 +53,7 @@ Every screen and interaction actually wired up in the approved design (`Auto Auc
 
 ## What I'd Do With More Time
 
+- Add more data sanitization around values like VIN (used in links)
 - A real backend in `server/`, including simulated rival bids so the `Outbid` state shows up without hand-editing data
 - Persistence (bids/watchlist/compare survive a refresh)
 - True proxy/second-price bidding against a real bidder pool

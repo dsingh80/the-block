@@ -13,6 +13,13 @@ const specs = computed(() => [
   { label: 'Interior', value: props.vehicle.interior_color },
   { label: 'Fuel Type', value: capitalize(props.vehicle.fuel_type) },
 ])
+
+const vinCheckLink = computed(() => {
+  if(!props.vehicle?.vin?.trim()) {
+    return "";
+  }
+  return `https://www.nicb.org/vincheck?vin=${props.vehicle.vin.trim()}`
+})
 </script>
 
 <template>
@@ -27,7 +34,7 @@ const specs = computed(() => [
         <div class="vehicle-data-card__label">VIN</div>
         <a
           class="vehicle-data-card__vin"
-          href="https://www.nicb.org/vincheck"
+          :href="vinCheckLink"
           target="_blank"
           rel="noopener noreferrer"
         >
