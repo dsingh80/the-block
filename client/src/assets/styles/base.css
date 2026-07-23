@@ -40,6 +40,26 @@ button {
   }
 }
 
+/* Single reused node driven by the `v-tooltip` directive (@/directives/tooltip). */
+.v-tooltip-bubble {
+  position: fixed;
+  display: none;
+  transform: translate(-50%, -100%);
+  background: var(--color-navy);
+  color: var(--color-surface);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  padding: 8px 10px;
+  border-radius: 8px;
+  width: max-content;
+  max-width: 220px;
+  text-align: left;
+  box-shadow: var(--shadow-card-hover);
+  z-index: var(--z-tooltip);
+  pointer-events: none;
+}
+
 /* Visually-hidden but screen-reader-accessible content (form labels, etc.). */
 .sr-only {
   position: absolute;

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { formatGrade } from '@/utils/format'
+import { vTooltip } from '@/directives/tooltip'
 import type { AugmentedListing } from '@/types/listing'
 
 const props = defineProps<{ listing: AugmentedListing }>()
@@ -20,9 +21,9 @@ const hasRealDamageNotes = props.listing.vehicle.damage_notes.length > 0
 
     <div class="condition-card__boxes">
       <div
+        v-tooltip="listing.gradeTooltip"
         class="condition-card__box"
         :class="`condition-card__box--${listing.gradeVariant}`"
-        :title="listing.gradeTooltip"
       >
         <svg
           width="20"

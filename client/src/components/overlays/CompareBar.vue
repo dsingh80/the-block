@@ -20,12 +20,14 @@ const compareListings = computed<AugmentedListing[]>(() =>
   <div v-if="compare.ids.length > 0 && route.path === '/inventory'" class="compare-bar">
     <div class="compare-bar__thumbs">
       <div v-for="item in compareListings" :key="item.id" class="compare-bar__thumb">
-        <img
-          v-if="item.images[0]"
-          :src="item.images[0]"
-          :alt="`${item.vehicle.year} ${item.vehicle.make} ${item.vehicle.model}`"
-          loading="lazy"
-        />
+        <div class="compare-bar__thumb-media">
+          <img
+            v-if="item.images[0]"
+            :src="item.images[0]"
+            :alt="`${item.vehicle.year} ${item.vehicle.make} ${item.vehicle.model}`"
+            loading="lazy"
+          />
+        </div>
         <button
           type="button"
           class="compare-bar__remove"
@@ -82,6 +84,11 @@ const compareListings = computed<AugmentedListing[]>(() =>
   width: 44px;
   height: 36px;
   flex-shrink: 0;
+}
+
+.compare-bar__thumb-media {
+  width: 100%;
+  height: 100%;
   border-radius: 6px;
   overflow: hidden;
   background: var(--color-divider);

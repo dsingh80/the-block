@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { gradeVariant, gradeLabel, gradeTooltip } from '@/utils/grading'
 import { formatGrade } from '@/utils/format'
+import { vTooltip } from '@/directives/tooltip'
 
 const props = defineProps<{ grade: number }>()
 
@@ -13,9 +14,9 @@ const formatted = computed(() => formatGrade(props.grade))
 
 <template>
   <span
+    v-tooltip="tooltip"
     class="grade-pill"
     :class="`grade-pill--${variant}`"
-    :title="tooltip"
     :aria-label="`Condition grade ${formatted}, ${label}`"
   >
     <svg

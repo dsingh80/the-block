@@ -52,6 +52,7 @@ Every screen and interaction actually wired up in the approved design (`Auto Auc
 
 ## What I'd Do With More Time
 
+- Split up the functionality that's currently grouped into `AugmentedListing`. This type is useful because I can guarantee consistency without redundancy and move fast but it's a single type that is way too extensive and likely hard to maintain.
 - Add more data sanitization around values like VIN (used in links)
 - A real backend in `server/`, including simulated rival bids so the `Outbid` state shows up without hand-editing data
 - Persistence (bids/watchlist/compare survive a refresh)
