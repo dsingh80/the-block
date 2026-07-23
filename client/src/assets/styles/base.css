@@ -1,0 +1,74 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  background: var(--color-page-bg);
+  color: var(--color-text);
+}
+
+input,
+select,
+button {
+  font-family: var(--font-family);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-inactive);
+  border-radius: 6px;
+}
+
+/* Drives the ~1.6s highlight on a Watchlist drawer row when it's just added. */
+@keyframes watchlist-highlight {
+  0%,
+  60% {
+    background: var(--color-selected-bg);
+    box-shadow: 0 0 0 2px var(--color-accent);
+  }
+  100% {
+    background: transparent;
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+/* Single reused node driven by the `v-tooltip` directive (@/directives/tooltip). */
+.v-tooltip-bubble {
+  position: fixed;
+  display: none;
+  transform: translate(-50%, -100%);
+  background: var(--color-navy);
+  color: var(--color-surface);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  padding: 8px 10px;
+  border-radius: 8px;
+  width: max-content;
+  max-width: 220px;
+  text-align: left;
+  box-shadow: var(--shadow-card-hover);
+  z-index: var(--z-tooltip);
+  pointer-events: none;
+}
+
+/* Visually-hidden but screen-reader-accessible content (form labels, etc.). */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

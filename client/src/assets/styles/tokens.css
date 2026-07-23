@@ -1,0 +1,78 @@
+/*
+ * Design tokens ported from the approved Claude Design mock
+ * ("Auto Auction Buyer App.dc.html"). Every color used anywhere in the
+ * app should come from a variable defined here — no raw hex in
+ * component styles. See guidelines/02-design-patterns.md #6.
+ *
+ * Two pairs are intentionally NOT the mock's literal hex values:
+ * --color-green-text and --color-amber-text are darkened from the
+ * mock's #1B8A5A / #B7791F so badge/pill text clears WCAG AA (4.5:1)
+ * against its own tinted background. See guidelines/03-guardrails.md.
+ */
+
+:root {
+  /* Brand / structure */
+  --color-navy: #0a1f44;
+  --color-accent: #0057d9;
+  --color-logo-accent: #3d8bff;
+  --color-page-bg: #f4f6fa;
+
+  /* Surfaces & borders */
+  --color-surface: #ffffff;
+  --color-border: #e2e6ec;
+  --color-divider: #eef1f5;
+  /* Scrollbar thumb, inactive carousel dots, empty-state dashed border */
+  --color-inactive: #c7ceda;
+
+  /* Text */
+  --color-text: #0f172a;
+  --color-muted: #5b6472;
+  /* Fails AA at normal text size on white and --color-page-bg (3.10:1 /
+     2.86:1) — reserve for large or decorative text only, use --color-muted
+     for anything else. */
+  --color-faint: #8a93a3;
+
+  /* Status: green (good grade / clean title / winning / won) */
+  --color-green-bg: #e7f5ee;
+  --color-green-text: #167a4e;
+
+  /* Status: amber (fair grade / rebuilt title) */
+  --color-amber-bg: #fdf3dd;
+  --color-amber-text: #8a5714;
+
+  /* Status: red (poor grade / salvage title / outbid / urgent) */
+  --color-red-bg: #fbe7e5;
+  --color-red-text: #c4342a;
+
+  /* Status: neutral (lost, disabled) */
+  --color-neutral-bg: #eef1f5;
+  --color-neutral-text: #5b6472;
+
+  /* Selection */
+  --color-selected-bg: #eaf1ff;
+
+  /* Overlays (modal backdrops, image-overlay buttons) and their shadows */
+  --color-overlay-dark: rgba(10, 20, 40, 0.55);
+  --color-overlay-light: rgba(255, 255, 255, 0.92);
+  --color-overlay-light-faint: rgba(255, 255, 255, 0.35);
+  --color-overlay-light-muted: rgba(255, 255, 255, 0.6);
+  --shadow-card-hover: 0 10px 28px rgba(10, 20, 40, 0.1);
+  --shadow-compare-bar: 0 12px 30px rgba(10, 20, 40, 0.35);
+  --shadow-drawer-tab: -4px 0 14px rgba(10, 20, 40, 0.2);
+  --shadow-drawer-panel: -8px 0 24px rgba(10, 20, 40, 0.12);
+  --shadow-focus-ring: 0 0 0 3px rgba(61, 139, 255, 0.55);
+
+  /* Typography */
+  --font-family: 'Inter', sans-serif;
+
+  /* Z-index scale — keeps the app's floating layers ordered by
+     construction instead of ad hoc per-component numbers. */
+  --z-header: 60;
+  --z-sticky-column: 70;
+  --z-watchlist-drawer: 85;
+  --z-watchlist-tab: 86;
+  --z-compare-bar: 90;
+  --z-preview-modal: 100;
+  --z-compare-modal: 110;
+  --z-tooltip: 120;
+}
