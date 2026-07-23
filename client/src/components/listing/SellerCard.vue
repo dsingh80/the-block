@@ -22,14 +22,12 @@ function viewSellerListings() {
       <div class="seller-card__subtitle">Seller on OpenLane</div>
     </div>
     <button
-      v-if="listing.sellerOtherListingsCount > 0"
       type="button"
       class="seller-card__link"
       @click="viewSellerListings"
     >
-      {{ listing.sellerOtherListingsCount }} other listings →
+      View all listings →
     </button>
-    <div v-else class="seller-card__solo">Only listing from this seller</div>
   </div>
 </template>
 

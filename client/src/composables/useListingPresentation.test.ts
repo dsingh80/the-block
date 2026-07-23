@@ -155,28 +155,6 @@ describe('augment - damage notes', () => {
   })
 })
 
-describe('augment - seller listing count (against the real dataset)', () => {
-  it('is 0 for a dealership with exactly one listing', () => {
-    const [dealership] = [...sellerCounts.entries()].find(([, count]) => count === 1)!
-    const vehicle = vehicles.find((candidate) => candidate.selling_dealership === dealership)!
-    const listing = augment(
-      vehicle,
-      baseCtx({ effectiveNow: new Date(vehicle.auction_start).getTime() + HOUR_MS }),
-    )
-    expect(listing.sellerOtherListingsCount).toBe(0)
-  })
-
-  it('is count-minus-one for a dealership with multiple listings', () => {
-    const [dealership, count] = [...sellerCounts.entries()].find(([, c]) => c > 1)!
-    const vehicle = vehicles.find((candidate) => candidate.selling_dealership === dealership)!
-    const listing = augment(
-      vehicle,
-      baseCtx({ effectiveNow: new Date(vehicle.auction_start).getTime() + HOUR_MS }),
-    )
-    expect(listing.sellerOtherListingsCount).toBe(count - 1)
-  })
-})
-
 describe('useAugmentedListing reactivity', () => {
   it('flips lifecycle live as the clock store advances past the end boundary', () => {
     setActivePinia(createPinia())

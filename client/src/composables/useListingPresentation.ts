@@ -165,7 +165,6 @@ export function augment(vehicle: Vehicle, ctx: AugmentContext): AugmentedListing
 
     images: vehicle.images,
     damageList: vehicle.damage_notes.length > 0 ? vehicle.damage_notes : ['No reported damage.'],
-    sellerOtherListingsCount: (sellerCounts.get(vehicle.selling_dealership) ?? 1) - 1,
   }
 }
 

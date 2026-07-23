@@ -28,7 +28,6 @@ Using `@pinia/testing`'s `createTestingPinia()` per test (a fresh store instance
 - All four `priceLabelText` cases (`Opening Bid` / `Starting Bid` / `Current Bid` / `Winning Bid`), including the real-data case the mock's original 3-case table didn't have to handle (`current_bid == null` on an active listing).
 - Every `badgeVariant` (winning/outbid/bidding/won/lost/none).
 - `damageList` on both an empty and a non-empty `damage_notes` array.
-- `sellerOtherListingsCount`, including the real 0-case (a dealership with exactly one listing).
 - Reactivity to the `clock` store — a test that advances `effectiveNow` past a listing's end time and asserts the derived `lifecycle`/badge actually change, not just that the initial computation is correct.
 
 ### 4. Component tests

@@ -85,5 +85,4 @@ export interface AugmentedListing {
 
   images: string[]
   damageList: string[]
-  sellerOtherListingsCount: number
 }

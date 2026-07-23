@@ -22,7 +22,6 @@ Other scripts, run from `client/`: `npm test` (Vitest), `npm run lint` (ESLint),
 - **No persistence.** Bids, watchlist, compare selection, and inventory filters all live in memory and reset on refresh.
 - **No rival-bid simulation.** Price and bid count only change from your own actions — there's no other buyer to get outbid by. `server/` is a placeholder for a real backend later, which is where simulated competing bids belong instead of a client-side timer hack.
 - **`reserve_price` is in the dataset but intentionally not shown** — buyers don't see reserve amounts in a real auction either.
-- **"N other listings" on the seller card is a name-text search against Inventory**, not a true seller-id filter (there's no seller-id concept in this dataset).
 - **Watchlist starts empty.** No hand-picked seed data.
 
 ## Stack
