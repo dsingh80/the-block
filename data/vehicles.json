@@ -1,6 +1,6 @@
 [
   {
-    "id": "af22b65b-5b9c-4318-8e51-72f4d6d7b2a8",
+    "id": "a89c1673-b04c-42f0-9333-7e46a1974116",
     "vin": "CG2UAF4T8LRBBVWJY",
     "year": 2025,
     "make": "Mazda",
@@ -36,7 +36,7 @@
     "bid_count": 11
   },
   {
-    "id": "a535d8d0-2a1a-4113-995b-62b4a7c0a9c7",
+    "id": "891ed83d-0eea-4593-b307-c559ada0d00e",
     "vin": "D9V7RWMW31KR4Z96R",
     "year": 2019,
     "make": "Chevrolet",
@@ -77,7 +77,7 @@
     "bid_count": 13
   },
   {
-    "id": "2dfbefae-5943-4cdd-8450-4450fcd4f71c",
+    "id": "ba0b8ca9-6c78-4f0d-8a13-776d72298a04",
     "vin": "56GWTGB07KKMAH9V9",
     "year": 2017,
     "make": "Volkswagen",
@@ -117,7 +117,7 @@
     "bid_count": 1
   },
   {
-    "id": "f7347a0d-2a28-4800-8e18-e77c5b4a018b",
+    "id": "c479f477-5f4a-4930-9266-429092328600",
     "vin": "73RF5U464EX3GNV9T",
     "year": 2023,
     "make": "Ram",
@@ -156,7 +156,7 @@
     "bid_count": 9
   },
   {
-    "id": "a4922954-7a38-4c42-b3c0-528f5e4d3988",
+    "id": "47671e3c-9ff9-4179-baa1-4de9e72b970e",
     "vin": "86S0EKEB2RV032GYU",
     "year": 2023,
     "make": "Ford",
@@ -193,7 +193,7 @@
     "bid_count": 2
   },
   {
-    "id": "1196eca4-8028-400c-aed6-d9f68b841eaf",
+    "id": "1c2b5e8c-b2cf-42f8-8caf-9f4ab23a903c",
     "vin": "FCDBJZZV9APMK4UG8",
     "year": 2021,
     "make": "BMW",
@@ -237,7 +237,7 @@
     "bid_count": 0
   },
   {
-    "id": "70abf107-0c29-4bc8-8f3e-aa304a6c749b",
+    "id": "241f644a-d19f-47c3-afce-4ce220ea6136",
     "vin": "MU4X5ZEK9TKX210G4",
     "year": 2024,
     "make": "Subaru",
@@ -273,7 +273,7 @@
     "bid_count": 0
   },
   {
-    "id": "9e5f4653-69d3-4f0a-97ea-a102dc84a6f9",
+    "id": "49af5ab2-f9e3-4fd9-bfc8-beb088069242",
     "vin": "0UTWD2Z71BBMHH9W4",
     "year": 2020,
     "make": "Jeep",
@@ -315,7 +315,7 @@
     "bid_count": 9
   },
   {
-    "id": "d8b3ce0d-e158-48ef-a451-e3d9c837a0e3",
+    "id": "b848b0ca-0246-4b7d-a975-79a2dc426058",
     "vin": "7U1B8WKB302J5SGYT",
     "year": 2024,
     "make": "Tesla",
@@ -350,7 +350,7 @@
     "bid_count": 12
   },
   {
-    "id": "f1ee542c-eafb-47b7-ad16-d841e5d9c214",
+    "id": "1a9849e8-3738-41b6-96e9-48852a4ee417",
     "vin": "3BWVSTSR5A0AZGN07",
     "year": 2021,
     "make": "Chevrolet",
@@ -393,7 +393,7 @@
     "bid_count": 0
   },
   {
-    "id": "b894e710-1fa2-4d4c-8d43-0cdfa2dfefc4",
+    "id": "53154af7-d8e7-4713-b700-4fb5894cc235",
     "vin": "FC9BT5Z234R7YJFN0",
     "year": 2020,
     "make": "Kia",
@@ -437,7 +437,7 @@
     "bid_count": 0
   },
   {
-    "id": "66484475-63ba-4865-90a6-cfe55d63916d",
+    "id": "d9398880-1057-43ae-bf57-314403068d6b",
     "vin": "4NWF9FZ05VX62ABD7",
     "year": 2020,
     "make": "Mazda",
@@ -478,7 +478,7 @@
     "bid_count": 0
   },
   {
-    "id": "3b6542e1-49e5-4b18-a375-281d8a63d285",
+    "id": "562b468a-5c1b-49b6-bccd-ac20a12b15fa",
     "vin": "MY96ZM7T9HEL9T9AY",
     "year": 2020,
     "make": "Mazda",
@@ -518,7 +518,7 @@
     "bid_count": 0
   },
   {
-    "id": "dfb4eb6a-365d-4ba6-b912-ff53dceb5f8d",
+    "id": "9a6fdf3b-0e11-426b-b7ef-6f28b82150e5",
     "vin": "PFA0NLAE6KBS0E0HK",
     "year": 2021,
     "make": "Nissan",
@@ -558,7 +558,7 @@
     "bid_count": 0
   },
   {
-    "id": "e0f4f834-a682-479e-85aa-b7fdc4779475",
+    "id": "c4051dd5-503d-45aa-b9ea-b90bd90f481b",
     "vin": "U66CH7N05RLNMY56H",
     "year": 2018,
     "make": "GMC",
@@ -601,7 +601,7 @@
     "bid_count": 0
   },
   {
-    "id": "a9be3c3d-e620-4da7-9198-eb80742c812c",
+    "id": "2be584d6-24d4-493c-831e-bd41508d95f8",
     "vin": "VCX5G4H94PAPBNSPA",
     "year": 2018,
     "make": "Ram",
@@ -643,7 +643,7 @@
     "bid_count": 18
   },
   {
-    "id": "37574d91-bdb3-4892-a3fe-003be0f9ad93",
+    "id": "213ad853-f170-4c31-9a38-aa569243404a",
     "vin": "XZ3A4HUN0K69VGB3B",
     "year": 2026,
     "make": "Subaru",
@@ -678,7 +678,7 @@
     "bid_count": 0
   },
   {
-    "id": "776333bd-83e7-4f48-95aa-9a45b104fadb",
+    "id": "f7af066b-f134-4100-ba99-d08c3f3c66eb",
     "vin": "R0CXYY5542ESYPG97",
     "year": 2019,
     "make": "Ford",
@@ -718,7 +718,7 @@
     "bid_count": 0
   },
   {
-    "id": "b2e9826f-cf51-4485-9f37-c6c65c0426ee",
+    "id": "a349b182-8215-4f0d-9ded-020d88c68cf9",
     "vin": "MYWK251Y4NW9KPPKZ",
     "year": 2021,
     "make": "GMC",
@@ -756,7 +756,7 @@
     "bid_count": 14
   },
   {
-    "id": "841d8845-544b-4527-9058-b12854f8f857",
+    "id": "c23af6d7-5ef2-48fd-b8b8-a56b1f672080",
     "vin": "3J4NJB018TJXXK63X",
     "year": 2025,
     "make": "Nissan",
@@ -794,7 +794,7 @@
     "bid_count": 0
   },
   {
-    "id": "6c4ebdb5-dd18-4d6e-bfca-3185029018a3",
+    "id": "6a820c16-d521-49c6-848b-0f6d8e220d08",
     "vin": "K9YJLGH69YN1FWSWM",
     "year": 2025,
     "make": "GMC",
@@ -830,7 +830,7 @@
     "bid_count": 0
   },
   {
-    "id": "5a58759d-1a72-440e-b74e-f54885d47a02",
+    "id": "673117ee-9cd8-4818-bd9b-3a4a9d2961df",
     "vin": "CJH3SEKX718T5705M",
     "year": 2022,
     "make": "Subaru",
@@ -870,7 +870,7 @@
     "bid_count": 1
   },
   {
-    "id": "a8610b7d-6813-4472-a905-b9db53f5ff7d",
+    "id": "4524a3b1-697e-47e2-85ca-3e0358e6f7cd",
     "vin": "NG1GZH2K0EG88ML61",
     "year": 2023,
     "make": "Nissan",
@@ -905,7 +905,7 @@
     "bid_count": 0
   },
   {
-    "id": "e59539bf-959d-42e4-aaf6-3cc1f26b8d2f",
+    "id": "920de9ec-5d03-4160-869b-4af3f08f3bc4",
     "vin": "4CBXNEX52CBGJ76PT",
     "year": 2025,
     "make": "Subaru",
@@ -941,7 +941,7 @@
     "bid_count": 0
   },
   {
-    "id": "62a6ee4d-c620-4eff-a7dd-debfd8a3234e",
+    "id": "acf15101-9d1b-4f1e-8d84-9925de771b11",
     "vin": "R75XPXH71Z4UXMYVJ",
     "year": 2026,
     "make": "Hyundai",
@@ -978,7 +978,7 @@
     "bid_count": 1
   },
   {
-    "id": "bf805648-48cf-4e3c-bf67-f5bd8874d919",
+    "id": "18127424-4cf5-498f-8f34-08d848257a39",
     "vin": "XNHZ77236GGE70SVK",
     "year": 2018,
     "make": "Hyundai",
@@ -1019,7 +1019,7 @@
     "bid_count": 0
   },
   {
-    "id": "1640b53d-3e26-4051-8805-038755bc5dc7",
+    "id": "fcccd780-9a62-4182-b50b-dcf1582e1566",
     "vin": "7X1KFBA20BCKTRD18",
     "year": 2016,
     "make": "Jeep",
@@ -1061,7 +1061,7 @@
     "bid_count": 14
   },
   {
-    "id": "5389b9fc-069c-43bc-ba3e-58998d1b5781",
+    "id": "c5bbcd71-3ee3-451a-899e-2f98812c4f59",
     "vin": "PPD3ZF776RK0HGY7N",
     "year": 2017,
     "make": "Kia",
@@ -1100,7 +1100,7 @@
     "bid_count": 0
   },
   {
-    "id": "5163e499-8f6e-448e-8399-c10587f4c4bb",
+    "id": "e8ed817a-52bb-4405-a52b-350c8e380ef2",
     "vin": "82VGRF6858JF0VDFU",
     "year": 2021,
     "make": "Tesla",
@@ -1137,7 +1137,7 @@
     "bid_count": 0
   },
   {
-    "id": "8f2c1130-a6a0-4e1a-8aed-1079e4098141",
+    "id": "29d399bc-6411-4567-b692-ef410861e91d",
     "vin": "LV1G87BM8UHB382GL",
     "year": 2018,
     "make": "Ram",
@@ -1178,7 +1178,7 @@
     "bid_count": 0
   },
   {
-    "id": "9e4ddbdd-4603-404b-989b-6d5f707cd561",
+    "id": "29657162-b537-4eeb-9b36-d393df6c94c6",
     "vin": "D4LLZSME6W00ALSZD",
     "year": 2018,
     "make": "Tesla",
@@ -1219,7 +1219,7 @@
     "bid_count": 14
   },
   {
-    "id": "957feea9-2073-4a2a-9feb-f6fb439a530b",
+    "id": "206e0d15-50ab-4839-b357-5c2f47fb74e3",
     "vin": "7T7F490H86TVKD48A",
     "year": 2016,
     "make": "Nissan",
@@ -1260,7 +1260,7 @@
     "bid_count": 16
   },
   {
-    "id": "886c6e0e-e078-49f4-a33e-c8ae893c92f6",
+    "id": "ffbd298b-17d2-4e03-825f-1fb2ccb9d42d",
     "vin": "NXSCX8FB93HBVZT2C",
     "year": 2023,
     "make": "Mazda",
@@ -1299,7 +1299,7 @@
     "bid_count": 0
   },
   {
-    "id": "9d2e000c-f750-4ae7-9333-e6f33cf7be6d",
+    "id": "926b07be-eb31-423e-bc69-a4d6b9601fd7",
     "vin": "XCKUDEG41F1RLBWY0",
     "year": 2022,
     "make": "Subaru",
@@ -1339,7 +1339,7 @@
     "bid_count": 0
   },
   {
-    "id": "f3e4ece3-3b11-4c43-b167-8e39a4bc2c5b",
+    "id": "cdefb3cf-7f57-45d0-b144-cc31bbba87c6",
     "vin": "RKTM6KJ35G0LZX7PG",
     "year": 2020,
     "make": "Toyota",
@@ -1376,7 +1376,7 @@
     "bid_count": 8
   },
   {
-    "id": "5c90cba8-5372-47f0-94a0-6606366b6e08",
+    "id": "9ac3c64e-21b3-4cbf-92e1-d5ddcff4df89",
     "vin": "3B60YA8F0FG85JBA9",
     "year": 2016,
     "make": "Jeep",
@@ -1416,7 +1416,7 @@
     "bid_count": 17
   },
   {
-    "id": "bb3a172e-e89f-491e-88ef-b9cddf68fd23",
+    "id": "cb40e8c9-d9c3-45c5-9c9a-93041833ddef",
     "vin": "PYZS55D894GTLTZTK",
     "year": 2018,
     "make": "Nissan",
@@ -1459,7 +1459,7 @@
     "bid_count": 5
   },
   {
-    "id": "db028c2f-d7c2-4d68-8480-8f899ecbab0e",
+    "id": "91811148-724a-473e-bf94-68fafa5036b0",
     "vin": "7NGFG1K91R4ZXR6BY",
     "year": 2017,
     "make": "Ford",
@@ -1500,7 +1500,7 @@
     "bid_count": 5
   },
   {
-    "id": "934ff116-a647-4abc-8448-a8f1fd037ed0",
+    "id": "da2330f2-1f8e-4500-bc9c-27e4b71336d7",
     "vin": "ZLE7EHEJ7AY78VHXH",
     "year": 2019,
     "make": "Chevrolet",
@@ -1541,7 +1541,7 @@
     "bid_count": 0
   },
   {
-    "id": "eb12d70f-31b2-41af-90dc-6cbcb00ac1fa",
+    "id": "9f23d620-3258-42ac-bd23-0ef4a46ef9e8",
     "vin": "LJS99SU10DAE5U6NH",
     "year": 2022,
     "make": "Nissan",
@@ -1578,7 +1578,7 @@
     "bid_count": 0
   },
   {
-    "id": "ecac4de5-df1d-4c07-b1dd-91ba25dfe628",
+    "id": "96d53a59-7ed2-4384-ac75-78ad48e0c64e",
     "vin": "XXFSLCZ80H2E74NJ9",
     "year": 2022,
     "make": "Hyundai",
@@ -1619,7 +1619,7 @@
     "bid_count": 0
   },
   {
-    "id": "205c4c61-e793-4634-9180-ea554511f916",
+    "id": "9f904c70-827b-4a9d-ba99-5de11c6a3862",
     "vin": "4CJYUZS54GRG9BXZZ",
     "year": 2025,
     "make": "Mazda",
@@ -1656,7 +1656,7 @@
     "bid_count": 0
   },
   {
-    "id": "ebdd51bb-c6cb-4a6f-8db1-91fc3a03d56e",
+    "id": "93c8f9de-e8c3-435b-8803-16688487e327",
     "vin": "7H56HBSE9BKWU39LU",
     "year": 2016,
     "make": "Kia",
@@ -1695,7 +1695,7 @@
     "bid_count": 0
   },
   {
-    "id": "718cdd93-e586-40e2-ad48-2d717370dfc5",
+    "id": "47ae8b0a-3f5d-4ed5-8d74-39fd8acdfb87",
     "vin": "6SXGWHG43XW8ZA75V",
     "year": 2022,
     "make": "Mazda",
@@ -1733,7 +1733,7 @@
     "bid_count": 0
   },
   {
-    "id": "a2759478-6ac0-4b81-8893-453017273276",
+    "id": "5bdb656a-eaa8-4056-9067-2d0ebd5ec856",
     "vin": "YGYZ7DLZ6N02CM9LD",
     "year": 2026,
     "make": "Jeep",
@@ -1770,7 +1770,7 @@
     "bid_count": 0
   },
   {
-    "id": "0465bc73-ff5e-4417-9782-77a2009aab40",
+    "id": "653f9cea-efd5-43d4-bf24-41d86b7517a4",
     "vin": "A31YZLJL14TE9RAMC",
     "year": 2023,
     "make": "Kia",
@@ -1808,7 +1808,7 @@
     "bid_count": 0
   },
   {
-    "id": "081e9589-d009-4cb8-950d-1b36cafefb72",
+    "id": "e0c75bff-4229-4142-86fc-e1899a41e714",
     "vin": "9DAX8BWE9ZPKZ5S8E",
     "year": 2025,
     "make": "Honda",
@@ -1845,7 +1845,7 @@
     "bid_count": 0
   },
   {
-    "id": "056a1a8c-513e-4e73-ba63-8c933d553ae4",
+    "id": "accc3325-3e66-4ad7-bec4-e24d5d85a68e",
     "vin": "BC5YPRKP5FUEEHKGN",
     "year": 2024,
     "make": "Subaru",
@@ -1880,7 +1880,7 @@
     "bid_count": 0
   },
   {
-    "id": "25b99037-68d4-4e15-83d7-baf747cbc71d",
+    "id": "da05a15c-31ca-481b-be48-5527b20df03d",
     "vin": "G0UCL53H58NSTV433",
     "year": 2025,
     "make": "Nissan",
@@ -1918,7 +1918,7 @@
     "bid_count": 0
   },
   {
-    "id": "dc38f536-e918-477c-998f-59216900d574",
+    "id": "b3c86af9-39c0-4473-a360-aff7a51b67a7",
     "vin": "BMYB60NH9EHLCZJ0R",
     "year": 2018,
     "make": "Mazda",
@@ -1961,7 +1961,7 @@
     "bid_count": 0
   },
   {
-    "id": "4a2f0ae5-a3a6-4805-91a2-cfe186a5bf7f",
+    "id": "3121a494-abc7-40f3-a73b-136e904f8d12",
     "vin": "6LN1B7KN0V2N7KV60",
     "year": 2017,
     "make": "Nissan",
@@ -2001,7 +2001,7 @@
     "bid_count": 6
   },
   {
-    "id": "987dc94d-7471-4c31-be9d-25f50e97180c",
+    "id": "5f28088a-77e3-4699-a714-2a1e2a72e815",
     "vin": "41WAJZMW9ST5PPTK3",
     "year": 2018,
     "make": "Volkswagen",
@@ -2041,7 +2041,7 @@
     "bid_count": 0
   },
   {
-    "id": "3de379e8-8e98-453d-8397-48aab4f7a3b5",
+    "id": "ff09e416-e1ea-4238-89e7-3b9a5c68882b",
     "vin": "N9BGYF358ACY47DL1",
     "year": 2016,
     "make": "Subaru",
@@ -2083,7 +2083,7 @@
     "bid_count": 0
   },
   {
-    "id": "65088a9f-5599-405f-b2f4-1cf624a96ee3",
+    "id": "9bd3670f-5a1d-456f-88d6-ad3c0d700c64",
     "vin": "KGDBD8DM827UDYY6V",
     "year": 2025,
     "make": "Subaru",
@@ -2121,7 +2121,7 @@
     "bid_count": 18
   },
   {
-    "id": "ec36a508-7abd-4523-90f5-12d1e46f2724",
+    "id": "b71a8870-00f5-4b59-93bc-4e8f47540bb9",
     "vin": "HZU0U29D1X9ND2EBG",
     "year": 2020,
     "make": "BMW",
@@ -2162,7 +2162,7 @@
     "bid_count": 0
   },
   {
-    "id": "2e71d2af-b032-454c-9cac-56d0c476756c",
+    "id": "333659a4-fbdd-4c59-8b0b-d1fa6b137fa9",
     "vin": "LZTN40K861WVANJBZ",
     "year": 2024,
     "make": "Subaru",
@@ -2198,7 +2198,7 @@
     "bid_count": 0
   },
   {
-    "id": "4c5ee9e5-40a9-44ce-8778-d97d782b2af0",
+    "id": "c18f3f82-a90f-4c9f-b304-061045461470",
     "vin": "1KJRWW3A8LCK2J3HR",
     "year": 2018,
     "make": "GMC",
@@ -2239,7 +2239,7 @@
     "bid_count": 9
   },
   {
-    "id": "6d522817-d320-47c6-ac11-2c421932e1e1",
+    "id": "a2746949-4d84-4766-8e26-a0b5d3c33f78",
     "vin": "331ZTJ31422V3XSNJ",
     "year": 2026,
     "make": "GMC",
@@ -2277,7 +2277,7 @@
     "bid_count": 7
   },
   {
-    "id": "f6642bfb-413a-42ed-8bcd-3547c2070ef9",
+    "id": "430c7fc2-b616-4ede-b80f-02249298d40b",
     "vin": "JWLKST580LN43AXUZ",
     "year": 2020,
     "make": "Tesla",
@@ -2314,7 +2314,7 @@
     "bid_count": 0
   },
   {
-    "id": "9a7ea63c-609e-426f-9e56-5d4634eb0101",
+    "id": "b0b9a0c9-eab7-4a9c-be8c-a13f626cc7bb",
     "vin": "W68U754S8GW8M90BK",
     "year": 2021,
     "make": "Mazda",
@@ -2349,7 +2349,7 @@
     "bid_count": 0
   },
   {
-    "id": "bd903e09-43c6-4bee-baa8-59f941fc03e8",
+    "id": "87419d75-e46c-4f6b-b011-49f0755e9f35",
     "vin": "RJ37EJR24ULPML38E",
     "year": 2024,
     "make": "Jeep",
@@ -2387,7 +2387,7 @@
     "bid_count": 12
   },
   {
-    "id": "d2cfdd78-634b-4d90-b181-681a254c3eeb",
+    "id": "7e9f2cfb-7a6e-40ac-badb-dfea49fcd17f",
     "vin": "B6J8908L3PC3P4BFT",
     "year": 2025,
     "make": "Ford",
@@ -2422,7 +2422,7 @@
     "bid_count": 6
   },
   {
-    "id": "c1a8882e-2b63-44e0-af9f-d8883d702726",
+    "id": "e489e713-deae-42b4-859b-a2deb97bc438",
     "vin": "NSYJ3A7M3M2K2JPTU",
     "year": 2026,
     "make": "Mazda",
@@ -2459,7 +2459,7 @@
     "bid_count": 0
   },
   {
-    "id": "d2097127-92d1-4223-9ffa-074b20eec2fb",
+    "id": "29cd7ed6-a680-4802-8ed3-48f307a85482",
     "vin": "HPZ3MU1K2X3XNXWLN",
     "year": 2024,
     "make": "Honda",
@@ -2500,7 +2500,7 @@
     "bid_count": 15
   },
   {
-    "id": "66803878-a905-4563-839f-ee9f6f8c2fe2",
+    "id": "dd5d0ea1-9995-4a98-a69e-d20d4735bbbe",
     "vin": "8KAZ4X846XPA5R0DX",
     "year": 2016,
     "make": "Subaru",
@@ -2539,7 +2539,7 @@
     "bid_count": 0
   },
   {
-    "id": "20659b12-1e42-4e11-8b8a-490052875ed0",
+    "id": "30796725-feb0-451e-8a18-31242d432bd8",
     "vin": "7LWYZDL84DSPD3UYY",
     "year": 2017,
     "make": "Volkswagen",
@@ -2579,7 +2579,7 @@
     "bid_count": 18
   },
   {
-    "id": "63f94566-be0d-4e35-b5db-19f4b22c0378",
+    "id": "9f046c0f-c2dc-4132-9321-7b316f17f317",
     "vin": "MHGX0RTP5ATWBKMRB",
     "year": 2019,
     "make": "Hyundai",
@@ -2620,7 +2620,7 @@
     "bid_count": 0
   },
   {
-    "id": "46cb4220-5688-4404-8c72-ca6f9d0d24c8",
+    "id": "fedf5e76-c8ca-4cb6-aba0-de5eab1f4646",
     "vin": "GRA266J4596KLVKA3",
     "year": 2025,
     "make": "Tesla",
@@ -2658,7 +2658,7 @@
     "bid_count": 8
   },
   {
-    "id": "0c109e9a-2649-47ed-82dd-dcbc24f00305",
+    "id": "fd047972-cc53-4d68-9277-7d0170351f9d",
     "vin": "KNGMWKJU84JB2SWTY",
     "year": 2019,
     "make": "Volkswagen",
@@ -2701,7 +2701,7 @@
     "bid_count": 0
   },
   {
-    "id": "34752215-1007-458d-8206-98c9050addd9",
+    "id": "bdee0705-ed98-4fc0-abd7-a76a42373c2a",
     "vin": "MZZSB4KC1M0H69X4G",
     "year": 2022,
     "make": "Volkswagen",
@@ -2740,7 +2740,7 @@
     "bid_count": 0
   },
   {
-    "id": "582a2aae-56cf-4e97-9a5c-3d17c8e175df",
+    "id": "1d533004-bc2d-497a-af4c-af471a7a1794",
     "vin": "5S0L8WWT56K5V27BB",
     "year": 2026,
     "make": "Ford",
@@ -2780,7 +2780,7 @@
     "bid_count": 0
   },
   {
-    "id": "7c6dad5f-480d-4762-b6ae-c19b4d472385",
+    "id": "a4dcc70f-a5bb-4186-90df-2176e6182f2d",
     "vin": "Z6ZST7ES570NSUE2N",
     "year": 2022,
     "make": "Toyota",
@@ -2818,7 +2818,7 @@
     "bid_count": 10
   },
   {
-    "id": "284c40c3-af2d-4257-b2fc-052f5d0bf5a9",
+    "id": "0971b65d-2d53-4b3b-a090-94027956f0a2",
     "vin": "V2CKBE3G7AXSML4KK",
     "year": 2021,
     "make": "Ram",
@@ -2855,7 +2855,7 @@
     "bid_count": 0
   },
   {
-    "id": "8853e31c-63e2-411b-8e9b-7f4ce8955f3c",
+    "id": "e1bae920-116f-41b7-bd72-8ada6b26c2e1",
     "vin": "0883FKSF8V0M10V65",
     "year": 2023,
     "make": "BMW",
@@ -2893,7 +2893,7 @@
     "bid_count": 3
   },
   {
-    "id": "d34df04d-a747-4dc2-8dc0-0167d2cda54f",
+    "id": "d7a62d5a-2399-4397-a89c-31dfe3c280c2",
     "vin": "CEZZHMYK94KPFNXNT",
     "year": 2023,
     "make": "Ford",
@@ -2933,7 +2933,7 @@
     "bid_count": 0
   },
   {
-    "id": "75d66944-fab5-4a38-a167-2a65508ea889",
+    "id": "f937e429-4cf6-4a39-869e-dcaa8802cff5",
     "vin": "RT40S14R6DZ6D19Z1",
     "year": 2026,
     "make": "Hyundai",
@@ -2969,7 +2969,7 @@
     "bid_count": 4
   },
   {
-    "id": "c0d8bb1e-23ae-40d9-8d50-facb15012e8b",
+    "id": "a9be63ea-de35-4bd7-ab2d-bf57ead9bd10",
     "vin": "DUWSGWPF8GUA5GYG9",
     "year": 2020,
     "make": "Jeep",
@@ -3008,7 +3008,7 @@
     "bid_count": 0
   },
   {
-    "id": "44a90638-8894-4215-ac6c-eff22e6487bf",
+    "id": "e6c426f8-ad30-4fe6-842e-7a09e5793045",
     "vin": "GSR1XW964U101J04R",
     "year": 2020,
     "make": "Honda",
@@ -3048,7 +3048,7 @@
     "bid_count": 18
   },
   {
-    "id": "0805302c-b0d1-49a5-b8c5-022b3c6bee72",
+    "id": "0b1249c7-fe3a-4912-a741-6cc5a6f27efe",
     "vin": "KLPNPHXV33TDE22YC",
     "year": 2016,
     "make": "Subaru",
@@ -3089,7 +3089,7 @@
     "bid_count": 0
   },
   {
-    "id": "9dba0f46-a9b5-4519-8b85-a048befea49a",
+    "id": "2740a908-e0c9-4f8e-a9c6-5261d8bb48ff",
     "vin": "9SMTEHBG9JBCPJ5LK",
     "year": 2019,
     "make": "Jeep",
@@ -3128,7 +3128,7 @@
     "bid_count": 11
   },
   {
-    "id": "520a9db6-fbd8-4840-a38e-c83eaf6f0f45",
+    "id": "bf82c6c5-dd6b-4acf-a529-bc30828cb841",
     "vin": "3MPRZJBB9FA1E40HD",
     "year": 2026,
     "make": "BMW",
@@ -3171,7 +3171,7 @@
     "bid_count": 0
   },
   {
-    "id": "acbf6263-04cb-4669-9984-ffc1dc147781",
+    "id": "93816895-be94-4e01-b9a6-659a2b89fcbd",
     "vin": "HU7T4H8X95WHH9VEP",
     "year": 2024,
     "make": "Subaru",
@@ -3208,7 +3208,7 @@
     "bid_count": 0
   },
   {
-    "id": "0005c003-9b2b-4dbc-99ae-ce975f47e8c1",
+    "id": "6526d13b-3e72-4c08-9078-f657beb21dfc",
     "vin": "E1FPDCW44R2EXC120",
     "year": 2017,
     "make": "Chevrolet",
@@ -3247,7 +3247,7 @@
     "bid_count": 0
   },
   {
-    "id": "0f435029-b206-4dd5-a8ce-05a2380ccc2e",
+    "id": "a5fb68b9-996e-4feb-9612-edae61f997ce",
     "vin": "TE6G1HDH10N44PFUY",
     "year": 2023,
     "make": "Mazda",
@@ -3284,7 +3284,7 @@
     "bid_count": 16
   },
   {
-    "id": "41eb1007-ecbf-49c3-bf47-2b4249a8286b",
+    "id": "7067f36c-3b28-4eac-883b-4913ca6d326f",
     "vin": "G7BAS3L66U8XUDPR0",
     "year": 2019,
     "make": "Honda",
@@ -3327,7 +3327,7 @@
     "bid_count": 0
   },
   {
-    "id": "1f79ec75-29dd-4237-99fd-fac89ebd49ad",
+    "id": "90ff48fe-f05a-4bae-bcfb-38940854cdfd",
     "vin": "BR8BK7GA3WZ5VE569",
     "year": 2021,
     "make": "Ram",
@@ -3366,7 +3366,7 @@
     "bid_count": 12
   },
   {
-    "id": "4c15f25e-6b2a-46fb-852a-5c3fd3d520b5",
+    "id": "22ac7be7-0b08-47b9-857f-ac3b9f7036a6",
     "vin": "1KN9V5330BFZ5KB4K",
     "year": 2026,
     "make": "Ram",
@@ -3404,7 +3404,7 @@
     "bid_count": 6
   },
   {
-    "id": "06cb01ec-3185-4e67-bd4f-fd46ae71786c",
+    "id": "86104cd5-a990-433a-ad7b-d4cbd98e96bc",
     "vin": "GH1FTH4956YP94GR0",
     "year": 2021,
     "make": "Subaru",
@@ -3439,7 +3439,7 @@
     "bid_count": 0
   },
   {
-    "id": "47edda91-592d-44fe-aa7b-dcc8b54d0c64",
+    "id": "69b8c28b-42fd-4702-9a6c-a9094ecb69c1",
     "vin": "73YNDPER219A98HRS",
     "year": 2020,
     "make": "GMC",
@@ -3483,7 +3483,7 @@
     "bid_count": 0
   },
   {
-    "id": "14ae9b30-a777-4162-95cc-3ad60b8d4c2c",
+    "id": "327fbad0-4845-421f-a0e8-052c838b24cc",
     "vin": "J0KPREVU4N1VWN166",
     "year": 2021,
     "make": "BMW",
@@ -3519,7 +3519,7 @@
     "bid_count": 0
   },
   {
-    "id": "6b612d0d-26bb-4f9f-9f33-8ca1cc43f496",
+    "id": "2066792f-66d2-46b7-8b68-e144d7b3a0b4",
     "vin": "ZD1THVKP7MC0X5CA5",
     "year": 2022,
     "make": "Toyota",
@@ -3557,7 +3557,7 @@
     "bid_count": 15
   },
   {
-    "id": "5541d3af-2ea8-4a33-8a7d-23147795289e",
+    "id": "0e81c205-36e0-46a0-927a-f56f0134cb1e",
     "vin": "12VACC2A72WV4M18T",
     "year": 2019,
     "make": "Volkswagen",
@@ -3600,7 +3600,7 @@
     "bid_count": 16
   },
   {
-    "id": "23c942bb-bac4-4c64-a0a6-5fddd8ddf8da",
+    "id": "2a176bbd-350f-42b3-87f1-65498eb434b1",
     "vin": "JK8V5D0E7C775YNFP",
     "year": 2018,
     "make": "Honda",
@@ -3644,7 +3644,7 @@
     "bid_count": 0
   },
   {
-    "id": "6f8e92db-f3fb-4a32-ad44-e7d49da7f154",
+    "id": "dddf1fe1-6c88-4855-b1ff-ea1d8885a2f8",
     "vin": "J6H0BG4A3KSSU5UTK",
     "year": 2019,
     "make": "Jeep",
@@ -3684,7 +3684,7 @@
     "bid_count": 0
   },
   {
-    "id": "a6a6a976-5ef5-47e3-9f0e-55bf6fd2df62",
+    "id": "5970f2bf-811c-46c3-b3d9-3c1f0cc2323b",
     "vin": "S138A6VC50NZBUAHW",
     "year": 2025,
     "make": "Ford",
@@ -3719,7 +3719,7 @@
     "bid_count": 0
   },
   {
-    "id": "8298ec76-7705-40e8-b0f0-ed0eb3e92a0a",
+    "id": "7bc56d55-6c07-4479-a550-9b7cea89d9cb",
     "vin": "R4EX8YHY4APBA5FAW",
     "year": 2021,
     "make": "Nissan",
@@ -3757,7 +3757,7 @@
     "bid_count": 0
   },
   {
-    "id": "9bcbba73-5070-4495-b608-05f05cffc8a4",
+    "id": "50af68ec-ef71-461d-9bc1-e992367e5c29",
     "vin": "KVVAZMG453BDY7BEC",
     "year": 2018,
     "make": "Nissan",
@@ -3797,7 +3797,7 @@
     "bid_count": 7
   },
   {
-    "id": "111f827e-a075-4fd3-989e-a67acbd57fe9",
+    "id": "ec99fddb-c9fc-4e84-8c1e-11d9b540360a",
     "vin": "JBGZRGZD7LM5UFHH8",
     "year": 2020,
     "make": "Honda",
@@ -3838,7 +3838,7 @@
     "bid_count": 5
   },
   {
-    "id": "7e75613b-fb89-40b9-bfe4-c71e87e7e5da",
+    "id": "261a3b6c-4357-41c1-8776-f52e8c2e891f",
     "vin": "GNPPX2ZX4ZUGBBV8U",
     "year": 2018,
     "make": "Honda",
@@ -3882,7 +3882,7 @@
     "bid_count": 14
   },
   {
-    "id": "8196a722-4820-4bb9-947b-64d1df1a2160",
+    "id": "143fdb7a-1838-4d1d-a9e7-87109240f43e",
     "vin": "FR9V4Z1J31P9SU8UL",
     "year": 2018,
     "make": "Kia",
@@ -3924,7 +3924,7 @@
     "bid_count": 0
   },
   {
-    "id": "7238c961-8aa4-49eb-86cf-b23516ca8ae9",
+    "id": "78c6c1fa-1d4d-446a-a5aa-0c85ccab6c13",
     "vin": "0169V129708KX8ZF5",
     "year": 2025,
     "make": "GMC",
@@ -3964,7 +3964,7 @@
     "bid_count": 0
   },
   {
-    "id": "b67fb0a2-45f9-4f01-8afb-17386331fe52",
+    "id": "150db476-cefe-4222-842c-3fe34e9b3b01",
     "vin": "39VA98EH0HSXC03HT",
     "year": 2016,
     "make": "Mazda",
@@ -4009,7 +4009,7 @@
     "bid_count": 0
   },
   {
-    "id": "1a6e9b14-367f-4b42-81d6-f94b49508b85",
+    "id": "d9fbaad6-8c53-4258-bc52-18595a6255d5",
     "vin": "60PP6JRU2EAHC11Y9",
     "year": 2016,
     "make": "Mazda",
@@ -4051,7 +4051,7 @@
     "bid_count": 0
   },
   {
-    "id": "636c9f20-3f03-405a-8717-0e6a1a13d41b",
+    "id": "3b1a5239-77c2-4bb9-ad00-8f56071cd3d2",
     "vin": "TNG1WUWK9E1DN72XA",
     "year": 2017,
     "make": "Volkswagen",
@@ -4090,7 +4090,7 @@
     "bid_count": 0
   },
   {
-    "id": "85ccb28f-3ba1-43a5-956b-dca274f9b2cb",
+    "id": "2604daa4-9108-468a-8dd3-14e009375872",
     "vin": "S0SU6YVV8DHD72E0K",
     "year": 2024,
     "make": "BMW",
@@ -4125,7 +4125,7 @@
     "bid_count": 0
   },
   {
-    "id": "711ee8a1-a952-4c26-b381-752d37255fd2",
+    "id": "f5f5c039-ca0e-49ed-8fc9-c073a9bc5465",
     "vin": "T5GSPXZN213KBGVXB",
     "year": 2023,
     "make": "Kia",
@@ -4163,7 +4163,7 @@
     "bid_count": 4
   },
   {
-    "id": "36000aea-f4d5-4593-9b75-03b9f46b043f",
+    "id": "d084a6a9-574d-4ef4-bb57-06074f8e0a83",
     "vin": "8204NEZY776LSCJNW",
     "year": 2022,
     "make": "Tesla",
@@ -4204,7 +4204,7 @@
     "bid_count": 14
   },
   {
-    "id": "aa9f536c-94ae-43d3-b40c-16233fd406fe",
+    "id": "a851bb09-93d0-4c98-a733-b3fda61fc42b",
     "vin": "L4GWRY365AWESST2T",
     "year": 2021,
     "make": "Tesla",
@@ -4246,7 +4246,7 @@
     "bid_count": 7
   },
   {
-    "id": "9b8c961f-1552-46fb-a678-8b29827464a7",
+    "id": "823965d5-1fd6-4ccc-944b-f9563b6b23ae",
     "vin": "L1SAYTVM4B109KAEX",
     "year": 2022,
     "make": "Hyundai",
@@ -4284,7 +4284,7 @@
     "bid_count": 0
   },
   {
-    "id": "d215d652-230d-496c-9712-fcac3ab832ca",
+    "id": "d44bed41-93f8-4f76-9a4e-4eeec528d3d0",
     "vin": "D4AUXHT46SDRCU3Y6",
     "year": 2026,
     "make": "Nissan",
@@ -4323,7 +4323,7 @@
     "bid_count": 0
   },
   {
-    "id": "22c0be11-a5bd-43c6-b2ae-8ef224c264da",
+    "id": "cd532957-b6af-4cd5-b0de-4f51347a789a",
     "vin": "P27WMPEA3LLJZFMS4",
     "year": 2016,
     "make": "Subaru",
@@ -4365,7 +4365,7 @@
     "bid_count": 0
   },
   {
-    "id": "15d0cb4f-d87e-4cf2-8b4f-2dc4f80b6c65",
+    "id": "48e783b4-f6c9-46e7-ab61-c22bf462f6a0",
     "vin": "CDXYDGM54YR0V3P12",
     "year": 2017,
     "make": "Kia",
@@ -4403,7 +4403,7 @@
     "bid_count": 13
   },
   {
-    "id": "46b41727-1d11-4164-a471-91b4592979c0",
+    "id": "5f300b22-d5e6-4596-a7c8-3f9c0e2e22bc",
     "vin": "PTMWY4X74C79V53R6",
     "year": 2020,
     "make": "BMW",
@@ -4448,7 +4448,7 @@
     "bid_count": 11
   },
   {
-    "id": "1cd7edf7-2ad5-4634-8414-c31c6e032871",
+    "id": "e490bd05-65f3-40eb-8a52-32a2d64e8aea",
     "vin": "7TNG57E64GC2HHS9D",
     "year": 2020,
     "make": "Honda",
@@ -4483,7 +4483,7 @@
     "bid_count": 17
   },
   {
-    "id": "d6284056-6ab4-4da9-b314-741ecf157ecf",
+    "id": "9b8bdc66-dbac-4e5d-a4f0-cf9302ac4d51",
     "vin": "532LXT2337JZRMFRZ",
     "year": 2026,
     "make": "Ford",
@@ -4521,7 +4521,7 @@
     "bid_count": 16
   },
   {
-    "id": "c8228440-d2f2-4b56-91bc-fa23abe9bb12",
+    "id": "bbfee7b3-d247-40cf-8d7a-e9195a9c3eb0",
     "vin": "LA22CLZ51K9G1K7U0",
     "year": 2023,
     "make": "Nissan",
@@ -4559,7 +4559,7 @@
     "bid_count": 0
   },
   {
-    "id": "6c894b54-d2c0-4431-bb73-bede24ab2f85",
+    "id": "b4a5d77f-f36a-4b4b-bf89-4e61164b7e66",
     "vin": "CK00FWEE1CM1PK3GG",
     "year": 2021,
     "make": "Ford",
@@ -4603,7 +4603,7 @@
     "bid_count": 0
   },
   {
-    "id": "a239c625-5c9c-41f2-9627-c16e93f3631c",
+    "id": "2c5787f6-7dad-4d6a-adc1-c7de01a91439",
     "vin": "3BHN9C8C4NNT603E7",
     "year": 2016,
     "make": "Toyota",
@@ -4643,7 +4643,7 @@
     "bid_count": 5
   },
   {
-    "id": "7674a059-8c3a-4f55-86e1-d0affe166d21",
+    "id": "94f3df32-023e-4567-a660-9e5b03c423b1",
     "vin": "B61TZARL81LSCUV8K",
     "year": 2022,
     "make": "GMC",
@@ -4680,7 +4680,7 @@
     "bid_count": 0
   },
   {
-    "id": "9414c572-2856-46c6-a2ae-49767b3feb56",
+    "id": "76b6d4dd-0851-460d-ad3b-c64366cc7ff1",
     "vin": "DH9X28373HA7AJM8R",
     "year": 2026,
     "make": "Mazda",
@@ -4715,7 +4715,7 @@
     "bid_count": 12
   },
   {
-    "id": "dc13b048-1d7f-4c0e-b6ba-e7c4ef858fed",
+    "id": "7679d4fb-f7e1-410a-a21f-76c2cbe2ee83",
     "vin": "S682VV0G3AYEWF88R",
     "year": 2018,
     "make": "Kia",
@@ -4754,7 +4754,7 @@
     "bid_count": 0
   },
   {
-    "id": "3dccfd28-93e1-4b6f-9cfb-fd807a91f11a",
+    "id": "d15bb99b-b11d-4750-86d7-55cd7be27ac8",
     "vin": "UPD4UBCE1C6J9RXR0",
     "year": 2019,
     "make": "Mazda",
@@ -4794,7 +4794,7 @@
     "bid_count": 1
   },
   {
-    "id": "80cc136b-88ca-4027-b612-8457cc531ed9",
+    "id": "ea395fa5-5ea7-406e-9371-4099bfb71749",
     "vin": "8R9X74R93S0V1LPXX",
     "year": 2023,
     "make": "Mazda",
@@ -4835,7 +4835,7 @@
     "bid_count": 0
   },
   {
-    "id": "2f3f8bc6-d967-464c-b193-a98199d2d2d5",
+    "id": "8be9f892-a6b0-4859-b027-df72fe6425b4",
     "vin": "4LAVN5MM6BWA97T5C",
     "year": 2022,
     "make": "BMW",
@@ -4873,7 +4873,7 @@
     "bid_count": 10
   },
   {
-    "id": "b0b81299-189b-430a-8804-5ca1259dd30b",
+    "id": "7e3931f7-5cf3-46b7-96c9-2f797ebbdb76",
     "vin": "XTPFN39B4ZTRV3GXU",
     "year": 2021,
     "make": "BMW",
@@ -4910,7 +4910,7 @@
     "bid_count": 1
   },
   {
-    "id": "fd423710-ed9f-408f-97bf-27916ce3ff62",
+    "id": "e96f5123-381c-41aa-be86-81d5fb68e434",
     "vin": "CDYD4BSU4HLFXTVD8",
     "year": 2018,
     "make": "Kia",
@@ -4951,7 +4951,7 @@
     "bid_count": 15
   },
   {
-    "id": "0a078613-cb0f-48be-8e7f-2a767b54891c",
+    "id": "71dfc9d4-97ce-4686-b42a-7cc6da81eb29",
     "vin": "2JHSLXKE2B11VZUR0",
     "year": 2022,
     "make": "GMC",
@@ -4996,7 +4996,7 @@
     "bid_count": 12
   },
   {
-    "id": "72e00440-f396-4f00-9d48-82579cbb0064",
+    "id": "3987512e-b77c-4b61-89aa-9f13ff1a4ef6",
     "vin": "Z06P4ACK5D9CMYMCB",
     "year": 2021,
     "make": "Nissan",
@@ -5033,7 +5033,7 @@
     "bid_count": 0
   },
   {
-    "id": "9fe163ef-2b8b-4789-adcc-c767ff99aab6",
+    "id": "e52fe559-42e8-4678-a7e2-5da7dba28493",
     "vin": "92SY4UM78B12YXW5R",
     "year": 2026,
     "make": "GMC",
@@ -5070,7 +5070,7 @@
     "bid_count": 15
   },
   {
-    "id": "ae313b0a-ee59-4daf-8bfe-48a21b41212b",
+    "id": "81c46670-9214-4fa0-9efe-e643f44d256c",
     "vin": "7RRVTCGS4GWH5MC1T",
     "year": 2018,
     "make": "Kia",
@@ -5109,7 +5109,7 @@
     "bid_count": 14
   },
   {
-    "id": "eaa252a1-b8b7-4c5f-88aa-69da1fb169ee",
+    "id": "fdb51583-ab0c-446f-913f-93bfa35b69c5",
     "vin": "JFMEF1FX6KDT694G3",
     "year": 2024,
     "make": "Honda",
@@ -5148,7 +5148,7 @@
     "bid_count": 0
   },
   {
-    "id": "6ad7525d-3416-4913-8deb-238a4ae3b2d1",
+    "id": "9be59498-5560-4dd0-bab6-cc69aa1220a3",
     "vin": "PS32PR2A3EUETEE1D",
     "year": 2022,
     "make": "Jeep",
@@ -5183,7 +5183,7 @@
     "bid_count": 14
   },
   {
-    "id": "d216c010-7f8c-41c1-8770-1ee5cd117a87",
+    "id": "43f7040f-c8b0-44f8-959f-4f80c4eb3ffe",
     "vin": "3T3LCBN31E1C5L2G1",
     "year": 2025,
     "make": "Jeep",
@@ -5220,7 +5220,7 @@
     "bid_count": 0
   },
   {
-    "id": "f1b2f0eb-b01d-4069-ae6e-9cb1a06a77a9",
+    "id": "93277f86-6114-419e-9212-78328b528be9",
     "vin": "L99VU30X7UE5VFG7T",
     "year": 2019,
     "make": "Ram",
@@ -5262,7 +5262,7 @@
     "bid_count": 0
   },
   {
-    "id": "5baad35f-37d3-4e6c-aad6-69b70d23dbff",
+    "id": "ef507694-80a8-4f68-be8b-dd5e7798e760",
     "vin": "92GFN0WM7JME8970W",
     "year": 2017,
     "make": "Ford",
@@ -5301,7 +5301,7 @@
     "bid_count": 7
   },
   {
-    "id": "871b2aeb-c508-46f2-8cf2-b685f2774bb0",
+    "id": "e1ae6094-2de3-4018-b582-49c8166e954a",
     "vin": "TXNJXSHK9R2XVN0MP",
     "year": 2025,
     "make": "GMC",
@@ -5338,7 +5338,7 @@
     "bid_count": 0
   },
   {
-    "id": "b397fb7e-62b3-4576-9c4c-f3489f698ca1",
+    "id": "91e41e3b-9e32-4892-aaea-a07c71d9c842",
     "vin": "PT2PURJ94XDU2JF9W",
     "year": 2024,
     "make": "Honda",
@@ -5375,7 +5375,7 @@
     "bid_count": 7
   },
   {
-    "id": "c6d6cd0a-7970-438b-8c8c-e58ad7e3ab82",
+    "id": "394006ba-634a-4efb-b45f-13b10db109d3",
     "vin": "0FYLWXYU9EZVU6EKD",
     "year": 2017,
     "make": "Chevrolet",
@@ -5415,7 +5415,7 @@
     "bid_count": 0
   },
   {
-    "id": "f6fe2994-d20b-49d9-9490-1ed29f26e5d7",
+    "id": "4f187d6c-a214-461a-8ba6-4e7cd24b3775",
     "vin": "CCBVYE0M84BX5DBCM",
     "year": 2020,
     "make": "Nissan",
@@ -5452,7 +5452,7 @@
     "bid_count": 0
   },
   {
-    "id": "7794c616-bae8-43f4-af18-aa15331121a5",
+    "id": "a9edfdda-f408-41f9-9ded-74ab72ee315d",
     "vin": "88M90THE2JM2CDAM2",
     "year": 2018,
     "make": "Ram",
@@ -5487,7 +5487,7 @@
     "bid_count": 1
   },
   {
-    "id": "b9c7798e-a205-479a-9d97-aa5bffdde4ab",
+    "id": "9e9171a2-8933-4b31-93f9-db664f09ad75",
     "vin": "FLF13XRC21NCLNW80",
     "year": 2023,
     "make": "BMW",
@@ -5527,7 +5527,7 @@
     "bid_count": 0
   },
   {
-    "id": "ce4e0f3c-2a9b-4e59-ab44-8085e4f212c1",
+    "id": "1df845e8-cc70-4e40-bb3e-7c489e4a44ad",
     "vin": "AHZ4JN6B491XFVSU9",
     "year": 2024,
     "make": "Kia",
@@ -5562,7 +5562,7 @@
     "bid_count": 0
   },
   {
-    "id": "324c19d1-e709-477f-9649-f0a62e289158",
+    "id": "87bdcfac-b94b-4132-a0e9-73e208ddc7ec",
     "vin": "FSM02VBU11YBGS1UZ",
     "year": 2020,
     "make": "Tesla",
@@ -5602,7 +5602,7 @@
     "bid_count": 6
   },
   {
-    "id": "d3b6442d-8f17-424c-bbe5-6346c9c580ba",
+    "id": "298a8391-6163-4c71-8bd5-1b3f76969610",
     "vin": "25VE3PTK2AMLSL7P5",
     "year": 2019,
     "make": "Ram",
@@ -5643,7 +5643,7 @@
     "bid_count": 0
   },
   {
-    "id": "2e962bbb-2d2d-4be0-9cac-c0c5bc2de519",
+    "id": "abe2d913-8a55-477f-a0b2-1abde0fd9fdb",
     "vin": "6YLWYUY48NHV2UDUH",
     "year": 2025,
     "make": "Jeep",
@@ -5680,7 +5680,7 @@
     "bid_count": 0
   },
   {
-    "id": "fbc219fb-c5c5-4e9c-b571-c52c6ada02ac",
+    "id": "2662b813-8623-4d90-b51c-7dd6d2bf4773",
     "vin": "0HHDF5AV751RHACU5",
     "year": 2017,
     "make": "Volkswagen",
@@ -5722,7 +5722,7 @@
     "bid_count": 0
   },
   {
-    "id": "0a114c47-2810-4824-96cd-80a320b9e010",
+    "id": "7293b522-a6c7-41e2-bb92-6b119acd8298",
     "vin": "1R9PLSJR786A6803Z",
     "year": 2021,
     "make": "Ram",
@@ -5763,7 +5763,7 @@
     "bid_count": 0
   },
   {
-    "id": "c85afc8a-f189-4646-bd1e-cda1e057e42a",
+    "id": "180616ee-7242-4770-bc5f-c6cd1efe94c3",
     "vin": "FFXEGDLJ5R161PW5J",
     "year": 2023,
     "make": "Kia",
@@ -5802,7 +5802,7 @@
     "bid_count": 0
   },
   {
-    "id": "5c71cfba-a375-4a36-b146-8d69374a1dbf",
+    "id": "a6e5e073-bb76-41f5-bc2c-644df6efe8c4",
     "vin": "5HL2DCJG0B2CV4UVF",
     "year": 2021,
     "make": "Ford",
@@ -5840,7 +5840,7 @@
     "bid_count": 0
   },
   {
-    "id": "91980850-b07c-4b9d-ba7d-69e1dc5a23ba",
+    "id": "933e2c9e-bc0a-4cbd-94d0-7bc4ff3e2728",
     "vin": "6TVR2DFY5TEPTD4AW",
     "year": 2016,
     "make": "Ram",
@@ -5882,7 +5882,7 @@
     "bid_count": 0
   },
   {
-    "id": "07fbfc9f-2c5d-462b-b3f2-ca89ed88dd35",
+    "id": "822269a6-c36d-46ed-b188-6f2c376224a8",
     "vin": "L9HTV723006H7KDWX",
     "year": 2026,
     "make": "Ford",
@@ -5919,7 +5919,7 @@
     "bid_count": 13
   },
   {
-    "id": "8a1bd9e0-fe5c-44e6-9cad-ff7a423043e2",
+    "id": "9d1c6036-51de-46c3-b049-718d1f3bf282",
     "vin": "PVG51NLE01TDE16TU",
     "year": 2025,
     "make": "Volkswagen",
@@ -5956,7 +5956,7 @@
     "bid_count": 7
   },
   {
-    "id": "2d9e6d01-25af-4b7d-bc8c-dd361d13bceb",
+    "id": "e0967c3f-fbc0-43c7-8fc1-94caa511a684",
     "vin": "D1793GZD8WRX2FMRN",
     "year": 2026,
     "make": "Toyota",
@@ -5992,7 +5992,7 @@
     "bid_count": 0
   },
   {
-    "id": "cc86bfcd-0ff9-4fea-bf92-26f1316e6d31",
+    "id": "f78f9f1e-f6e5-4214-910e-99699f08ff4a",
     "vin": "Z9JN0PCU620CJ99EH",
     "year": 2026,
     "make": "Kia",
@@ -6031,7 +6031,7 @@
     "bid_count": 0
   },
   {
-    "id": "36c1c772-73cd-4a03-9561-feb8cc6754f7",
+    "id": "e54359a6-6827-4c29-a161-e49269eb27b5",
     "vin": "CBV5A9RA3LU27L5KW",
     "year": 2024,
     "make": "GMC",
@@ -6066,7 +6066,7 @@
     "bid_count": 0
   },
   {
-    "id": "d1a8bb1c-cef6-4fc0-9003-d69c7543f1bf",
+    "id": "6104c086-8747-49da-a027-695fa5fcc182",
     "vin": "0SVB45MA96SRAPN94",
     "year": 2022,
     "make": "Ford",
@@ -6103,7 +6103,7 @@
     "bid_count": 11
   },
   {
-    "id": "9c644545-48bf-46f2-a306-1dd63c922a69",
+    "id": "f990a2e8-3b8d-4f9e-8bf0-9b024d12aa1e",
     "vin": "36GX154047R7ZJEF2",
     "year": 2020,
     "make": "Volkswagen",
@@ -6141,7 +6141,7 @@
     "bid_count": 0
   },
   {
-    "id": "c9d7116f-6eb5-4e68-b3ea-a92ca6e7f617",
+    "id": "ca51c110-32d3-4cdb-9543-6b726587106c",
     "vin": "BV22HVNS4KWVB1KVH",
     "year": 2026,
     "make": "BMW",
@@ -6183,7 +6183,7 @@
     "bid_count": 0
   },
   {
-    "id": "41fe76c6-1f6b-4b0c-8a3d-46ab804d4a26",
+    "id": "14d42387-5e35-4ac2-a0db-e70f2df2abb9",
     "vin": "LDGUF3Y912FM9SB01",
     "year": 2017,
     "make": "Toyota",
@@ -6224,7 +6224,7 @@
     "bid_count": 0
   },
   {
-    "id": "b4af6121-013d-4cd8-b3f6-fc6c4343ff2e",
+    "id": "79399005-5ccd-49a7-a84e-03bccfaf012c",
     "vin": "6VVBJ0D79GW4TW1DF",
     "year": 2016,
     "make": "Mazda",
@@ -6268,7 +6268,7 @@
     "bid_count": 0
   },
   {
-    "id": "f06c75b3-ff7e-44b7-9b3a-2eb173f37f2c",
+    "id": "9dea31ca-72ff-4bf1-8b9e-0cf507d6cfe1",
     "vin": "SBH95Z6F5D4EBC7UD",
     "year": 2023,
     "make": "Ram",
@@ -6308,7 +6308,7 @@
     "bid_count": 8
   },
   {
-    "id": "c3e33bb8-6417-4d03-aea1-c05b1f8345f5",
+    "id": "1c59640b-a66e-40fb-8be8-71f4afd1dca0",
     "vin": "8ZJU0XEU7M0AE7MUU",
     "year": 2016,
     "make": "Volkswagen",
@@ -6349,7 +6349,7 @@
     "bid_count": 17
   },
   {
-    "id": "ebbba163-92c9-40a0-87b8-f713ac33d382",
+    "id": "07c7748f-9b15-44f4-954b-4b8eca679f29",
     "vin": "4AYRUSAC3VFE0KMCB",
     "year": 2026,
     "make": "Chevrolet",
@@ -6385,7 +6385,7 @@
     "bid_count": 17
   },
   {
-    "id": "f4e82bae-8a5f-4cd5-948d-249480b1ae38",
+    "id": "c8e3b5aa-ab9e-44da-87cf-688f04b241dd",
     "vin": "UDUA095P8U81D9BSN",
     "year": 2022,
     "make": "Hyundai",
@@ -6420,7 +6420,7 @@
     "bid_count": 0
   },
   {
-    "id": "be2a9f20-2d03-41ff-806d-3851c520331b",
+    "id": "51af9213-fde3-49c5-903b-a3c05949f675",
     "vin": "A6CMXDF37X7XXDR3H",
     "year": 2020,
     "make": "Honda",
@@ -6458,7 +6458,7 @@
     "bid_count": 0
   },
   {
-    "id": "cc0e1572-abad-485e-a9f3-4d64bbb64973",
+    "id": "4b9dc495-bab3-4fa4-aa3c-481b18e841e6",
     "vin": "A8NYAM8T7KPZZHD22",
     "year": 2021,
     "make": "BMW",
@@ -6500,7 +6500,7 @@
     "bid_count": 4
   },
   {
-    "id": "7d99a193-72d7-4168-969d-61368015e5d1",
+    "id": "109935e1-d728-417a-add0-02de21652db4",
     "vin": "59754R0G1L9NRATS3",
     "year": 2016,
     "make": "Ford",
@@ -6541,7 +6541,7 @@
     "bid_count": 0
   },
   {
-    "id": "26f7a795-e7e4-48a3-ace3-08a25af0a785",
+    "id": "1ae01a0b-9aa0-47d8-b70b-1a06cf8b6011",
     "vin": "3ULS67UN2202586LE",
     "year": 2017,
     "make": "Mazda",
@@ -6585,7 +6585,7 @@
     "bid_count": 0
   },
   {
-    "id": "1378e6ce-99e4-48e2-87dc-c77adfea59d7",
+    "id": "b0d9fc8c-086f-4fd4-a899-ccf67ef40e7a",
     "vin": "JX5EYVFR7RJ7T4E0C",
     "year": 2025,
     "make": "Ram",
@@ -6621,7 +6621,7 @@
     "bid_count": 4
   },
   {
-    "id": "d977c48b-dd3b-443a-acea-ff8c2eba6299",
+    "id": "bbb1127b-4077-417a-b2e4-2f0818f8b293",
     "vin": "DUFJRX3K1P8CESNEE",
     "year": 2017,
     "make": "Ram",
@@ -6660,7 +6660,7 @@
     "bid_count": 5
   },
   {
-    "id": "7940f0cf-e28b-4334-bbb6-2763bb4830ba",
+    "id": "f37533a6-ad7e-4d2a-9706-c38b2c0e6bf8",
     "vin": "WWBW3MLK44YE1PLFA",
     "year": 2023,
     "make": "Hyundai",
@@ -6695,7 +6695,7 @@
     "bid_count": 14
   },
   {
-    "id": "a23236a7-ed6e-4d16-ba14-200f34412e11",
+    "id": "b96c69ea-d82d-442b-8ed5-a72ccd77eccd",
     "vin": "0DC9XCMM66U5L8PSJ",
     "year": 2020,
     "make": "Subaru",
@@ -6738,7 +6738,7 @@
     "bid_count": 13
   },
   {
-    "id": "8ccb3822-3fd5-44b8-a6ef-ba7009a78929",
+    "id": "2d3e5675-d0b0-4411-aeed-a77ff14adce6",
     "vin": "M93TZBXW8FMZYM3KR",
     "year": 2025,
     "make": "Toyota",
@@ -6773,7 +6773,7 @@
     "bid_count": 5
   },
   {
-    "id": "f58a6ede-624b-4e2e-95a1-50e7b5b03d04",
+    "id": "54e6730f-3980-493a-81ae-1b999753a7f5",
     "vin": "AYWNRW4F0W7L0YLR5",
     "year": 2026,
     "make": "Mazda",
@@ -6811,7 +6811,7 @@
     "bid_count": 1
   },
   {
-    "id": "fadb17b2-6c53-43c0-9b5e-f85287dcadd1",
+    "id": "561e5c82-2cf3-4d35-b2f9-f5170a3bbef7",
     "vin": "UG6XPYHC9D1KY29X1",
     "year": 2020,
     "make": "Jeep",
@@ -6850,7 +6850,7 @@
     "bid_count": 0
   },
   {
-    "id": "973fbcb9-30d4-4a13-9cce-6047219bb9cb",
+    "id": "f372d01e-fde7-40bf-8abc-d041ff07136a",
     "vin": "BEBB13GS8KSECNMMH",
     "year": 2019,
     "make": "Nissan",
@@ -6892,7 +6892,7 @@
     "bid_count": 5
   },
   {
-    "id": "4a5dab14-4f7a-4757-98bc-f2f287488a48",
+    "id": "2a3752aa-1321-42be-8e11-c758ba5035b0",
     "vin": "L537FSX68Y25CU7LV",
     "year": 2017,
     "make": "BMW",
@@ -6935,7 +6935,7 @@
     "bid_count": 3
   },
   {
-    "id": "a9885dc0-3fb4-4ecc-a479-c6714e1d4fd8",
+    "id": "6aa43299-10b2-402f-82bd-9203b909a42b",
     "vin": "5B9VS98U3JZBC95R9",
     "year": 2022,
     "make": "GMC",
@@ -6971,7 +6971,7 @@
     "bid_count": 0
   },
   {
-    "id": "c2d4025f-9193-49ef-be8c-a2324b6446f6",
+    "id": "53266647-9ff6-4078-bfc1-15de5cfc6351",
     "vin": "9VJ9XEE52GPMG0CFS",
     "year": 2025,
     "make": "Nissan",
@@ -7011,7 +7011,7 @@
     "bid_count": 0
   },
   {
-    "id": "06b4d5dc-ddb4-4cd5-b37c-c83b38404417",
+    "id": "2ff7768e-2c3d-4f9f-a322-6104a3b73b27",
     "vin": "X36LFSM05KDKN2NM2",
     "year": 2022,
     "make": "Ram",
@@ -7048,7 +7048,7 @@
     "bid_count": 16
   },
   {
-    "id": "d8fb8660-8db6-424c-bb20-ba623866552f",
+    "id": "6caeb313-4b16-401d-a7bd-0c635d5886d5",
     "vin": "D378VAWK3K0LPJM36",
     "year": 2020,
     "make": "GMC",
@@ -7084,7 +7084,7 @@
     "bid_count": 18
   },
   {
-    "id": "de7583b8-0ad3-4c81-ad0d-e25b96ebb6ae",
+    "id": "9270d635-7d00-4fd7-ab66-f5772193cfd3",
     "vin": "0YTHTDNJ582J5T9R5",
     "year": 2023,
     "make": "Tesla",
@@ -7120,7 +7120,7 @@
     "bid_count": 7
   },
   {
-    "id": "6ce86489-edaf-4de9-9edb-ffcc93e63285",
+    "id": "26a4d061-2a36-4e71-a4db-234b0f958836",
     "vin": "N9CU9G8X2S6YS6745",
     "year": 2017,
     "make": "BMW",
@@ -7162,7 +7162,7 @@
     "bid_count": 14
   },
   {
-    "id": "0a1fdcd0-e56d-46e9-8ee3-fd5dc0f22261",
+    "id": "9fa250d8-a609-47ed-9f12-bf815e200a5b",
     "vin": "26MC7BD37EPNCTC39",
     "year": 2025,
     "make": "Honda",
@@ -7200,7 +7200,7 @@
     "bid_count": 1
   },
   {
-    "id": "cfe16c24-7e2f-4f10-bb12-163a083ba23a",
+    "id": "7604ee15-72a7-4363-8a54-4affd08ee42b",
     "vin": "NM8MVPWA9D5Z48692",
     "year": 2019,
     "make": "Honda",
@@ -7238,7 +7238,7 @@
     "bid_count": 0
   },
   {
-    "id": "49ae2604-c7af-48b6-8b61-d0d82982c1e6",
+    "id": "ab61f57b-85ad-4019-9a41-4ea3d30042ea",
     "vin": "6SHX4WFJ6YYDUFJR5",
     "year": 2023,
     "make": "Chevrolet",
@@ -7278,7 +7278,7 @@
     "bid_count": 0
   },
   {
-    "id": "edc2a828-d4cd-4544-85be-587586545434",
+    "id": "71aaafa8-ab9f-4b46-a93f-eed1bd098c56",
     "vin": "4D3B8CBA9711RHW9Y",
     "year": 2025,
     "make": "Volkswagen",
@@ -7314,7 +7314,7 @@
     "bid_count": 16
   },
   {
-    "id": "152d4dcc-045f-4898-be0a-b1ed05d3da56",
+    "id": "bcb1af86-d4a9-4d2e-9ac3-1403c84caa86",
     "vin": "3R9E02XT9DT6S745N",
     "year": 2021,
     "make": "Ford",
@@ -7350,7 +7350,7 @@
     "bid_count": 0
   },
   {
-    "id": "6fcf9cd9-77d9-4598-b963-15a5e3891591",
+    "id": "503f0a6d-82b4-4915-b5a9-4897653d3332",
     "vin": "TXUX049V0AFN2H25Y",
     "year": 2024,
     "make": "Nissan",
@@ -7392,7 +7392,7 @@
     "bid_count": 0
   },
   {
-    "id": "f74efc7c-8fdc-4937-ae96-6dfcc8bcd903",
+    "id": "c16e9aa7-ac36-418a-8b6c-7f622fc07932",
     "vin": "UMJP9DHX8C2XZJY38",
     "year": 2026,
     "make": "Kia",
@@ -7435,7 +7435,7 @@
     "bid_count": 0
   },
   {
-    "id": "e9b81d66-5843-47a5-a697-bd8f206a32d5",
+    "id": "2c6f572a-6ef4-426a-8123-b8a82dd8d074",
     "vin": "2PLSKYMF5UFTVYEPZ",
     "year": 2018,
     "make": "Volkswagen",
@@ -7478,7 +7478,7 @@
     "bid_count": 0
   },
   {
-    "id": "b9961ff3-8de5-41f3-9974-1f14a2c594d5",
+    "id": "03a9c60c-ea38-47cd-a12d-f1fc8ef20d03",
     "vin": "HA562G0V0NWJ01N67",
     "year": 2023,
     "make": "GMC",
@@ -7515,7 +7515,7 @@
     "bid_count": 9
   },
   {
-    "id": "4092d2bf-dda7-4acd-b7ba-116554a2f169",
+    "id": "0a400cd1-5762-4bfd-a0ba-2b74f8a99f9f",
     "vin": "W5ZZL7FP02FFEAKU2",
     "year": 2019,
     "make": "Volkswagen",
@@ -7553,7 +7553,7 @@
     "bid_count": 0
   },
   {
-    "id": "def2de6f-854e-48c9-9cb4-df08ba0d744e",
+    "id": "27de45f2-aad4-4897-b32c-cd833292fdd4",
     "vin": "86UXNVHD6SSVEPLER",
     "year": 2020,
     "make": "Kia",
@@ -7591,7 +7591,7 @@
     "bid_count": 16
   },
   {
-    "id": "216a78f2-ef87-4637-a21e-294c9d7e82ad",
+    "id": "7db2ef25-bac3-4f11-9e34-675c1be72f34",
     "vin": "61AZAYLK9UZ7W78ZW",
     "year": 2025,
     "make": "Ram",
@@ -7626,7 +7626,7 @@
     "bid_count": 4
   },
   {
-    "id": "ecb6c201-896a-445e-896f-3d940bd033fb",
+    "id": "bab02b16-f3b9-44dd-9ae9-f4590d73d887",
     "vin": "6BGJ8JNY0PM78D8EH",
     "year": 2017,
     "make": "Chevrolet",
@@ -7666,7 +7666,7 @@
     "bid_count": 14
   },
   {
-    "id": "99045da5-fb74-4f8b-878d-a7667eef30f9",
+    "id": "4f5ba4bd-3857-4469-8be7-368bc786cbdd",
     "vin": "B46MSVX22ZF1KLW1Y",
     "year": 2020,
     "make": "Ford",
@@ -7703,7 +7703,7 @@
     "bid_count": 0
   },
   {
-    "id": "8ceafa9a-c7e4-4818-a940-5ab9279fa087",
+    "id": "2f7cf1ef-5e33-4354-9bc7-bf5dd38a8755",
     "vin": "EZ73RMG76X31G4JN4",
     "year": 2024,
     "make": "Ram",
@@ -7738,7 +7738,7 @@
     "bid_count": 10
   },
   {
-    "id": "1a2e7103-5b79-442f-91ff-a4f1d5ed2261",
+    "id": "fa8a7ab7-9a0f-44e1-9b0f-ac901a32f249",
     "vin": "2A4XMBJP2FK5KU8FB",
     "year": 2017,
     "make": "Ram",
@@ -7780,7 +7780,7 @@
     "bid_count": 3
   },
   {
-    "id": "3bb6c2e7-ebb9-4e63-ad10-f8d54bda7bd4",
+    "id": "acccbd3a-09b6-4ca8-9baf-a4f6341fb91b",
     "vin": "M8JEVXS42P63U30F6",
     "year": 2023,
     "make": "GMC",
