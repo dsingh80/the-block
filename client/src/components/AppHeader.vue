@@ -4,15 +4,6 @@
       <RouterLink to="/inventory" class="app-header__logo">
         <span class="app-header__logo-open">OPEN</span><span class="app-header__logo-lane">LANE</span>
       </RouterLink>
-      <nav class="app-header__nav">
-        <RouterLink
-          to="/inventory"
-          class="app-header__nav-item"
-          exact-active-class="app-header__nav-item--active"
-        >
-          Inventory
-        </RouterLink>
-      </nav>
     </div>
   </header>
 </template>
@@ -28,7 +19,7 @@
 .app-header__inner {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center; /* should switch to space-between when we have actual links */
   gap: 20px;
   padding: 14px 28px;
   flex-wrap: wrap;
