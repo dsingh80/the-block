@@ -12,6 +12,7 @@ import (
 	"github.com/dsingh80/the-block/server/internal/transport/http/middleware"
 	"github.com/dsingh80/the-block/server/internal/usecase/bidding"
 	"github.com/dsingh80/the-block/server/internal/usecase/listings"
+	"github.com/dsingh80/the-block/server/internal/usecase/realtime"
 )
 
 // The stubs below satisfy NewRouter's ports with the bare minimum to route a
@@ -68,11 +69,18 @@ type stubPinger struct{ err error }
 
 func (s stubPinger) Ping(context.Context) error { return s.err }
 
+type stubBroadcaster struct{}
+
+func (stubBroadcaster) Subscribe(realtime.Subscriber, ...string)   {}
+func (stubBroadcaster) Unsubscribe(realtime.Subscriber, ...string) {}
+func (stubBroadcaster) Publish(context.Context, realtime.Event)    {}
+
 func newTestRouter(redisErr, postgresErr error) http.Handler {
 	return NewRouter(
 		stubListingReader{}, stubBidReader{}, stubViewerLookup{},
 		stubBidStore{}, stubRateLimiter{}, stubSessionStore{},
 		stubPinger{err: redisErr}, stubPinger{err: postgresErr},
+		stubBroadcaster{}, []string{"https://localhost"},
 	)
 }
 

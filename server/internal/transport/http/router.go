@@ -7,10 +7,12 @@ import (
 
 	"github.com/dsingh80/the-block/server/internal/transport/http/handlers"
 	"github.com/dsingh80/the-block/server/internal/transport/http/middleware"
+	"github.com/dsingh80/the-block/server/internal/transport/ws"
 	"github.com/dsingh80/the-block/server/internal/usecase/audit"
 	"github.com/dsingh80/the-block/server/internal/usecase/bidding"
 	"github.com/dsingh80/the-block/server/internal/usecase/health"
 	"github.com/dsingh80/the-block/server/internal/usecase/listings"
+	"github.com/dsingh80/the-block/server/internal/usecase/realtime"
 	"github.com/dsingh80/the-block/server/internal/usecase/sessions"
 )
 
@@ -32,6 +34,8 @@ func NewRouter(
 	sessionStore sessions.Store,
 	redisPinger health.Pinger,
 	postgresPinger health.Pinger,
+	broadcaster realtime.Broadcaster,
+	wsAllowedOrigins []string,
 ) http.Handler {
 	api := http.NewServeMux()
 
@@ -46,6 +50,9 @@ func NewRouter(
 	api.HandleFunc("POST /v1/listings/{id}/buy-now", bidsHandler.BuyNow)
 
 	api.HandleFunc("GET /v1/session", handlers.SessionInfo)
+
+	wsHub := ws.NewHub(broadcaster, wsAllowedOrigins)
+	api.HandleFunc("GET /v1/ws", wsHub.Upgrade)
 
 	root := http.NewServeMux()
 	root.Handle("/", Chain(api,

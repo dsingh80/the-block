@@ -1,7 +1,9 @@
 package middleware
 
 import (
+	"bufio"
 	"log"
+	"net"
 	"net/http"
 	"time"
 )
@@ -16,6 +18,22 @@ type statusRecorder struct {
 func (r *statusRecorder) WriteHeader(status int) {
 	r.status = status
 	r.ResponseWriter.WriteHeader(status)
+}
+
+// Hijack forwards to the underlying ResponseWriter's own Hijack. Without this,
+// embedding http.ResponseWriter as an interface field only promotes that
+// interface's own methods (Header/Write/WriteHeader) -- NOT http.Hijacker's
+// Hijack, even though the concrete *http.response underneath supports it.
+// gorilla/websocket's Upgrade asserts for http.Hijacker on whatever
+// ResponseWriter it's handed; without this override, every WS upgrade request
+// would fail the moment it passed through this middleware
+// (guidelines/06-backend-architecture.md, "Caught by ... not by inspection" gotchas).
+func (r *statusRecorder) Hijack() (net.Conn, *bufio.ReadWriter, error) {
+	hj, ok := r.ResponseWriter.(http.Hijacker)
+	if !ok {
+		return nil, nil, http.ErrNotSupported
+	}
+	return hj.Hijack()
 }
 
 // AccessLog logs method, path, status, duration, and request id for every
