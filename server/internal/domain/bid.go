@@ -1,0 +1,34 @@
+package domain
+
+import "time"
+
+type BidType string
+
+const (
+	BidTypeBid    BidType = "bid"
+	BidTypeBuyNow BidType = "buy_now"
+)
+
+// Bid mirrors a row in the `bids` table -- the durable, append-only per-bid audit
+// trail (guidelines/06-backend-architecture.md). Never mutated after insert.
+type Bid struct {
+	ID             string
+	ListingID      string
+	SessionID      string
+	RequestID      string
+	Type           BidType
+	Amount         int64
+	BidCountAfter  int
+	AcceptedAt     time.Time
+	SourceStreamID string
+}
+
+// Viewer is one session's relationship to a listing. Computed without a SQL join --
+// IsHighBidder from a column comparison, HasBid from a Redis set-membership check
+// (guidelines/06-backend-architecture.md, "computing viewer without joins"). This is
+// structurally what the client's BidOverride used to invent locally from nothing.
+type Viewer struct {
+	HasBid       bool
+	IsHighBidder bool
+	IsOutbid     bool
+}
