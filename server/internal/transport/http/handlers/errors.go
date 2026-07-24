@@ -20,6 +20,13 @@ var domainErrorResponses = map[string]struct {
 	"not_found":            {http.StatusNotFound, "That listing doesn't exist."},
 	"invalid_cursor":       {http.StatusBadRequest, "This page link is invalid."},
 	"cursor_sort_mismatch": {http.StatusBadRequest, "This page link doesn't match the current filter or sort -- start over from the first page."},
+	// 409, not 400: the request was well-formed when the client built it, but the
+	// world (price, lifecycle) moved before it arrived -- a state conflict, not
+	// bad input (guidelines/06-backend-architecture.md, "API design").
+	"auction_not_started": {http.StatusConflict, "This auction hasn't started yet."},
+	"auction_ended":       {http.StatusConflict, "This auction has already ended."},
+	"bid_too_low":         {http.StatusConflict, "Your bid is below the current minimum."},
+	"buy_now_unavailable": {http.StatusConflict, "Buy Now is no longer available for this listing."},
 }
 
 // writeError writes err as the standard envelope: a recognized domain.DomainError

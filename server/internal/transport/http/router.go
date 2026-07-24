@@ -18,7 +18,14 @@ import (
 // methods, so wiring it now is harmless even before any such route exists,
 // and every request (read-only included) getting a resolved session is what
 // the rest of this API assumes (guidelines/06-backend-architecture.md).
-func NewRouter(listingReader listings.Reader, bidReader audit.Reader, viewerLookup bidding.ViewerLookup, sessionStore sessions.Store) http.Handler {
+func NewRouter(
+	listingReader listings.Reader,
+	bidReader audit.Reader,
+	viewerLookup bidding.ViewerLookup,
+	bidStore bidding.Store,
+	rateLimiter bidding.RateLimiter,
+	sessionStore sessions.Store,
+) http.Handler {
 	mux := http.NewServeMux()
 
 	listingsHandler := handlers.NewListings(listingReader, bidReader, viewerLookup)
@@ -26,6 +33,10 @@ func NewRouter(listingReader listings.Reader, bidReader audit.Reader, viewerLook
 	mux.HandleFunc("GET /v1/listings/facets", listingsHandler.Facets)
 	mux.HandleFunc("GET /v1/listings/{id}", listingsHandler.Get)
 	mux.HandleFunc("GET /v1/listings/{id}/bids", listingsHandler.BidHistory)
+
+	bidsHandler := handlers.NewBids(bidStore, rateLimiter)
+	mux.HandleFunc("POST /v1/listings/{id}/bids", bidsHandler.Place)
+	mux.HandleFunc("POST /v1/listings/{id}/buy-now", bidsHandler.BuyNow)
 
 	return Chain(mux,
 		middleware.RequestID,

@@ -33,3 +33,10 @@ type Store interface {
 type ViewerLookup interface {
 	BidListingIDs(ctx context.Context, sessionToken string) (map[string]struct{}, error)
 }
+
+// RateLimiter mitigates bid-attempt abuse without needing real auth first
+// (guidelines/06-backend-architecture.md, "SOC2 principles mapping"). Allow
+// reports whether this (sessionToken, bucket) request is within its window.
+type RateLimiter interface {
+	Allow(ctx context.Context, sessionToken, bucket string) (bool, error)
+}

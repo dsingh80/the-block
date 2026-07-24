@@ -74,3 +74,29 @@ func reverseBidHistoryEntries(e []BidHistoryEntry) {
 		e[i], e[j] = e[j], e[i]
 	}
 }
+
+// BidAccept is the wire shape of a successful bid or buy-now acceptance
+// (guidelines/06-backend-architecture.md, "Idempotency"). Built by the handler
+// directly from bidding.Result's fields (the same pattern as ListingsPage),
+// not a constructor here -- this package stays domain-only, no usecase import.
+type BidAccept struct {
+	BidID      string `json:"bid_id"`
+	CurrentBid int64  `json:"current_bid"`
+	BidCount   int    `json:"bid_count"`
+	AcceptedAt string `json:"accepted_at"`
+	Viewer     Viewer `json:"viewer"`
+}
+
+type BidAcceptResponse struct {
+	Data BidAccept `json:"data"`
+}
+
+// AcceptedByCaller is the viewer object for whichever session's bid/buy-now was
+// just accepted -- always has_bid+is_high_bidder true, is_outbid false, and
+// deliberately a constant rather than a fresh Redis lookup: an identical
+// retried request must return a byte-identical response to the original
+// acceptance (guidelines/06-backend-architecture.md, "Idempotency"), and a live
+// lookup on replay could disagree with that if someone else has since outbid
+// this session in the meantime. This response describes the accept event
+// itself, not a live snapshot of the listing.
+var AcceptedByCaller = Viewer{HasBid: true, IsHighBidder: true, IsOutbid: false}
