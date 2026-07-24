@@ -8,12 +8,14 @@ import "os"
 type Config struct {
 	DatabaseURL      string
 	VehiclesDataPath string
+	RedisAddr        string
 }
 
 func Load() Config {
 	return Config{
 		DatabaseURL:      getEnv("DATABASE_URL", "postgres://postgres:postgres@localhost:5432/theblock?sslmode=disable"),
 		VehiclesDataPath: getEnv("VEHICLES_DATA_PATH", "../data/vehicles.json"),
+		RedisAddr:        getEnv("REDIS_ADDR", "localhost:6379"),
 	}
 }
 
