@@ -1,10 +1,11 @@
 package middleware
 
 import (
-	"log"
+	"fmt"
 	"net/http"
 	"runtime/debug"
 
+	"github.com/dsingh80/the-block/server/internal/platform/logging"
 	"github.com/dsingh80/the-block/server/internal/transport/httputil"
 )
 
@@ -20,8 +21,8 @@ func Recover(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		defer func() {
 			if rec := recover(); rec != nil {
-				log.Printf("panic recovered [request_id=%s]: %v\n%s",
-					RequestIDFromContext(r.Context()), rec, debug.Stack())
+				logging.FromContext(r.Context()).Error("panic recovered",
+					"panic", fmt.Sprint(rec), "stack", string(debug.Stack()))
 				httputil.WriteError(w, http.StatusInternalServerError, "internal_error",
 					"Something went wrong.", nil, RequestIDFromContext(r.Context()))
 			}

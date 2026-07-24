@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/dsingh80/the-block/server/internal/platform/logging"
 	"github.com/dsingh80/the-block/server/internal/transport/dto"
 	"github.com/dsingh80/the-block/server/internal/transport/http/middleware"
 	"github.com/dsingh80/the-block/server/internal/transport/httputil"
@@ -61,6 +62,7 @@ func (h *Bids) Place(w http.ResponseWriter, r *http.Request) {
 		writeError(w, r, err)
 		return
 	}
+	logBidAccepted(r, "bid accepted", id, result)
 	writeBidAccept(w, result)
 }
 
@@ -82,6 +84,7 @@ func (h *Bids) BuyNow(w http.ResponseWriter, r *http.Request) {
 		writeError(w, r, err)
 		return
 	}
+	logBidAccepted(r, "buy-now accepted", id, result)
 	writeBidAccept(w, result)
 }
 
@@ -100,6 +103,19 @@ func (h *Bids) checkRateLimit(w http.ResponseWriter, r *http.Request, sessionTok
 		return false
 	}
 	return true
+}
+
+// logBidAccepted is the correlation point between an operational log line and
+// the durable audit trail (guidelines/06-backend-architecture.md, "Logging"):
+// bid_id is the same value stored as bids.id (it round-trips unchanged from
+// here through the Lua accept path, the Redis stream, and the stream tailer's
+// insert), so this line plus that row are enough to trace a request all the
+// way to its durable record -- without needing a dedicated bids.request_id
+// column populated on every write path just to duplicate what bid_id already
+// gives for free.
+func logBidAccepted(r *http.Request, msg, listingID string, result bidding.Result) {
+	logging.FromContext(r.Context()).Info(msg,
+		"listing_id", listingID, "bid_id", result.BidID, "current_bid", result.CurrentPrice)
 }
 
 func writeBidAccept(w http.ResponseWriter, result bidding.Result) {

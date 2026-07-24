@@ -2,10 +2,10 @@ package middleware
 
 import (
 	"context"
-	"log"
 	"net/http"
 
 	"github.com/dsingh80/the-block/server/internal/domain"
+	"github.com/dsingh80/the-block/server/internal/platform/logging"
 	"github.com/dsingh80/the-block/server/internal/usecase/sessions"
 )
 
@@ -34,7 +34,7 @@ func Session(store sessions.Store) func(http.Handler) http.Handler {
 
 			sess, isNew, err := store.Touch(r.Context(), token)
 			if err != nil {
-				log.Printf("session middleware: touch: %v [request_id=%s]", err, RequestIDFromContext(r.Context()))
+				logging.FromContext(r.Context()).Error("session touch failed", "error", err)
 				w.WriteHeader(http.StatusInternalServerError)
 				return
 			}
@@ -51,6 +51,10 @@ func Session(store sessions.Store) func(http.Handler) http.Handler {
 			}
 
 			ctx := context.WithValue(r.Context(), sessionKey, sess)
+			// session_id is an opaque, non-PII lookup key (guidelines/06-backend-architecture.md,
+			// "SOC2 principles mapping") -- safe to carry on every log line from
+			// here down, same as request_id.
+			ctx = logging.WithLogger(ctx, logging.FromContext(ctx).With("session_id", sess.Token))
 			next.ServeHTTP(w, r.WithContext(ctx))
 		})
 	}

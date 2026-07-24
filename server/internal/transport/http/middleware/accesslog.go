@@ -2,10 +2,11 @@ package middleware
 
 import (
 	"bufio"
-	"log"
 	"net"
 	"net/http"
 	"time"
+
+	"github.com/dsingh80/the-block/server/internal/platform/logging"
 )
 
 // statusRecorder captures the status code a handler actually wrote --
@@ -36,17 +37,18 @@ func (r *statusRecorder) Hijack() (net.Conn, *bufio.ReadWriter, error) {
 	return hj.Hijack()
 }
 
-// AccessLog logs method, path, status, duration, and request id for every
-// request. Uses the stdlib log package for now, same as elsewhere in
-// server/ before structured logging is wired in (a later commit) --
-// upgrading the destination later doesn't change any call site here
-// (guidelines/06-backend-architecture.md).
+// AccessLog logs method, path, status, and duration as structured fields for
+// every request (guidelines/06-backend-architecture.md, "Logging"). Reads the
+// logger via logging.FromContext rather than logging.RequestIDFromContext
+// plus a format string, so request_id (and session_id, for anything logged
+// downstream of Session) ride along as real fields, not string interpolation.
 func AccessLog(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
 		rec := &statusRecorder{ResponseWriter: w, status: http.StatusOK}
 		next.ServeHTTP(rec, r)
-		log.Printf("%s %s %d %s [request_id=%s]",
-			r.Method, r.URL.Path, rec.status, time.Since(start), RequestIDFromContext(r.Context()))
+		logging.FromContext(r.Context()).Info("request",
+			"method", r.Method, "path", r.URL.Path, "status", rec.status,
+			"duration_ms", time.Since(start).Milliseconds())
 	})
 }

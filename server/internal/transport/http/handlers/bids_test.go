@@ -1,8 +1,10 @@
 package handlers
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
+	"log/slog"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -10,6 +12,7 @@ import (
 	"time"
 
 	"github.com/dsingh80/the-block/server/internal/domain"
+	"github.com/dsingh80/the-block/server/internal/platform/logging"
 	"github.com/dsingh80/the-block/server/internal/transport/dto"
 	"github.com/dsingh80/the-block/server/internal/usecase/bidding"
 )
@@ -85,6 +88,34 @@ func TestBidsPlace_Success(t *testing.T) {
 	want := dto.BidAccept{BidID: "bid-1", CurrentBid: 21_500, BidCount: 3, AcceptedAt: "2026-01-01T12:00:00Z", Viewer: dto.AcceptedByCaller}
 	if resp.Data != want {
 		t.Errorf("data = %+v, want %+v", resp.Data, want)
+	}
+}
+
+// TestBidsPlace_LogsBidIDAlongsideRequestID is the actual correlation
+// mechanism between an operational log line and the durable audit trail
+// (guidelines/06-backend-architecture.md, "Logging"): bids.request_id is
+// never populated by any write path, so bid_id -- which does round-trip
+// unchanged into bids.id -- appearing on the same log line as request_id is
+// what lets an operator trace a request to its durable row.
+func TestBidsPlace_LogsBidIDAlongsideRequestID(t *testing.T) {
+	var buf bytes.Buffer
+	testLogger := slog.New(slog.NewJSONHandler(&buf, nil)).With("request_id", "req-789")
+
+	store := &fakeBidStore{result: bidding.Result{BidID: "bid-correlated", CurrentPrice: 21_500, BidCount: 1}}
+	h := NewBids(store, &fakeRateLimiter{})
+
+	req := httptest.NewRequest(http.MethodPost, "/v1/listings/"+sampleListingUUID+"/bids", strings.NewReader(`{"amount": 21500}`))
+	req.SetPathValue("id", sampleListingUUID)
+	req = req.WithContext(logging.WithLogger(req.Context(), testLogger))
+	rec := httptest.NewRecorder()
+	h.Place(rec, req)
+
+	var line map[string]any
+	if err := json.Unmarshal(buf.Bytes(), &line); err != nil {
+		t.Fatalf("log output isn't valid JSON: %v (%s)", err, buf.String())
+	}
+	if line["request_id"] != "req-789" || line["bid_id"] != "bid-correlated" {
+		t.Errorf("line = %v, want request_id=req-789 and bid_id=bid-correlated together", line)
 	}
 }
 

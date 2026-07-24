@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"log"
+	"log/slog"
 	"strconv"
 	"time"
 
@@ -42,7 +42,7 @@ func (t *StreamTailer) Run(ctx context.Context, interval time.Duration) error {
 			return ctx.Err()
 		case <-ticker.C:
 			if err := t.Tick(ctx); err != nil {
-				log.Printf("redisstore: stream tailer tick: %v", err)
+				slog.Error("stream tailer tick failed", "error", err)
 			}
 		}
 	}
@@ -96,7 +96,8 @@ func (t *StreamTailer) Tick(ctx context.Context) error {
 		listingID := streamKeyToListingID[stream.Stream]
 		for _, msg := range stream.Messages {
 			if err := t.processEntry(ctx, listingID, msg); err != nil {
-				log.Printf("redisstore: stream tailer: listing %s entry %s: %v", listingID, msg.ID, err)
+				slog.Error("stream tailer: process entry failed",
+					"listing_id", listingID, "entry_id", msg.ID, "error", err)
 			}
 		}
 	}

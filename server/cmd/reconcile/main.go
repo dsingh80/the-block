@@ -7,41 +7,50 @@ package main
 
 import (
 	"context"
-	"log"
+	"log/slog"
+	"os"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 
 	"github.com/dsingh80/the-block/server/internal/platform/config"
+	"github.com/dsingh80/the-block/server/internal/platform/logging"
 	"github.com/dsingh80/the-block/server/internal/platform/pgstore"
 	"github.com/dsingh80/the-block/server/internal/platform/redisstore"
 	"github.com/dsingh80/the-block/server/internal/platform/seeddata"
 )
 
 func main() {
+	slog.SetDefault(logging.New(os.Stdout))
+
 	cfg := config.Load()
 	ctx := context.Background()
 
 	if err := pgstore.Migrate(cfg.DatabaseURL); err != nil {
-		log.Fatalf("reconcile: migrate: %v", err)
+		slog.Error("reconcile: migrate failed", "error", err)
+		os.Exit(1)
 	}
 
 	vehicles, err := seeddata.LoadVehicles(cfg.VehiclesDataPath)
 	if err != nil {
-		log.Fatalf("reconcile: load %s: %v", cfg.VehiclesDataPath, err)
+		slog.Error("reconcile: load vehicles failed", "path", cfg.VehiclesDataPath, "error", err)
+		os.Exit(1)
 	}
 
 	pool, err := pgxpool.New(ctx, cfg.DatabaseURL)
 	if err != nil {
-		log.Fatalf("reconcile: connect to postgres: %v", err)
+		slog.Error("reconcile: connect to postgres failed", "error", err)
+		os.Exit(1)
 	}
 	defer pool.Close()
 
 	inserted, err := pgstore.InsertNewListings(ctx, pool, vehicles)
 	if err != nil {
-		log.Fatalf("reconcile: insert new listings: %v", err)
+		slog.Error("reconcile: insert new listings failed", "error", err)
+		os.Exit(1)
 	}
-	log.Printf("reconcile: %d listing(s) in %s, %d newly inserted, %d already present and left untouched",
-		len(vehicles), cfg.VehiclesDataPath, len(inserted), len(vehicles)-len(inserted))
+	slog.Info("reconcile: dataset sync complete",
+		"total_listings", len(vehicles), "path", cfg.VehiclesDataPath,
+		"newly_inserted", len(inserted), "already_present", len(vehicles)-len(inserted))
 
 	// Redis priming reads back from Postgres, not the seeddata-loaded slice --
 	// only Postgres has auction_end as the trigger actually computed it, and
@@ -49,7 +58,8 @@ func main() {
 	reader := pgstore.NewListingReader(pool)
 	allListings, err := reader.ListAll(ctx)
 	if err != nil {
-		log.Fatalf("reconcile: list all listings: %v", err)
+		slog.Error("reconcile: list all listings failed", "error", err)
+		os.Exit(1)
 	}
 
 	rdb := redisstore.NewClient(cfg.RedisAddr)
@@ -57,8 +67,9 @@ func main() {
 
 	for _, l := range allListings {
 		if err := redisstore.PrimeListingState(ctx, rdb, l); err != nil {
-			log.Fatalf("reconcile: prime redis state for listing %s: %v", l.ID, err)
+			slog.Error("reconcile: prime redis state failed", "listing_id", l.ID, "error", err)
+			os.Exit(1)
 		}
 	}
-	log.Printf("reconcile: primed/verified Redis state for all %d listings", len(allListings))
+	slog.Info("reconcile: redis state primed", "listing_count", len(allListings))
 }

@@ -6,6 +6,8 @@ import (
 	"net/http"
 
 	"github.com/google/uuid"
+
+	"github.com/dsingh80/the-block/server/internal/platform/logging"
 )
 
 type contextKey int
@@ -26,6 +28,7 @@ func RequestID(next http.Handler) http.Handler {
 		}
 		w.Header().Set("X-Request-Id", id)
 		ctx := context.WithValue(r.Context(), requestIDKey, id)
+		ctx = logging.WithLogger(ctx, logging.FromContext(ctx).With("request_id", id))
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }
