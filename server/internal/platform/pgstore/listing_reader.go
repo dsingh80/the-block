@@ -43,7 +43,39 @@ func (r *ListingReader) Get(ctx context.Context, id string) (domain.Listing, err
 	return l, nil
 }
 
-func scanListing(row pgx.Row) (domain.Listing, error) {
+// ListAll returns every listing, ordered by id. A full scan is fine at this
+// dataset's size (a couple hundred rows); it exists specifically for
+// cmd/reconcile's Redis-priming pass, which needs auction_end as Postgres's
+// trigger actually computed it -- not the seeddata-loaded value, which has no
+// AuctionEnd set at all until Postgres derives it.
+func (r *ListingReader) ListAll(ctx context.Context) ([]domain.Listing, error) {
+	rows, err := r.pool.Query(ctx, `SELECT `+listingColumns+` FROM listings ORDER BY id`)
+	if err != nil {
+		return nil, fmt.Errorf("pgstore: list all listings: %w", err)
+	}
+	defer rows.Close()
+
+	var listings []domain.Listing
+	for rows.Next() {
+		l, err := scanListing(rows)
+		if err != nil {
+			return nil, fmt.Errorf("pgstore: scan listing: %w", err)
+		}
+		listings = append(listings, l)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("pgstore: iterate listings: %w", err)
+	}
+	return listings, nil
+}
+
+// rowScanner is satisfied by both pgx.Row (QueryRow, single row) and pgx.Rows
+// (Query, iterated via Next()) -- scanListing works for either.
+type rowScanner interface {
+	Scan(dest ...any) error
+}
+
+func scanListing(row rowScanner) (domain.Listing, error) {
 	var l domain.Listing
 	var durationSec int
 
