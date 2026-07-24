@@ -136,6 +136,23 @@ func (s *BidStore) BuyNow(ctx context.Context, listingID, sessionID string) (bid
 	}, nil
 }
 
+// BidListingIDs implements bidding.ViewerLookup: the listing ids sessionToken
+// has an accepted bid on, from the same set place_bid.lua/buy_now.lua SADD on
+// every acceptance (guidelines/06-backend-architecture.md). One SMEMBERS call
+// regardless of how many listings the caller is about to render viewer fields
+// for -- membership is then a plain map lookup per row, not a further round trip.
+func (s *BidStore) BidListingIDs(ctx context.Context, sessionToken string) (map[string]struct{}, error) {
+	ids, err := s.rdb.SMembers(ctx, SessionBidsKey(sessionToken)).Result()
+	if err != nil {
+		return nil, fmt.Errorf("redisstore: list bid listing ids for session %s: %w", sessionToken, err)
+	}
+	set := make(map[string]struct{}, len(ids))
+	for _, id := range ids {
+		set[id] = struct{}{}
+	}
+	return set, nil
+}
+
 // scriptErrorToDomain maps place_bid.lua/buy_now.lua's `error` code verbatim onto
 // the same domain.DomainError vocabulary the HTTP error envelope surfaces
 // (guidelines/06-backend-architecture.md) -- no separate translation table

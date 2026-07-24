@@ -23,3 +23,13 @@ type Store interface {
 	PlaceBid(ctx context.Context, listingID, sessionID string, amount int64) (Result, error)
 	BuyNow(ctx context.Context, listingID, sessionID string) (Result, error)
 }
+
+// ViewerLookup answers which listings a session has an accepted bid on -- the
+// join-free half of computing a listing's `viewer` object
+// (guidelines/06-backend-architecture.md, "Computing viewer without joins").
+// Populated by the same accept path as Store: place_bid.lua/buy_now.lua SADD
+// the session's own bids set on every acceptance, so this is a separate,
+// narrower interface over the same underlying store, not a different one.
+type ViewerLookup interface {
+	BidListingIDs(ctx context.Context, sessionToken string) (map[string]struct{}, error)
+}

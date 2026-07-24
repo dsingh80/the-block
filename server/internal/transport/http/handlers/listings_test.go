@@ -11,8 +11,35 @@ import (
 	"time"
 
 	"github.com/dsingh80/the-block/server/internal/domain"
+	"github.com/dsingh80/the-block/server/internal/transport/dto"
+	"github.com/dsingh80/the-block/server/internal/transport/http/middleware"
 	"github.com/dsingh80/the-block/server/internal/usecase/listings"
 )
+
+// sampleListingUUID is a well-formed UUID for the tests below that go through
+// Get/BidHistory -- unlike sampleDomainListing's "abc-123", these handlers
+// validate the {id} path value as a real UUID before touching any store.
+const sampleListingUUID = "11111111-1111-1111-1111-111111111111"
+
+func sampleDomainListingWithUUID() domain.Listing {
+	l := sampleDomainListing()
+	l.ID = sampleListingUUID
+	return l
+}
+
+// fixedSessionStore is a trivial sessions.Store fake that always resolves to
+// the same token, regardless of the inbound cookie -- lets a handler test
+// exercise a real resolved session (via the real middleware.Session, not a
+// hand-rolled context value) instead of every request reading back token="".
+type fixedSessionStore struct{ token string }
+
+func (f fixedSessionStore) Touch(_ context.Context, _ string) (domain.Session, bool, error) {
+	return domain.Session{Token: f.token}, false, nil
+}
+
+func withFixedSession(token string, h http.HandlerFunc) http.Handler {
+	return middleware.Session(fixedSessionStore{token: token})(h)
+}
 
 // fakeReader is a spy: it records the last PageRequest it was called with (so
 // tests can assert the handler wired query params correctly) and returns a
@@ -24,15 +51,52 @@ type fakeReader struct {
 	err         error
 	page        listings.Page // returned verbatim by ListPage when set
 	lastPageReq listings.PageRequest
+	getCalls    int
 }
 
 func (f *fakeReader) Get(_ context.Context, id string) (domain.Listing, error) {
+	f.getCalls++
 	for _, l := range f.all {
 		if l.ID == id {
 			return l, nil
 		}
 	}
 	return domain.Listing{}, domain.ErrNotFound
+}
+
+// fakeBidReader is a spy for audit.Reader.
+type fakeBidReader struct {
+	bids   []domain.Bid
+	err    error
+	calls  int
+	limits []int
+}
+
+func (f *fakeBidReader) ListForListing(_ context.Context, _ string, limit int) ([]domain.Bid, error) {
+	f.calls++
+	f.limits = append(f.limits, limit)
+	if f.err != nil {
+		return nil, f.err
+	}
+	return f.bids, nil
+}
+
+// fakeViewerLookup is a spy for bidding.ViewerLookup.
+type fakeViewerLookup struct {
+	ids   map[string]struct{}
+	err   error
+	calls int
+}
+
+func (f *fakeViewerLookup) BidListingIDs(_ context.Context, _ string) (map[string]struct{}, error) {
+	f.calls++
+	if f.err != nil {
+		return nil, f.err
+	}
+	if f.ids == nil {
+		return map[string]struct{}{}, nil
+	}
+	return f.ids, nil
 }
 
 func (f *fakeReader) ListPage(_ context.Context, req listings.PageRequest) (listings.Page, error) {
@@ -66,7 +130,7 @@ func sampleDomainListing() domain.Listing {
 
 func TestListingsList_WiresQueryParamsIntoPageRequest(t *testing.T) {
 	reader := &fakeReader{all: []domain.Listing{sampleDomainListing()}}
-	h := NewListings(reader)
+	h := NewListings(reader, &fakeBidReader{}, &fakeViewerLookup{})
 
 	req := httptest.NewRequest(http.MethodGet, "/v1/listings?status=active&make=Mazda&q=cx-5&sort=price-low&first=10&after=some-cursor", nil)
 	rec := httptest.NewRecorder()
@@ -86,7 +150,7 @@ func TestListingsList_WiresQueryParamsIntoPageRequest(t *testing.T) {
 
 func TestListingsList_DefaultsSortToEndingAndPageSizeTo24(t *testing.T) {
 	reader := &fakeReader{all: []domain.Listing{sampleDomainListing()}}
-	h := NewListings(reader)
+	h := NewListings(reader, &fakeBidReader{}, &fakeViewerLookup{})
 
 	req := httptest.NewRequest(http.MethodGet, "/v1/listings", nil)
 	rec := httptest.NewRecorder()
@@ -102,7 +166,7 @@ func TestListingsList_DefaultsSortToEndingAndPageSizeTo24(t *testing.T) {
 
 func TestListingsList_RejectsAnUnknownSort(t *testing.T) {
 	reader := &fakeReader{all: []domain.Listing{sampleDomainListing()}}
-	h := NewListings(reader)
+	h := NewListings(reader, &fakeBidReader{}, &fakeViewerLookup{})
 
 	req := httptest.NewRequest(http.MethodGet, "/v1/listings?sort=cheapest-first", nil)
 	rec := httptest.NewRecorder()
@@ -118,7 +182,7 @@ func TestListingsList_SerializesDataPageInfoAndNeverIncludesReservePrice(t *test
 		Items:       []domain.Listing{sampleDomainListing()},
 		HasNextPage: true, StartCursor: "start-cur", EndCursor: "end-cur",
 	}}
-	h := NewListings(reader)
+	h := NewListings(reader, &fakeBidReader{}, &fakeViewerLookup{})
 
 	req := httptest.NewRequest(http.MethodGet, "/v1/listings", nil)
 	rec := httptest.NewRecorder()
@@ -153,7 +217,7 @@ func TestListingsList_SerializesDataPageInfoAndNeverIncludesReservePrice(t *test
 
 func TestListingsList_ReaderErrorReturns500(t *testing.T) {
 	reader := &fakeReader{err: errors.New("boom")}
-	h := NewListings(reader)
+	h := NewListings(reader, &fakeBidReader{}, &fakeViewerLookup{})
 
 	req := httptest.NewRequest(http.MethodGet, "/v1/listings", nil)
 	rec := httptest.NewRecorder()
@@ -166,7 +230,7 @@ func TestListingsList_ReaderErrorReturns500(t *testing.T) {
 
 func TestListingsList_InvalidCursorMapsTo400(t *testing.T) {
 	reader := &fakeReader{err: domain.ErrInvalidCursor}
-	h := NewListings(reader)
+	h := NewListings(reader, &fakeBidReader{}, &fakeViewerLookup{})
 
 	req := httptest.NewRequest(http.MethodGet, "/v1/listings?after=garbage", nil)
 	rec := httptest.NewRecorder()
@@ -190,7 +254,7 @@ func TestListingsList_InvalidCursorMapsTo400(t *testing.T) {
 
 func TestListingsFacets_ReturnsDistinctMakes(t *testing.T) {
 	reader := &fakeReader{makes: []string{"Chevrolet", "Mazda", "Toyota"}}
-	h := NewListings(reader)
+	h := NewListings(reader, &fakeBidReader{}, &fakeViewerLookup{})
 
 	req := httptest.NewRequest(http.MethodGet, "/v1/listings/facets", nil)
 	rec := httptest.NewRecorder()
@@ -204,5 +268,145 @@ func TestListingsFacets_ReturnsDistinctMakes(t *testing.T) {
 	}
 	if len(body.Makes) != 3 || body.Makes[1] != "Mazda" {
 		t.Errorf("makes = %v, want [Chevrolet, Mazda, Toyota]", body.Makes)
+	}
+}
+
+func TestListingsGet_ReturnsListingWithViewer(t *testing.T) {
+	const viewerToken = "session-viewer"
+	highBidder := viewerToken
+	listing := sampleDomainListingWithUUID()
+	listing.HighBidderSessionID = &highBidder
+
+	reader := &fakeReader{all: []domain.Listing{listing}}
+	viewerLookup := &fakeViewerLookup{ids: map[string]struct{}{sampleListingUUID: {}}}
+	h := NewListings(reader, &fakeBidReader{}, viewerLookup)
+
+	req := httptest.NewRequest(http.MethodGet, "/v1/listings/"+sampleListingUUID, nil)
+	req.SetPathValue("id", sampleListingUUID)
+	rec := httptest.NewRecorder()
+	withFixedSession(viewerToken, h.Get).ServeHTTP(rec, req)
+
+	if rec.Code != http.StatusOK {
+		t.Fatalf("status = %d, want 200 (body: %s)", rec.Code, rec.Body.String())
+	}
+	if reader.getCalls != 1 {
+		t.Errorf("reader.Get called %d times, want exactly 1", reader.getCalls)
+	}
+	if viewerLookup.calls != 1 {
+		t.Errorf("viewerLookup.BidListingIDs called %d times, want exactly 1 -- no per-row/N+1 lookups", viewerLookup.calls)
+	}
+
+	var body struct {
+		ID     string     `json:"id"`
+		Viewer dto.Viewer `json:"viewer"`
+	}
+	if err := json.Unmarshal(rec.Body.Bytes(), &body); err != nil {
+		t.Fatalf("response isn't valid JSON: %v (%s)", err, rec.Body.String())
+	}
+	if body.ID != sampleListingUUID {
+		t.Errorf("id = %q, want %q", body.ID, sampleListingUUID)
+	}
+	want := dto.Viewer{HasBid: true, IsHighBidder: true, IsOutbid: false}
+	if body.Viewer != want {
+		t.Errorf("viewer = %+v, want %+v", body.Viewer, want)
+	}
+}
+
+func TestListingsGet_UnknownIdReturns404(t *testing.T) {
+	reader := &fakeReader{}
+	h := NewListings(reader, &fakeBidReader{}, &fakeViewerLookup{})
+
+	unknownID := "22222222-2222-2222-2222-222222222222"
+	req := httptest.NewRequest(http.MethodGet, "/v1/listings/"+unknownID, nil)
+	req.SetPathValue("id", unknownID)
+	rec := httptest.NewRecorder()
+	h.Get(rec, req)
+
+	if rec.Code != http.StatusNotFound {
+		t.Errorf("status = %d, want 404 for a well-formed but unknown id", rec.Code)
+	}
+}
+
+func TestListingsGet_MalformedIdReturns404(t *testing.T) {
+	reader := &fakeReader{}
+	h := NewListings(reader, &fakeBidReader{}, &fakeViewerLookup{})
+
+	req := httptest.NewRequest(http.MethodGet, "/v1/listings/not-a-uuid", nil)
+	req.SetPathValue("id", "not-a-uuid")
+	rec := httptest.NewRecorder()
+	h.Get(rec, req)
+
+	if rec.Code != http.StatusNotFound {
+		t.Errorf("status = %d, want 404 for a malformed id", rec.Code)
+	}
+	if reader.getCalls != 0 {
+		t.Errorf("reader.Get called %d times, want 0 -- a malformed id must be rejected before touching any store", reader.getCalls)
+	}
+}
+
+func TestListingsBidHistory_ReturnsAnonymizedHistoryNewestFirst(t *testing.T) {
+	listing := sampleDomainListingWithUUID()
+	reader := &fakeReader{all: []domain.Listing{listing}}
+	t0 := time.Date(2026, 1, 1, 12, 0, 0, 0, time.UTC)
+	bidReader := &fakeBidReader{bids: []domain.Bid{
+		{ID: "bid-1", ListingID: sampleListingUUID, SessionID: "session-a", Type: domain.BidTypeBid, Amount: 21_000, BidCountAfter: 1, AcceptedAt: t0},
+		{ID: "bid-2", ListingID: sampleListingUUID, SessionID: "session-b", Type: domain.BidTypeBid, Amount: 21_500, BidCountAfter: 2, AcceptedAt: t0.Add(time.Minute)},
+	}}
+	h := NewListings(reader, bidReader, &fakeViewerLookup{})
+
+	req := httptest.NewRequest(http.MethodGet, "/v1/listings/"+sampleListingUUID+"/bids", nil)
+	req.SetPathValue("id", sampleListingUUID)
+	rec := httptest.NewRecorder()
+	h.BidHistory(rec, req)
+
+	if rec.Code != http.StatusOK {
+		t.Fatalf("status = %d, want 200 (body: %s)", rec.Code, rec.Body.String())
+	}
+	if reader.getCalls != 1 {
+		t.Errorf("reader.Get (existence check) called %d times, want exactly 1", reader.getCalls)
+	}
+	if got := bidReader.limits; len(got) != 1 || got[0] != defaultBidHistoryLimit {
+		t.Errorf("bidReader.ListForListing called with limits %v, want exactly [%d]", got, defaultBidHistoryLimit)
+	}
+
+	var body dto.BidHistory
+	if err := json.Unmarshal(rec.Body.Bytes(), &body); err != nil {
+		t.Fatalf("response isn't valid JSON: %v (%s)", err, rec.Body.String())
+	}
+	if len(body.Data) != 2 || body.Data[0].Handle != "Bidder 2" || body.Data[1].Handle != "Bidder 1" {
+		t.Fatalf("data handles = %+v, want [\"Bidder 2\", \"Bidder 1\"] (newest first, numbered by first appearance)", body.Data)
+	}
+}
+
+func TestListingsBidHistory_UnknownIdReturns404WithoutQueryingBids(t *testing.T) {
+	reader := &fakeReader{}
+	bidReader := &fakeBidReader{}
+	h := NewListings(reader, bidReader, &fakeViewerLookup{})
+
+	unknownID := "22222222-2222-2222-2222-222222222222"
+	req := httptest.NewRequest(http.MethodGet, "/v1/listings/"+unknownID+"/bids", nil)
+	req.SetPathValue("id", unknownID)
+	rec := httptest.NewRecorder()
+	h.BidHistory(rec, req)
+
+	if rec.Code != http.StatusNotFound {
+		t.Errorf("status = %d, want 404 for a well-formed but unknown id", rec.Code)
+	}
+	if bidReader.calls != 0 {
+		t.Errorf("bidReader.ListForListing called %d times, want 0 -- no point querying bids for a listing that doesn't exist", bidReader.calls)
+	}
+}
+
+func TestListingsBidHistory_MalformedIdReturns404(t *testing.T) {
+	reader := &fakeReader{}
+	h := NewListings(reader, &fakeBidReader{}, &fakeViewerLookup{})
+
+	req := httptest.NewRequest(http.MethodGet, "/v1/listings/not-a-uuid/bids", nil)
+	req.SetPathValue("id", "not-a-uuid")
+	rec := httptest.NewRecorder()
+	h.BidHistory(rec, req)
+
+	if rec.Code != http.StatusNotFound {
+		t.Errorf("status = %d, want 404 for a malformed id", rec.Code)
 	}
 }

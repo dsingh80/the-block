@@ -7,6 +7,8 @@ import (
 
 	"github.com/dsingh80/the-block/server/internal/transport/http/handlers"
 	"github.com/dsingh80/the-block/server/internal/transport/http/middleware"
+	"github.com/dsingh80/the-block/server/internal/usecase/audit"
+	"github.com/dsingh80/the-block/server/internal/usecase/bidding"
 	"github.com/dsingh80/the-block/server/internal/usecase/listings"
 	"github.com/dsingh80/the-block/server/internal/usecase/sessions"
 )
@@ -16,12 +18,14 @@ import (
 // methods, so wiring it now is harmless even before any such route exists,
 // and every request (read-only included) getting a resolved session is what
 // the rest of this API assumes (guidelines/06-backend-architecture.md).
-func NewRouter(listingReader listings.Reader, sessionStore sessions.Store) http.Handler {
+func NewRouter(listingReader listings.Reader, bidReader audit.Reader, viewerLookup bidding.ViewerLookup, sessionStore sessions.Store) http.Handler {
 	mux := http.NewServeMux()
 
-	listingsHandler := handlers.NewListings(listingReader)
+	listingsHandler := handlers.NewListings(listingReader, bidReader, viewerLookup)
 	mux.HandleFunc("GET /v1/listings", listingsHandler.List)
 	mux.HandleFunc("GET /v1/listings/facets", listingsHandler.Facets)
+	mux.HandleFunc("GET /v1/listings/{id}", listingsHandler.Get)
+	mux.HandleFunc("GET /v1/listings/{id}/bids", listingsHandler.BidHistory)
 
 	return Chain(mux,
 		middleware.RequestID,

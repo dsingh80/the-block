@@ -46,12 +46,16 @@ type ListingSummary struct {
 	CurrentBid        *int64   `json:"current_bid"` // null until bid_count > 0, matching the client's current_bid ?? starting_bid fallback
 	BidCount          int      `json:"bid_count"`
 	PurchasedAt       *string  `json:"purchased_at"` // RFC3339, null unless Buy Now closed it
+	Viewer            Viewer   `json:"viewer"`
 }
 
 // NewListingSummary maps a domain.Listing to the wire shape at instant now.
 // Status is computed here (Listing.Status(now)), not stored -- see
-// guidelines/06-backend-architecture.md.
-func NewListingSummary(l domain.Listing, now time.Time) ListingSummary {
+// guidelines/06-backend-architecture.md. viewer is computed by the caller
+// (domain.ComputeViewer) rather than here, since it needs the requesting
+// session's token and bid-listing set -- inputs this otherwise-pure mapping
+// function has no other reason to take.
+func NewListingSummary(l domain.Listing, now time.Time, viewer domain.Viewer) ListingSummary {
 	var currentBid *int64
 	if l.BidCount > 0 {
 		v := l.CurrentPrice
@@ -77,6 +81,7 @@ func NewListingSummary(l domain.Listing, now time.Time) ListingSummary {
 		StartingBid:  l.StartingBid, BuyNowPrice: l.BuyNowPrice,
 		Images: l.Images, SellingDealership: l.SellingDealership, Lot: l.Lot,
 		CurrentBid: currentBid, BidCount: l.BidCount, PurchasedAt: purchasedAt,
+		Viewer: NewViewer(viewer),
 	}
 }
 

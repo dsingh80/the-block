@@ -32,3 +32,15 @@ type Viewer struct {
 	IsHighBidder bool
 	IsOutbid     bool
 }
+
+// ComputeViewer derives sessionToken's relationship to l from two cheap facts
+// instead of a SQL join: IsHighBidder is a plain column comparison (already
+// denormalized onto the listing row by the stream-tailer drain), and HasBid is
+// a lookup against a set the caller already fetched with one Redis SMEMBERS
+// call regardless of how many listings are being rendered
+// (guidelines/06-backend-architecture.md, "Computing viewer without joins").
+func ComputeViewer(l Listing, sessionToken string, bidListingIDs map[string]struct{}) Viewer {
+	_, hasBid := bidListingIDs[l.ID]
+	isHighBidder := sessionToken != "" && l.HighBidderSessionID != nil && *l.HighBidderSessionID == sessionToken
+	return Viewer{HasBid: hasBid, IsHighBidder: isHighBidder, IsOutbid: hasBid && !isHighBidder}
+}

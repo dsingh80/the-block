@@ -219,6 +219,57 @@ func TestBidStore_PlaceBid(t *testing.T) {
 	})
 }
 
+// TestBidStore_BidListingIDs covers bidding.ViewerLookup -- the read side of
+// the same set place_bid.lua SADDs into on every acceptance (tested above via
+// raw SIsMember calls; this is the actual production method handlers call).
+func TestBidStore_BidListingIDs(t *testing.T) {
+	ctx := context.Background()
+	rdb := startRedis(t)
+	store := redisstore.NewBidStore(rdb, redisstore.DefaultIdempotencyTTL)
+
+	now := time.Now()
+	activeStart, activeEnd := now.Add(-time.Hour), now.Add(time.Hour)
+	listingA, listingB := "listing-viewer-a", "listing-viewer-b"
+	primeListingState(t, rdb, listingA, 1_000, 0, activeStart, activeEnd)
+	primeListingState(t, rdb, listingB, 1_000, 0, activeStart, activeEnd)
+
+	t.Run("a session with no accepted bids at all gets an empty set, not an error", func(t *testing.T) {
+		ids, err := store.BidListingIDs(ctx, "session-never-bid")
+		if err != nil {
+			t.Fatalf("BidListingIDs: %v", err)
+		}
+		if len(ids) != 0 {
+			t.Errorf("ids = %v, want empty", ids)
+		}
+	})
+
+	t.Run("accepted bids across multiple listings all show up, and only for that session", func(t *testing.T) {
+		if _, err := store.PlaceBid(ctx, listingA, "session-viewer", 1_100); err != nil {
+			t.Fatalf("PlaceBid(listingA): %v", err)
+		}
+		if _, err := store.PlaceBid(ctx, listingB, "session-viewer", 1_100); err != nil {
+			t.Fatalf("PlaceBid(listingB): %v", err)
+		}
+		if _, err := store.PlaceBid(ctx, listingA, "session-other", 1_200); err != nil {
+			t.Fatalf("PlaceBid(listingA, other session): %v", err)
+		}
+
+		ids, err := store.BidListingIDs(ctx, "session-viewer")
+		if err != nil {
+			t.Fatalf("BidListingIDs: %v", err)
+		}
+		if _, ok := ids[listingA]; !ok {
+			t.Error("expected listingA in session-viewer's bid set")
+		}
+		if _, ok := ids[listingB]; !ok {
+			t.Error("expected listingB in session-viewer's bid set")
+		}
+		if len(ids) != 2 {
+			t.Errorf("ids = %v, want exactly 2 entries (not session-other's bid too)", ids)
+		}
+	})
+}
+
 // Distinct from "an identical retry replays the original result" above: this
 // proves the *other* half of that behavior -- once the idempotency cache
 // entry's own TTL has actually elapsed, the identical (session, listing, amount)

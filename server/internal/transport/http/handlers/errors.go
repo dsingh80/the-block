@@ -17,6 +17,7 @@ var domainErrorResponses = map[string]struct {
 	status  int
 	message string
 }{
+	"not_found":            {http.StatusNotFound, "That listing doesn't exist."},
 	"invalid_cursor":       {http.StatusBadRequest, "This page link is invalid."},
 	"cursor_sort_mismatch": {http.StatusBadRequest, "This page link doesn't match the current filter or sort -- start over from the first page."},
 }
