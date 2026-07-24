@@ -17,10 +17,14 @@ import (
 //go:embed scripts/place_bid.lua
 var placeBidSource string
 
+//go:embed scripts/buy_now.lua
+var buyNowSource string
+
 // redis.NewScript gives EVALSHA-with-NOSCRIPT-fallback for free (it tries EVALSHA
 // first, and on a NOSCRIPT reply transparently EVALs and caches it) -- no need to
 // hand-rolled SCRIPT LOAD bookkeeping ourselves.
 var placeBidScript = redis.NewScript(placeBidSource)
+var buyNowScript = redis.NewScript(buyNowSource)
 
 // idempotencyTTL bounds how long a (session, listing, amount) triple's cached
 // result is replayed -- long enough to cover a realistic retry delay, short
@@ -90,11 +94,48 @@ func (s *BidStore) PlaceBid(ctx context.Context, listingID, sessionID string, am
 	}, nil
 }
 
-// scriptErrorToDomain maps place_bid.lua's `error` code verbatim onto the same
-// domain.DomainError vocabulary the HTTP error envelope surfaces
+// BuyNow is place_bid.lua's structural sibling: same idempotency/existence/
+// lifecycle checks, no amount (a listing has exactly one buy-now price).
+func (s *BidStore) BuyNow(ctx context.Context, listingID, sessionID string) (bidding.Result, error) {
+	bidID, err := uuid.NewV7()
+	if err != nil {
+		return bidding.Result{}, fmt.Errorf("redisstore: generate bid id: %w", err)
+	}
+
+	keys := []string{
+		ListingStateKey(listingID),
+		ListingStreamKey(listingID),
+		IdempotencyBuyNowKey(sessionID, listingID),
+		SessionBidsKey(sessionID),
+	}
+	args := []any{sessionID, bidID.String(), int(idempotencyTTL.Seconds()), listingID}
+
+	raw, err := buyNowScript.Run(ctx, s.rdb, keys, args...).Text()
+	if err != nil {
+		return bidding.Result{}, fmt.Errorf("redisstore: buy_now script: %w", err)
+	}
+
+	var res scriptResult
+	if err := json.Unmarshal([]byte(raw), &res); err != nil {
+		return bidding.Result{}, fmt.Errorf("redisstore: decode buy_now result %q: %w", raw, err)
+	}
+
+	if !res.OK {
+		return bidding.Result{}, scriptErrorToDomain(res)
+	}
+
+	return bidding.Result{
+		BidID:        res.BidID,
+		CurrentPrice: res.CurrentPrice,
+		BidCount:     res.BidCount,
+		AcceptedAt:   time.UnixMilli(res.AcceptedAtMs).UTC(),
+	}, nil
+}
+
+// scriptErrorToDomain maps place_bid.lua/buy_now.lua's `error` code verbatim onto
+// the same domain.DomainError vocabulary the HTTP error envelope surfaces
 // (guidelines/06-backend-architecture.md) -- no separate translation table
-// between the atomic path and HTTP. buy_now.lua's own error (buy_now_unavailable)
-// is added here in the commit that introduces it.
+// between the atomic path and HTTP.
 func scriptErrorToDomain(res scriptResult) error {
 	switch res.Error {
 	case "not_found":
@@ -105,6 +146,8 @@ func scriptErrorToDomain(res scriptResult) error {
 		return domain.ErrAuctionEnded
 	case "bid_too_low":
 		return domain.NewBidTooLowError(res.Minimum)
+	case "buy_now_unavailable":
+		return domain.ErrBuyNowUnavailable
 	default:
 		return fmt.Errorf("redisstore: unrecognized script error code %q", res.Error)
 	}

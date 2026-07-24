@@ -21,4 +21,5 @@ type Result struct {
 // Store is the atomic bid-accept port.
 type Store interface {
 	PlaceBid(ctx context.Context, listingID, sessionID string, amount int64) (Result, error)
+	BuyNow(ctx context.Context, listingID, sessionID string) (Result, error)
 }
