@@ -23,6 +23,7 @@ Other scripts, run from `client/`: `npm test` (Vitest), `npm run lint` (ESLint),
 - **No rival-bid simulation.** Price and bid count only change from your own actions — there's no other buyer to get outbid by. `server/` is a placeholder for a real backend later, which is where simulated competing bids belong instead of a client-side timer hack.
 - **`reserve_price` is in the dataset but intentionally not shown** — buyers don't see reserve amounts in a real auction either.
 - **Watchlist starts empty.** No hand-picked seed data.
+- **Money is a whole number everywhere** (the new `server/` backend and its Postgres schema included) — every cost in this domain is flat, with no decimal-prone fees or taxes, so there are no cents anywhere: `starting_bid`, `current_bid`, bid increments, all whole integers. If fractional currency is ever needed, the two migration paths are (a) switch the column/application type to a decimal type, or (b) keep integers and scale by 100, treating the last two digits as cents — either way, deliberately not a silent default.
 
 ## Stack
 
