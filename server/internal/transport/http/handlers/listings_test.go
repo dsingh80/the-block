@@ -28,17 +28,24 @@ func sampleDomainListingWithUUID() domain.Listing {
 }
 
 // fixedSessionStore is a trivial sessions.Store fake that always resolves to
-// the same token, regardless of the inbound cookie -- lets a handler test
+// the same session, regardless of the inbound cookie -- lets a handler test
 // exercise a real resolved session (via the real middleware.Session, not a
 // hand-rolled context value) instead of every request reading back token="".
-type fixedSessionStore struct{ token string }
+type fixedSessionStore struct {
+	token     string
+	createdAt time.Time
+}
 
 func (f fixedSessionStore) Touch(_ context.Context, _ string) (domain.Session, bool, error) {
-	return domain.Session{Token: f.token}, false, nil
+	return domain.Session{Token: f.token, CreatedAt: f.createdAt}, false, nil
 }
 
 func withFixedSession(token string, h http.HandlerFunc) http.Handler {
 	return middleware.Session(fixedSessionStore{token: token})(h)
+}
+
+func withFixedSessionAt(token string, createdAt time.Time, h http.HandlerFunc) http.Handler {
+	return middleware.Session(fixedSessionStore{token: token, createdAt: createdAt})(h)
 }
 
 // fakeReader is a spy: it records the last PageRequest it was called with (so
