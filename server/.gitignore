@@ -1,0 +1,12 @@
+# Build artifacts
+/bin/
+*.exe
+*.test
+*.out
+
+# Local env
+.env
+.env.local
+
+# Generated local TLS certs (setup-ssl-windows.sh output) — regenerate via the script, don't commit
+deploy/docker/certs/
