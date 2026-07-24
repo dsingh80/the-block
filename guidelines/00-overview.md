@@ -11,6 +11,7 @@ Read this file first, then the others as relevant:
 - `03-guardrails.md` — this app's actual trust boundaries: input validation and state-mutation correctness.
 - `04-testing-strategy.md` — what "tested" means for this project and how to verify it.
 - `05-pr-review-process.md` — an automated PR review/fix loop, documented as a future option. **Not built yet** — read this when actually setting one up, not for day-to-day development.
+- `06-backend-architecture.md` — the Go/Redis/Postgres backend in `server/`: data-store split, API/pagination design, realtime, sessions/security, deployment, and the decisions (and reversals) behind each.
 
 ## Locked-in stack decisions
 
@@ -45,10 +46,10 @@ These were decided explicitly, largely during the planning conversation for the 
 
 ## Non-goals (for now)
 
-- A real backend, authentication, or WebSockets — `server/` is a placeholder. Rival-bid simulation is explicitly deferred there, not faked client-side with a timer.
-- Persistence (`localStorage`, etc.) for bids/watchlist/compare/filters — everything resets on refresh, by design, documented in the README.
+- **User authentication or access control.** A real backend now exists (`server/` — see `06-backend-architecture.md`), including WebSockets and rival bidding, but sessions are identifiable, not authenticated — no login, no accounts.
+- Persistence (`localStorage`, etc.) for bids/watchlist/compare/filters **in the client's own local state** — bidding state now lives server-side (`06-backend-architecture.md`), but watchlist/compare selection still resets on refresh, by design.
 - The "My Auctions" page from the handoff doc — the concrete design mock ships it disabled/unbuilt, and this app removes it entirely rather than shipping a dead nav link.
-- Pagination or virtualization on the inventory grid — 200 client-side records renders fine without either; don't add either speculatively.
+- Virtualization on the inventory grid — cursor pagination (`06-backend-architecture.md`) now bounds how many rows render at once per page, but the grid still renders each loaded page's DOM directly rather than windowing it; not needed at current page sizes.
 - Tailwind or any other CSS framework — see the styling decision above.
 - A built, running automated PR-review CI loop — see `05-pr-review-process.md`, which documents the *design* as an option without standing up the actual GitHub Actions workflows.
 
