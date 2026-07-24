@@ -10,7 +10,18 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 
 	"github.com/dsingh80/the-block/server/internal/domain"
+	"github.com/dsingh80/the-block/server/internal/usecase/listings"
 )
+
+// statusCase is the same upcoming/active/ended computation described in
+// guidelines/06-backend-architecture.md, reused by both the status filter and
+// (in a later commit) the "ending soonest" sort -- one pair of predicates
+// backs both.
+const statusCase = `
+	CASE WHEN purchased_at IS NOT NULL THEN 'ended'
+	     WHEN now() >= auction_end   THEN 'ended'
+	     WHEN now() >= auction_start THEN 'active'
+	     ELSE 'upcoming' END`
 
 // ListingReader implements listings.Reader (internal/usecase/listings) against
 // Postgres, the system of record for listing reads (guidelines/06-backend-architecture.md).
@@ -67,6 +78,64 @@ func (r *ListingReader) ListAll(ctx context.Context) ([]domain.Listing, error) {
 		return nil, fmt.Errorf("pgstore: iterate listings: %w", err)
 	}
 	return listings, nil
+}
+
+// ListFiltered applies the basic (pre-pagination) filter set. Search mirrors
+// the client's own haystack-join-then-substring-match
+// (client/src/views/InventoryView.vue): year/make/model/trim/vin/selling_dealership
+// concatenated and matched case-insensitively, not a per-field OR chain.
+func (r *ListingReader) ListFiltered(ctx context.Context, filter listings.Filter) ([]domain.Listing, error) {
+	rows, err := r.pool.Query(ctx, `
+		SELECT `+listingColumns+`
+		FROM listings
+		WHERE ($1 = '' OR (`+statusCase+`) = $1)
+		  AND ($2 = '' OR make = $2)
+		  AND ($3 = '' OR lower(
+		        year::text || ' ' || make || ' ' || model || ' ' || trim || ' ' || vin || ' ' || selling_dealership
+		      ) LIKE '%' || lower($3) || '%')
+		ORDER BY id`,
+		filter.Status, filter.Make, filter.Search)
+	if err != nil {
+		return nil, fmt.Errorf("pgstore: list filtered listings: %w", err)
+	}
+	defer rows.Close()
+
+	var result []domain.Listing
+	for rows.Next() {
+		l, err := scanListing(rows)
+		if err != nil {
+			return nil, fmt.Errorf("pgstore: scan listing: %w", err)
+		}
+		result = append(result, l)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("pgstore: iterate filtered listings: %w", err)
+	}
+	return result, nil
+}
+
+// DistinctMakes powers the filter dropdown's options -- a paginated list
+// can't cheaply give the client "every distinct make across all listings" on
+// its own (guidelines/06-backend-architecture.md).
+func (r *ListingReader) DistinctMakes(ctx context.Context) ([]string, error) {
+	rows, err := r.pool.Query(ctx, `SELECT DISTINCT make FROM listings ORDER BY make`)
+	if err != nil {
+		return nil, fmt.Errorf("pgstore: distinct makes: %w", err)
+	}
+	defer rows.Close()
+
+	var makes []string
+	for rows.Next() {
+		var m string
+		if err := rows.Scan(&m); err != nil {
+			return nil, fmt.Errorf("pgstore: scan make: %w", err)
+		}
+		makes = append(makes, m)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, fmt.Errorf("pgstore: iterate makes: %w", err)
+	}
+	return makes, nil
 }
 
 // rowScanner is satisfied by both pgx.Row (QueryRow, single row) and pgx.Rows

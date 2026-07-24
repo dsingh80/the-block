@@ -5,6 +5,7 @@ package integration
 import (
 	"context"
 	"errors"
+	"sort"
 	"testing"
 	"time"
 
@@ -12,6 +13,7 @@ import (
 
 	"github.com/dsingh80/the-block/server/internal/domain"
 	"github.com/dsingh80/the-block/server/internal/platform/pgstore"
+	"github.com/dsingh80/the-block/server/internal/usecase/listings"
 )
 
 func sampleListing(id, vin string) domain.Listing {
@@ -134,6 +136,109 @@ func TestInsertNewListings_InsertOnlyNew(t *testing.T) {
 		}
 		if got.CurrentPrice != 55_555 || got.BidCount != 7 {
 			t.Errorf("listing a after reconcile = current_price=%d bid_count=%d, want the live-bid values (55555, 7) untouched", got.CurrentPrice, got.BidCount)
+		}
+	})
+}
+
+func TestListingReader_ListFilteredAndDistinctMakes(t *testing.T) {
+	ctx := context.Background()
+	pool := newPoolAndMigrate(t)
+	reader := pgstore.NewListingReader(pool)
+	now := time.Now()
+
+	mazda := sampleListing("aaaaaaaa-0000-0000-0000-000000000001", "MAZDAVIN001")
+	mazda.AuctionStart = now.Add(-time.Hour) // active
+	mazda.AuctionDuration = 24 * time.Hour
+
+	toyota := sampleListing("aaaaaaaa-0000-0000-0000-000000000002", "TOYOTAVIN002")
+	toyota.Make, toyota.Model = "Toyota", "Camry"
+	toyota.AuctionStart = now.Add(time.Hour) // upcoming
+	toyota.AuctionDuration = 24 * time.Hour
+
+	ended := sampleListing("aaaaaaaa-0000-0000-0000-000000000003", "ENDEDVIN003")
+	ended.Make, ended.Model = "Toyota", "Corolla"
+	ended.AuctionStart = now.Add(-48 * time.Hour) // ended (well past a 24h window)
+	ended.AuctionDuration = 24 * time.Hour
+
+	if _, err := pgstore.InsertNewListings(ctx, pool, []domain.Listing{mazda, toyota, ended}); err != nil {
+		t.Fatalf("InsertNewListings: %v", err)
+	}
+
+	t.Run("no filter returns everything", func(t *testing.T) {
+		got, err := reader.ListFiltered(ctx, listings.Filter{})
+		if err != nil {
+			t.Fatalf("ListFiltered: %v", err)
+		}
+		if len(got) != 3 {
+			t.Errorf("got %d listings, want 3", len(got))
+		}
+	})
+
+	t.Run("make filter is an exact match", func(t *testing.T) {
+		got, err := reader.ListFiltered(ctx, listings.Filter{Make: "Toyota"})
+		if err != nil {
+			t.Fatalf("ListFiltered: %v", err)
+		}
+		if len(got) != 2 {
+			t.Fatalf("got %d listings for make=Toyota, want 2", len(got))
+		}
+		for _, l := range got {
+			if l.Make != "Toyota" {
+				t.Errorf("got make %q, want only Toyota", l.Make)
+			}
+		}
+	})
+
+	t.Run("status filter matches the real lifecycle at query time", func(t *testing.T) {
+		for _, tt := range []struct {
+			status   string
+			wantVIN  string
+			wantOnly bool
+		}{
+			{"active", "MAZDAVIN001", true},
+			{"upcoming", "TOYOTAVIN002", true},
+			{"ended", "ENDEDVIN003", true},
+		} {
+			got, err := reader.ListFiltered(ctx, listings.Filter{Status: tt.status})
+			if err != nil {
+				t.Fatalf("ListFiltered(status=%s): %v", tt.status, err)
+			}
+			if len(got) != 1 || got[0].VIN != tt.wantVIN {
+				t.Errorf("status=%s returned %d listings (want [%s]): %+v", tt.status, len(got), tt.wantVIN, got)
+			}
+		}
+	})
+
+	t.Run("search matches across make/model/vin, case-insensitively", func(t *testing.T) {
+		got, err := reader.ListFiltered(ctx, listings.Filter{Search: "corolla"})
+		if err != nil {
+			t.Fatalf("ListFiltered: %v", err)
+		}
+		if len(got) != 1 || got[0].VIN != "ENDEDVIN003" {
+			t.Errorf("search=corolla returned %+v, want just ENDEDVIN003", got)
+		}
+	})
+
+	t.Run("filters compose", func(t *testing.T) {
+		got, err := reader.ListFiltered(ctx, listings.Filter{Make: "Toyota", Status: "ended"})
+		if err != nil {
+			t.Fatalf("ListFiltered: %v", err)
+		}
+		if len(got) != 1 || got[0].VIN != "ENDEDVIN003" {
+			t.Errorf("make=Toyota+status=ended returned %+v, want just ENDEDVIN003", got)
+		}
+	})
+
+	t.Run("DistinctMakes is sorted and deduplicated", func(t *testing.T) {
+		makes, err := reader.DistinctMakes(ctx)
+		if err != nil {
+			t.Fatalf("DistinctMakes: %v", err)
+		}
+		if !sort.StringsAreSorted(makes) {
+			t.Errorf("makes = %v, want sorted", makes)
+		}
+		if len(makes) != 2 { // Mazda, Toyota -- Toyota appears twice in the data but once in the facet
+			t.Errorf("makes = %v, want exactly [Mazda, Toyota]", makes)
 		}
 	})
 }

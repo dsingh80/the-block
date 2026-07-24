@@ -1,6 +1,10 @@
 package middleware
 
-import "net/http"
+import (
+	"net/http"
+
+	"github.com/dsingh80/the-block/server/internal/transport/httputil"
+)
 
 // CSRFHeaderName/Value: requiring this on state-changing requests is a cheap
 // second layer behind SameSite=Lax -- a simple cross-site form/request can't
@@ -18,9 +22,8 @@ const (
 func CSRF(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if isStateChanging(r.Method) && r.Header.Get(CSRFHeaderName) != CSRFHeaderValue {
-			w.Header().Set("Content-Type", "application/json")
-			w.WriteHeader(http.StatusForbidden)
-			_, _ = w.Write([]byte(`{"error":{"code":"csrf_check_failed","message":"Missing or invalid ` + CSRFHeaderName + ` header."}}`))
+			httputil.WriteError(w, http.StatusForbidden, "csrf_check_failed",
+				"Missing or invalid "+CSRFHeaderName+" header.", nil, RequestIDFromContext(r.Context()))
 			return
 		}
 		next.ServeHTTP(w, r)
