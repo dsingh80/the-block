@@ -71,7 +71,7 @@ func primeListingState(t *testing.T, rdb *goredis.Client, listingID string, curr
 func TestBidStore_PlaceBid(t *testing.T) {
 	ctx := context.Background()
 	rdb := startRedis(t)
-	store := redisstore.NewBidStore(rdb)
+	store := redisstore.NewBidStore(rdb, redisstore.DefaultIdempotencyTTL)
 
 	now := time.Now()
 	activeStart, activeEnd := now.Add(-time.Hour), now.Add(time.Hour)
@@ -217,4 +217,44 @@ func TestBidStore_PlaceBid(t *testing.T) {
 			t.Errorf("BidCount = %d, want 2", second.BidCount)
 		}
 	})
+}
+
+// Distinct from "an identical retry replays the original result" above: this
+// proves the *other* half of that behavior -- once the idempotency cache
+// entry's own TTL has actually elapsed, the identical (session, listing, amount)
+// triple is evaluated fresh again, not replayed forever. Both halves matter: a
+// cache that never expired would still pass every other bidding test here, so
+// this needs its own real wall-clock check against Redis.
+func TestBidStore_PlaceBid_IdempotencyExpiry(t *testing.T) {
+	ctx := context.Background()
+	rdb := startRedis(t)
+	// Redis's SET ... EX only accepts whole seconds, so 1s is as short as this
+	// can be made (matching the same floor already hit in the session store test).
+	store := redisstore.NewBidStore(rdb, time.Second)
+
+	listingID := "listing-idempotency-expiry"
+	now := time.Now()
+	primeListingState(t, rdb, listingID, 1_000, 0, now.Add(-time.Hour), now.Add(time.Hour))
+
+	if _, err := store.PlaceBid(ctx, listingID, "session-a", 1_100); err != nil {
+		t.Fatalf("first PlaceBid: %v", err)
+	}
+
+	time.Sleep(1200 * time.Millisecond) // past the 1s idempotency TTL
+
+	// The identical (session, listing, amount) triple is re-evaluated for real
+	// this time, not replayed -- and since current_price already moved to 1100,
+	// bidding 1100 again now correctly fails as too low.
+	_, err := store.PlaceBid(ctx, listingID, "session-a", 1_100)
+	if !errors.Is(err, domain.ErrBidTooLow) {
+		t.Fatalf("after idempotency expiry, err = %v, want domain.ErrBidTooLow (re-evaluated, not replayed)", err)
+	}
+
+	finalCount, err := rdb.HGet(ctx, redisstore.ListingStateKey(listingID), "bid_count").Int()
+	if err != nil {
+		t.Fatalf("read bid_count: %v", err)
+	}
+	if finalCount != 1 {
+		t.Errorf("bid_count = %d, want 1 (the second call was correctly rejected, not counted)", finalCount)
+	}
 }

@@ -24,7 +24,7 @@ func setBuyNowPrice(t *testing.T, rdb *goredis.Client, listingID string, price i
 func TestBidStore_BuyNow(t *testing.T) {
 	ctx := context.Background()
 	rdb := startRedis(t)
-	store := redisstore.NewBidStore(rdb)
+	store := redisstore.NewBidStore(rdb, redisstore.DefaultIdempotencyTTL)
 
 	now := time.Now()
 	activeStart, activeEnd := now.Add(-time.Hour), now.Add(time.Hour)

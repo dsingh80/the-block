@@ -30,7 +30,7 @@ import (
 func TestBidStore_PlaceBid_ConcurrencyCorrectness(t *testing.T) {
 	ctx := context.Background()
 	rdb := startRedis(t)
-	store := redisstore.NewBidStore(rdb)
+	store := redisstore.NewBidStore(rdb, redisstore.DefaultIdempotencyTTL)
 
 	const goroutines = 100
 	const trials = 5 // repeated with a fresh listing each time -- a race condition can be order-dependent and get lucky once

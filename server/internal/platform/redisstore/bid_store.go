@@ -26,19 +26,23 @@ var buyNowSource string
 var placeBidScript = redis.NewScript(placeBidSource)
 var buyNowScript = redis.NewScript(buyNowSource)
 
-// idempotencyTTL bounds how long a (session, listing, amount) triple's cached
-// result is replayed -- long enough to cover a realistic retry delay, short
-// enough not to accumulate stale entries forever (guidelines/06-backend-architecture.md).
-const idempotencyTTL = 10 * time.Minute
+// DefaultIdempotencyTTL bounds how long a (session, listing, amount) triple's
+// cached result is replayed -- long enough to cover a realistic retry delay,
+// short enough not to accumulate stale entries forever
+// (guidelines/06-backend-architecture.md). Production code uses this constant;
+// tests pass a much shorter TTL via NewBidStore's explicit parameter so cache
+// expiry can be observed without a real 10-minute wait.
+const DefaultIdempotencyTTL = 10 * time.Minute
 
 // BidStore implements bidding.Store against Redis's Lua-scripted accept path
 // (guidelines/06-backend-architecture.md).
 type BidStore struct {
-	rdb *redis.Client
+	rdb            *redis.Client
+	idempotencyTTL time.Duration
 }
 
-func NewBidStore(rdb *redis.Client) *BidStore {
-	return &BidStore{rdb: rdb}
+func NewBidStore(rdb *redis.Client, idempotencyTTL time.Duration) *BidStore {
+	return &BidStore{rdb: rdb, idempotencyTTL: idempotencyTTL}
 }
 
 // scriptResult mirrors place_bid.lua's cjson.encode(...) shape exactly.
@@ -65,7 +69,7 @@ func (s *BidStore) PlaceBid(ctx context.Context, listingID, sessionID string, am
 		SessionBidsKey(sessionID),
 	}
 	args := []any{
-		amount, sessionID, bidID.String(), int(idempotencyTTL.Seconds()),
+		amount, sessionID, bidID.String(), int(s.idempotencyTTL.Seconds()),
 		domain.Tier1Ceiling, domain.Tier1Increment,
 		domain.Tier2Ceiling, domain.Tier2Increment,
 		domain.Tier3Increment,
@@ -108,7 +112,7 @@ func (s *BidStore) BuyNow(ctx context.Context, listingID, sessionID string) (bid
 		IdempotencyBuyNowKey(sessionID, listingID),
 		SessionBidsKey(sessionID),
 	}
-	args := []any{sessionID, bidID.String(), int(idempotencyTTL.Seconds()), listingID}
+	args := []any{sessionID, bidID.String(), int(s.idempotencyTTL.Seconds()), listingID}
 
 	raw, err := buyNowScript.Run(ctx, s.rdb, keys, args...).Text()
 	if err != nil {
