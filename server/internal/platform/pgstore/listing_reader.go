@@ -80,38 +80,23 @@ func (r *ListingReader) ListAll(ctx context.Context) ([]domain.Listing, error) {
 	return listings, nil
 }
 
-// ListFiltered applies the basic (pre-pagination) filter set. Search mirrors
-// the client's own haystack-join-then-substring-match
+// filterWhere builds the status/make/search WHERE clauses + args shared by
+// every ListPage sort mode, so none of them can silently drift from one
+// another. startArgIndex lets a query that adds its own predicates after
+// these (a cursor/bucket predicate) continue the placeholder numbering.
+// Search mirrors the client's own haystack-join-then-substring-match
 // (client/src/views/InventoryView.vue): year/make/model/trim/vin/selling_dealership
 // concatenated and matched case-insensitively, not a per-field OR chain.
-func (r *ListingReader) ListFiltered(ctx context.Context, filter listings.Filter) ([]domain.Listing, error) {
-	rows, err := r.pool.Query(ctx, `
-		SELECT `+listingColumns+`
-		FROM listings
-		WHERE ($1 = '' OR (`+statusCase+`) = $1)
-		  AND ($2 = '' OR make = $2)
-		  AND ($3 = '' OR lower(
+func filterWhere(filter listings.Filter, startArgIndex int) (clauses []string, args []any) {
+	i := startArgIndex
+	clauses = []string{
+		fmt.Sprintf("($%d = '' OR (%s) = $%d)", i, statusCase, i),
+		fmt.Sprintf("($%d = '' OR make = $%d)", i+1, i+1),
+		fmt.Sprintf(`($%d = '' OR lower(
 		        year::text || ' ' || make || ' ' || model || ' ' || trim || ' ' || vin || ' ' || selling_dealership
-		      ) LIKE '%' || lower($3) || '%')
-		ORDER BY id`,
-		filter.Status, filter.Make, filter.Search)
-	if err != nil {
-		return nil, fmt.Errorf("pgstore: list filtered listings: %w", err)
+		      ) LIKE '%%' || lower($%d) || '%%')`, i+2, i+2),
 	}
-	defer rows.Close()
-
-	var result []domain.Listing
-	for rows.Next() {
-		l, err := scanListing(rows)
-		if err != nil {
-			return nil, fmt.Errorf("pgstore: scan listing: %w", err)
-		}
-		result = append(result, l)
-	}
-	if err := rows.Err(); err != nil {
-		return nil, fmt.Errorf("pgstore: iterate filtered listings: %w", err)
-	}
-	return result, nil
+	return clauses, []any{filter.Status, filter.Make, filter.Search}
 }
 
 // DistinctMakes powers the filter dropdown's options -- a paginated list

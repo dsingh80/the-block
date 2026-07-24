@@ -140,7 +140,20 @@ func TestInsertNewListings_InsertOnlyNew(t *testing.T) {
 	})
 }
 
-func TestListingReader_ListFilteredAndDistinctMakes(t *testing.T) {
+// listAll runs a large-enough single ListPage call to behave like an
+// unpaginated "give me everything matching this filter" query, sorted by
+// year (an arbitrary but stable choice for a test that isn't exercising
+// pagination or sort order itself).
+func listAll(t *testing.T, ctx context.Context, reader *pgstore.ListingReader, filter listings.Filter) []domain.Listing {
+	t.Helper()
+	page, err := reader.ListPage(ctx, listings.PageRequest{Filter: filter, Sort: listings.SortYear, First: 50})
+	if err != nil {
+		t.Fatalf("ListPage: %v", err)
+	}
+	return page.Items
+}
+
+func TestListingReader_FilterSemanticsAndDistinctMakes(t *testing.T) {
 	ctx := context.Background()
 	pool := newPoolAndMigrate(t)
 	reader := pgstore.NewListingReader(pool)
@@ -165,20 +178,14 @@ func TestListingReader_ListFilteredAndDistinctMakes(t *testing.T) {
 	}
 
 	t.Run("no filter returns everything", func(t *testing.T) {
-		got, err := reader.ListFiltered(ctx, listings.Filter{})
-		if err != nil {
-			t.Fatalf("ListFiltered: %v", err)
-		}
+		got := listAll(t, ctx, reader, listings.Filter{})
 		if len(got) != 3 {
 			t.Errorf("got %d listings, want 3", len(got))
 		}
 	})
 
 	t.Run("make filter is an exact match", func(t *testing.T) {
-		got, err := reader.ListFiltered(ctx, listings.Filter{Make: "Toyota"})
-		if err != nil {
-			t.Fatalf("ListFiltered: %v", err)
-		}
+		got := listAll(t, ctx, reader, listings.Filter{Make: "Toyota"})
 		if len(got) != 2 {
 			t.Fatalf("got %d listings for make=Toyota, want 2", len(got))
 		}
@@ -199,10 +206,7 @@ func TestListingReader_ListFilteredAndDistinctMakes(t *testing.T) {
 			{"upcoming", "TOYOTAVIN002", true},
 			{"ended", "ENDEDVIN003", true},
 		} {
-			got, err := reader.ListFiltered(ctx, listings.Filter{Status: tt.status})
-			if err != nil {
-				t.Fatalf("ListFiltered(status=%s): %v", tt.status, err)
-			}
+			got := listAll(t, ctx, reader, listings.Filter{Status: tt.status})
 			if len(got) != 1 || got[0].VIN != tt.wantVIN {
 				t.Errorf("status=%s returned %d listings (want [%s]): %+v", tt.status, len(got), tt.wantVIN, got)
 			}
@@ -210,20 +214,14 @@ func TestListingReader_ListFilteredAndDistinctMakes(t *testing.T) {
 	})
 
 	t.Run("search matches across make/model/vin, case-insensitively", func(t *testing.T) {
-		got, err := reader.ListFiltered(ctx, listings.Filter{Search: "corolla"})
-		if err != nil {
-			t.Fatalf("ListFiltered: %v", err)
-		}
+		got := listAll(t, ctx, reader, listings.Filter{Search: "corolla"})
 		if len(got) != 1 || got[0].VIN != "ENDEDVIN003" {
 			t.Errorf("search=corolla returned %+v, want just ENDEDVIN003", got)
 		}
 	})
 
 	t.Run("filters compose", func(t *testing.T) {
-		got, err := reader.ListFiltered(ctx, listings.Filter{Make: "Toyota", Status: "ended"})
-		if err != nil {
-			t.Fatalf("ListFiltered: %v", err)
-		}
+		got := listAll(t, ctx, reader, listings.Filter{Make: "Toyota", Status: "ended"})
 		if len(got) != 1 || got[0].VIN != "ENDEDVIN003" {
 			t.Errorf("make=Toyota+status=ended returned %+v, want just ENDEDVIN003", got)
 		}

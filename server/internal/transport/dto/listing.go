@@ -80,6 +80,21 @@ func NewListingSummary(l domain.Listing, now time.Time) ListingSummary {
 	}
 }
 
+// PageInfo is the Relay-connection-style page metadata alongside a list
+// response (guidelines/06-backend-architecture.md, "Cursor pagination").
+type PageInfo struct {
+	HasNextPage bool   `json:"has_next_page"`
+	HasPrevPage bool   `json:"has_previous_page"`
+	StartCursor string `json:"start_cursor,omitempty"`
+	EndCursor   string `json:"end_cursor,omitempty"`
+}
+
+// ListingsPage is the full GET /v1/listings response shape.
+type ListingsPage struct {
+	Data     []ListingSummary `json:"data"`
+	PageInfo PageInfo         `json:"page_info"`
+}
+
 // Facets is the wire shape for GET /v1/listings/facets -- distinct filter
 // values a list-page filter dropdown needs, which a paginated list can't
 // cheaply provide on its own (guidelines/06-backend-architecture.md).

@@ -14,15 +14,16 @@ import (
 	"github.com/dsingh80/the-block/server/internal/usecase/listings"
 )
 
-// fakeReader is a spy: it records the last Filter it was called with (so
+// fakeReader is a spy: it records the last PageRequest it was called with (so
 // tests can assert the handler wired query params correctly) and returns a
-// fixed dataset -- SQL filter semantics themselves are covered by the
-// pgstore integration test, not re-tested here.
+// fixed dataset -- SQL filter/pagination semantics themselves are covered by
+// the pgstore integration tests, not re-tested here.
 type fakeReader struct {
-	all        []domain.Listing
-	makes      []string
-	err        error
-	lastFilter listings.Filter
+	all         []domain.Listing
+	makes       []string
+	err         error
+	page        listings.Page // returned verbatim by ListPage when set
+	lastPageReq listings.PageRequest
 }
 
 func (f *fakeReader) Get(_ context.Context, id string) (domain.Listing, error) {
@@ -34,12 +35,15 @@ func (f *fakeReader) Get(_ context.Context, id string) (domain.Listing, error) {
 	return domain.Listing{}, domain.ErrNotFound
 }
 
-func (f *fakeReader) ListFiltered(_ context.Context, filter listings.Filter) ([]domain.Listing, error) {
-	f.lastFilter = filter
+func (f *fakeReader) ListPage(_ context.Context, req listings.PageRequest) (listings.Page, error) {
+	f.lastPageReq = req
 	if f.err != nil {
-		return nil, f.err
+		return listings.Page{}, f.err
 	}
-	return f.all, nil
+	if f.page.Items != nil || f.page.HasNextPage || f.page.HasPrevPage {
+		return f.page, nil
+	}
+	return listings.Page{Items: f.all}, nil
 }
 
 func (f *fakeReader) DistinctMakes(_ context.Context) ([]string, error) {
@@ -60,24 +64,27 @@ func sampleDomainListing() domain.Listing {
 	}
 }
 
-func TestListingsList_WiresQueryParamsIntoFilter(t *testing.T) {
+func TestListingsList_WiresQueryParamsIntoPageRequest(t *testing.T) {
 	reader := &fakeReader{all: []domain.Listing{sampleDomainListing()}}
 	h := NewListings(reader)
 
-	req := httptest.NewRequest(http.MethodGet, "/v1/listings?status=active&make=Mazda&q=cx-5", nil)
+	req := httptest.NewRequest(http.MethodGet, "/v1/listings?status=active&make=Mazda&q=cx-5&sort=price-low&first=10&after=some-cursor", nil)
 	rec := httptest.NewRecorder()
 	h.List(rec, req)
 
-	want := listings.Filter{Status: "active", Make: "Mazda", Search: "cx-5"}
-	if reader.lastFilter != want {
-		t.Errorf("ListFiltered called with %+v, want %+v", reader.lastFilter, want)
+	want := listings.PageRequest{
+		Filter: listings.Filter{Status: "active", Make: "Mazda", Search: "cx-5"},
+		Sort:   listings.SortPriceLow, First: 10, After: "some-cursor", Last: 24,
+	}
+	if reader.lastPageReq != want {
+		t.Errorf("ListPage called with %+v, want %+v", reader.lastPageReq, want)
 	}
 	if rec.Code != http.StatusOK {
 		t.Errorf("status = %d, want 200", rec.Code)
 	}
 }
 
-func TestListingsList_NoQueryParamsMeansNoFilter(t *testing.T) {
+func TestListingsList_DefaultsSortToEndingAndPageSizeTo24(t *testing.T) {
 	reader := &fakeReader{all: []domain.Listing{sampleDomainListing()}}
 	h := NewListings(reader)
 
@@ -85,13 +92,32 @@ func TestListingsList_NoQueryParamsMeansNoFilter(t *testing.T) {
 	rec := httptest.NewRecorder()
 	h.List(rec, req)
 
-	if reader.lastFilter != (listings.Filter{}) {
-		t.Errorf("ListFiltered called with %+v, want the zero-value Filter", reader.lastFilter)
+	if reader.lastPageReq.Sort != listings.SortEnding {
+		t.Errorf("Sort = %q, want the default %q", reader.lastPageReq.Sort, listings.SortEnding)
+	}
+	if reader.lastPageReq.First != defaultPageSize || reader.lastPageReq.Last != defaultPageSize {
+		t.Errorf("First/Last = %d/%d, want both defaulted to %d", reader.lastPageReq.First, reader.lastPageReq.Last, defaultPageSize)
 	}
 }
 
-func TestListingsList_SerializesDataAndNeverIncludesReservePrice(t *testing.T) {
+func TestListingsList_RejectsAnUnknownSort(t *testing.T) {
 	reader := &fakeReader{all: []domain.Listing{sampleDomainListing()}}
+	h := NewListings(reader)
+
+	req := httptest.NewRequest(http.MethodGet, "/v1/listings?sort=cheapest-first", nil)
+	rec := httptest.NewRecorder()
+	h.List(rec, req)
+
+	if rec.Code != http.StatusBadRequest {
+		t.Errorf("status = %d, want 400 for an unrecognized sort value", rec.Code)
+	}
+}
+
+func TestListingsList_SerializesDataPageInfoAndNeverIncludesReservePrice(t *testing.T) {
+	reader := &fakeReader{page: listings.Page{
+		Items:       []domain.Listing{sampleDomainListing()},
+		HasNextPage: true, StartCursor: "start-cur", EndCursor: "end-cur",
+	}}
 	h := NewListings(reader)
 
 	req := httptest.NewRequest(http.MethodGet, "/v1/listings", nil)
@@ -107,12 +133,21 @@ func TestListingsList_SerializesDataAndNeverIncludesReservePrice(t *testing.T) {
 			ID   string `json:"id"`
 			Make string `json:"make"`
 		} `json:"data"`
+		PageInfo struct {
+			HasNextPage bool   `json:"has_next_page"`
+			HasPrevPage bool   `json:"has_previous_page"`
+			StartCursor string `json:"start_cursor"`
+			EndCursor   string `json:"end_cursor"`
+		} `json:"page_info"`
 	}
 	if err := json.Unmarshal(rec.Body.Bytes(), &body); err != nil {
 		t.Fatalf("response isn't valid JSON: %v (%s)", err, rec.Body.String())
 	}
 	if len(body.Data) != 1 || body.Data[0].ID != "abc-123" || body.Data[0].Make != "Mazda" {
 		t.Errorf("data = %+v, want exactly the one fake listing", body.Data)
+	}
+	if !body.PageInfo.HasNextPage || body.PageInfo.HasPrevPage || body.PageInfo.StartCursor != "start-cur" || body.PageInfo.EndCursor != "end-cur" {
+		t.Errorf("page_info = %+v, want it to match the reader's returned Page", body.PageInfo)
 	}
 }
 
@@ -126,6 +161,30 @@ func TestListingsList_ReaderErrorReturns500(t *testing.T) {
 
 	if rec.Code != http.StatusInternalServerError {
 		t.Errorf("status = %d, want 500", rec.Code)
+	}
+}
+
+func TestListingsList_InvalidCursorMapsTo400(t *testing.T) {
+	reader := &fakeReader{err: domain.ErrInvalidCursor}
+	h := NewListings(reader)
+
+	req := httptest.NewRequest(http.MethodGet, "/v1/listings?after=garbage", nil)
+	rec := httptest.NewRecorder()
+	h.List(rec, req)
+
+	if rec.Code != http.StatusBadRequest {
+		t.Errorf("status = %d, want 400 for domain.ErrInvalidCursor", rec.Code)
+	}
+	var body struct {
+		Error struct {
+			Code string `json:"code"`
+		} `json:"error"`
+	}
+	if err := json.Unmarshal(rec.Body.Bytes(), &body); err != nil {
+		t.Fatalf("response isn't valid JSON: %v (%s)", err, rec.Body.String())
+	}
+	if body.Error.Code != "invalid_cursor" {
+		t.Errorf("error.code = %q, want %q", body.Error.Code, "invalid_cursor")
 	}
 }
 

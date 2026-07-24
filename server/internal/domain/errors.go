@@ -24,11 +24,13 @@ func (e *DomainError) Is(target error) bool {
 }
 
 var (
-	ErrNotFound          = &DomainError{Code: "not_found"}
-	ErrAuctionNotStarted = &DomainError{Code: "auction_not_started"}
-	ErrAuctionEnded      = &DomainError{Code: "auction_ended"}
-	ErrBidTooLow         = &DomainError{Code: "bid_too_low"}
-	ErrBuyNowUnavailable = &DomainError{Code: "buy_now_unavailable"}
+	ErrNotFound           = &DomainError{Code: "not_found"}
+	ErrAuctionNotStarted  = &DomainError{Code: "auction_not_started"}
+	ErrAuctionEnded       = &DomainError{Code: "auction_ended"}
+	ErrBidTooLow          = &DomainError{Code: "bid_too_low"}
+	ErrBuyNowUnavailable  = &DomainError{Code: "buy_now_unavailable"}
+	ErrInvalidCursor      = &DomainError{Code: "invalid_cursor"}
+	ErrCursorSortMismatch = &DomainError{Code: "cursor_sort_mismatch"}
 )
 
 // NewBidTooLowError is the one domain error that carries extra data -- the minimum
