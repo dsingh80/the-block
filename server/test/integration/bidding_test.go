@@ -291,6 +291,92 @@ func TestBidStore_BidListingIDs(t *testing.T) {
 	})
 }
 
+// TestBidStore_HighBidderSessions covers the other half of bidding.ViewerLookup:
+// the live (never Postgres-drain-lagged) high_bidder_session read that lets a
+// handler correct a has_bid-but-not-Postgres-high-bidder Viewer for a session's
+// own just-accepted bid (domain.Viewer.ReconcileHighBidder) instead of reporting
+// it outbid.
+func TestBidStore_HighBidderSessions(t *testing.T) {
+	ctx := context.Background()
+	rdb := startRedis(t)
+	store := redisstore.NewBidStore(rdb, redisstore.DefaultIdempotencyTTL)
+
+	now := time.Now()
+	activeStart, activeEnd := now.Add(-time.Hour), now.Add(time.Hour)
+	listingA, listingB, listingC := "listing-hb-a", "listing-hb-b", "listing-hb-c"
+	primeListingState(t, rdb, listingA, 1_000, 0, activeStart, activeEnd)
+	primeListingState(t, rdb, listingB, 1_000, 0, activeStart, activeEnd)
+	primeListingState(t, rdb, listingC, 1_000, 0, activeStart, activeEnd)
+
+	t.Run("an empty id list is a no-op, not a round trip", func(t *testing.T) {
+		got, err := store.HighBidderSessions(ctx, nil)
+		if err != nil {
+			t.Fatalf("HighBidderSessions: %v", err)
+		}
+		if len(got) != 0 {
+			t.Errorf("got = %v, want empty", got)
+		}
+	})
+
+	t.Run("a listing with no bids yet has no entry in the result, not an empty-string one", func(t *testing.T) {
+		got, err := store.HighBidderSessions(ctx, []string{listingC})
+		if err != nil {
+			t.Fatalf("HighBidderSessions: %v", err)
+		}
+		if v, ok := got[listingC]; ok {
+			t.Errorf("got[%q] = %q, ok=true, want no entry at all", listingC, v)
+		}
+	})
+
+	t.Run("reflects the live high bidder immediately, in one batched call across listings, before any drain would happen", func(t *testing.T) {
+		if _, err := store.PlaceBid(ctx, listingA, "session-x", 1_100); err != nil {
+			t.Fatalf("PlaceBid(listingA): %v", err)
+		}
+		if _, err := store.PlaceBid(ctx, listingB, "session-y", 1_100); err != nil {
+			t.Fatalf("PlaceBid(listingB): %v", err)
+		}
+		// listingC deliberately left with no bids -- proves a mixed batch handles
+		// both "has a live high bidder" and "doesn't" ids in the same call.
+
+		got, err := store.HighBidderSessions(ctx, []string{listingA, listingB, listingC})
+		if err != nil {
+			t.Fatalf("HighBidderSessions: %v", err)
+		}
+		if got[listingA] != "session-x" {
+			t.Errorf("got[listingA] = %q, want %q", got[listingA], "session-x")
+		}
+		if got[listingB] != "session-y" {
+			t.Errorf("got[listingB] = %q, want %q", got[listingB], "session-y")
+		}
+		if _, ok := got[listingC]; ok {
+			t.Errorf("got[listingC] = %q, want no entry (still no bids)", got[listingC])
+		}
+
+		// A second, higher bid on listingA must flip the live answer -- this
+		// value is never Postgres-drain-lagged the way listings.high_bidder_session_id
+		// can be, so it needs no tailer tick to observe.
+		if _, err := store.PlaceBid(ctx, listingA, "session-z", 1_200); err != nil {
+			t.Fatalf("second PlaceBid(listingA): %v", err)
+		}
+		got, err = store.HighBidderSessions(ctx, []string{listingA})
+		if err != nil {
+			t.Fatalf("HighBidderSessions: %v", err)
+		}
+		if got[listingA] != "session-z" {
+			t.Errorf("got[listingA] = %q, want %q after the newer bid", got[listingA], "session-z")
+		}
+	})
+
+	t.Run("a canceled context surfaces as a wrapped error, not a hang", func(t *testing.T) {
+		canceledCtx, cancel := context.WithCancel(context.Background())
+		cancel()
+
+		if _, err := store.HighBidderSessions(canceledCtx, []string{listingA}); err == nil {
+			t.Error("expected an error for HighBidderSessions called with an already-canceled context, got nil")
+		}
+	})
+}
+
 // Distinct from "an identical retry replays the original result" above: this
 // proves the *other* half of that behavior -- once the idempotency cache
 // entry's own TTL has actually elapsed, the identical (session, listing, amount)

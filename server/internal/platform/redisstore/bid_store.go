@@ -4,6 +4,7 @@ import (
 	"context"
 	_ "embed"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"time"
 
@@ -151,6 +152,42 @@ func (s *BidStore) BidListingIDs(ctx context.Context, sessionToken string) (map[
 		set[id] = struct{}{}
 	}
 	return set, nil
+}
+
+// HighBidderSessions implements bidding.ViewerLookup: one pipelined HGET of
+// high_bidder_session per listing id, in a single round trip regardless of
+// how many ids are asked for. Callers only ever ask this for the small set of
+// listings actually ambiguous for the requesting session (has_bid true but
+// not the Postgres-recorded high bidder -- see domain.Viewer.ReconcileHighBidder),
+// not every listing on a page, so this stays cheap in practice.
+func (s *BidStore) HighBidderSessions(ctx context.Context, listingIDs []string) (map[string]string, error) {
+	result := make(map[string]string, len(listingIDs))
+	if len(listingIDs) == 0 {
+		return result, nil
+	}
+
+	pipe := s.rdb.Pipeline()
+	cmds := make(map[string]*redis.StringCmd, len(listingIDs))
+	for _, id := range listingIDs {
+		cmds[id] = pipe.HGet(ctx, ListingStateKey(id), "high_bidder_session")
+	}
+	if _, err := pipe.Exec(ctx); err != nil && !errors.Is(err, redis.Nil) {
+		return nil, fmt.Errorf("redisstore: high bidder sessions: %w", err)
+	}
+
+	for id, cmd := range cmds {
+		v, err := cmd.Result()
+		if err != nil {
+			if errors.Is(err, redis.Nil) {
+				continue // no state hash (or field) for this id -- no high bidder yet
+			}
+			return nil, fmt.Errorf("redisstore: high bidder session for %s: %w", id, err)
+		}
+		if v != "" {
+			result[id] = v
+		}
+	}
+	return result, nil
 }
 
 // scriptErrorToDomain maps place_bid.lua/buy_now.lua's `error` code verbatim onto

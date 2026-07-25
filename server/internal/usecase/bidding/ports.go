@@ -32,6 +32,14 @@ type Store interface {
 // narrower interface over the same underlying store, not a different one.
 type ViewerLookup interface {
 	BidListingIDs(ctx context.Context, sessionToken string) (map[string]struct{}, error)
+
+	// HighBidderSessions answers the *live* high_bidder_session for each given
+	// listing id that has one set -- the same Redis field the accept path
+	// writes atomically alongside the SADD that backs BidListingIDs, so unlike
+	// a listing's Postgres-derived HighBidderSessionID it can never lag a
+	// session's own just-accepted bid (see domain.Viewer.ReconcileHighBidder).
+	// A listing with no entry in the returned map has no high bidder yet.
+	HighBidderSessions(ctx context.Context, listingIDs []string) (map[string]string, error)
 }
 
 // RateLimiter mitigates bid-attempt abuse without needing real auth first

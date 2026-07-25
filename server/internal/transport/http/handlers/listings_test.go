@@ -6,6 +6,8 @@ import (
 	"errors"
 	"net/http"
 	"net/http/httptest"
+	"reflect"
+	"sort"
 	"strings"
 	"testing"
 	"time"
@@ -93,6 +95,11 @@ type fakeViewerLookup struct {
 	ids   map[string]struct{}
 	err   error
 	calls int
+
+	highBidders       map[string]string // listing id -> live Redis high_bidder_session
+	highBidderErr     error
+	highBidderCalls   int
+	lastHighBidderIDs []string
 }
 
 func (f *fakeViewerLookup) BidListingIDs(_ context.Context, _ string) (map[string]struct{}, error) {
@@ -104,6 +111,18 @@ func (f *fakeViewerLookup) BidListingIDs(_ context.Context, _ string) (map[strin
 		return map[string]struct{}{}, nil
 	}
 	return f.ids, nil
+}
+
+func (f *fakeViewerLookup) HighBidderSessions(_ context.Context, listingIDs []string) (map[string]string, error) {
+	f.highBidderCalls++
+	f.lastHighBidderIDs = listingIDs
+	if f.highBidderErr != nil {
+		return nil, f.highBidderErr
+	}
+	if f.highBidders == nil {
+		return map[string]string{}, nil
+	}
+	return f.highBidders, nil
 }
 
 func (f *fakeReader) ListPage(_ context.Context, req listings.PageRequest) (listings.Page, error) {
@@ -343,6 +362,203 @@ func TestListingsGet_ReturnsListingWithViewer(t *testing.T) {
 	want := dto.Viewer{HasBid: true, IsHighBidder: true, IsOutbid: false}
 	if body.Viewer != want {
 		t.Errorf("viewer = %+v, want %+v", body.Viewer, want)
+	}
+}
+
+// TestListingsGet_ReconcilesPostgresStaleOutbid is the regression test for the
+// bug this reconciliation exists to fix: a session whose own bid was just
+// accepted has has_bid=true (Redis, instant) immediately, but the listing's
+// Postgres-derived HighBidderSessionID can still name the *previous* high
+// bidder until the stream tailer's next tick drains it -- ComputeViewer alone
+// can't tell that apart from a genuine outbid, so without reconciliation this
+// session would see "You Have Been Outbid" on its own winning bid.
+func TestListingsGet_ReconcilesPostgresStaleOutbid(t *testing.T) {
+	const viewerToken = "session-viewer"
+	staleHighBidder := "session-previous-bidder"
+	listing := sampleDomainListingWithUUID()
+	listing.HighBidderSessionID = &staleHighBidder // Postgres hasn't drained this session's new bid yet
+
+	reader := &fakeReader{all: []domain.Listing{listing}}
+	viewerLookup := &fakeViewerLookup{
+		ids:         map[string]struct{}{sampleListingUUID: {}},        // has_bid: Redis already reflects it
+		highBidders: map[string]string{sampleListingUUID: viewerToken}, // Redis: this session IS the live high bidder
+	}
+	h := NewListings(reader, &fakeBidReader{}, viewerLookup)
+
+	req := httptest.NewRequest(http.MethodGet, "/v1/listings/"+sampleListingUUID, nil)
+	req.SetPathValue("id", sampleListingUUID)
+	rec := httptest.NewRecorder()
+	withFixedSession(viewerToken, h.Get).ServeHTTP(rec, req)
+
+	if rec.Code != http.StatusOK {
+		t.Fatalf("status = %d, want 200 (body: %s)", rec.Code, rec.Body.String())
+	}
+	if viewerLookup.highBidderCalls != 1 {
+		t.Errorf("HighBidderSessions called %d times, want exactly 1", viewerLookup.highBidderCalls)
+	}
+	if got := viewerLookup.lastHighBidderIDs; len(got) != 1 || got[0] != sampleListingUUID {
+		t.Errorf("HighBidderSessions called with %v, want exactly [%q]", got, sampleListingUUID)
+	}
+
+	var body struct {
+		Viewer dto.Viewer `json:"viewer"`
+	}
+	if err := json.Unmarshal(rec.Body.Bytes(), &body); err != nil {
+		t.Fatalf("response isn't valid JSON: %v (%s)", err, rec.Body.String())
+	}
+	want := dto.Viewer{HasBid: true, IsHighBidder: true, IsOutbid: false}
+	if body.Viewer != want {
+		t.Errorf("viewer = %+v, want %+v -- Postgres staleness must not surface as this session's own bid being outbid", body.Viewer, want)
+	}
+}
+
+// TestListingsGet_GenuineOutbidStaysOutbid proves reconciliation doesn't
+// overcorrect: when Redis's live high bidder agrees with Postgres that
+// someone else is winning, the viewer must still read outbid.
+func TestListingsGet_GenuineOutbidStaysOutbid(t *testing.T) {
+	const viewerToken = "session-viewer"
+	rival := "session-rival"
+	listing := sampleDomainListingWithUUID()
+	listing.HighBidderSessionID = &rival
+
+	reader := &fakeReader{all: []domain.Listing{listing}}
+	viewerLookup := &fakeViewerLookup{
+		ids:         map[string]struct{}{sampleListingUUID: {}},
+		highBidders: map[string]string{sampleListingUUID: rival}, // Redis agrees: rival is really winning
+	}
+	h := NewListings(reader, &fakeBidReader{}, viewerLookup)
+
+	req := httptest.NewRequest(http.MethodGet, "/v1/listings/"+sampleListingUUID, nil)
+	req.SetPathValue("id", sampleListingUUID)
+	rec := httptest.NewRecorder()
+	withFixedSession(viewerToken, h.Get).ServeHTTP(rec, req)
+
+	var body struct {
+		Viewer dto.Viewer `json:"viewer"`
+	}
+	if err := json.Unmarshal(rec.Body.Bytes(), &body); err != nil {
+		t.Fatalf("response isn't valid JSON: %v (%s)", err, rec.Body.String())
+	}
+	want := dto.Viewer{HasBid: true, IsHighBidder: false, IsOutbid: true}
+	if body.Viewer != want {
+		t.Errorf("viewer = %+v, want %+v -- a real outbid must survive reconciliation", body.Viewer, want)
+	}
+}
+
+// TestListingsGet_NeverAmbiguousSkipsHighBidderLookup guards the cheap path:
+// a session that's already the high bidder (or never bid at all) has nothing
+// for Redis to disambiguate, so HighBidderSessions must not be called --
+// otherwise every single listing view would pay for a lookup that's almost
+// always pointless.
+func TestListingsGet_NeverAmbiguousSkipsHighBidderLookup(t *testing.T) {
+	const viewerToken = "session-viewer"
+	highBidder := viewerToken
+	listing := sampleDomainListingWithUUID()
+	listing.HighBidderSessionID = &highBidder // already the recorded high bidder
+
+	reader := &fakeReader{all: []domain.Listing{listing}}
+	viewerLookup := &fakeViewerLookup{ids: map[string]struct{}{sampleListingUUID: {}}}
+	h := NewListings(reader, &fakeBidReader{}, viewerLookup)
+
+	req := httptest.NewRequest(http.MethodGet, "/v1/listings/"+sampleListingUUID, nil)
+	req.SetPathValue("id", sampleListingUUID)
+	rec := httptest.NewRecorder()
+	withFixedSession(viewerToken, h.Get).ServeHTTP(rec, req)
+
+	if viewerLookup.highBidderCalls != 0 {
+		t.Errorf("HighBidderSessions called %d times, want 0 -- already the high bidder is never ambiguous", viewerLookup.highBidderCalls)
+	}
+}
+
+func TestListingsGet_HighBidderSessionsErrorReturns500(t *testing.T) {
+	const viewerToken = "session-viewer"
+	staleHighBidder := "session-previous-bidder"
+	listing := sampleDomainListingWithUUID()
+	listing.HighBidderSessionID = &staleHighBidder
+
+	reader := &fakeReader{all: []domain.Listing{listing}}
+	viewerLookup := &fakeViewerLookup{
+		ids:           map[string]struct{}{sampleListingUUID: {}},
+		highBidderErr: errors.New("redis down"),
+	}
+	h := NewListings(reader, &fakeBidReader{}, viewerLookup)
+
+	req := httptest.NewRequest(http.MethodGet, "/v1/listings/"+sampleListingUUID, nil)
+	req.SetPathValue("id", sampleListingUUID)
+	rec := httptest.NewRecorder()
+	withFixedSession(viewerToken, h.Get).ServeHTTP(rec, req)
+
+	if rec.Code != http.StatusInternalServerError {
+		t.Errorf("status = %d, want 500 when HighBidderSessions errors", rec.Code)
+	}
+}
+
+// TestListingsList_BatchesAmbiguousHighBidderLookupAcrossRows proves the List
+// endpoint reconciles the same way as Get, and does it with one batched
+// HighBidderSessions call across every ambiguous row on the page -- not one
+// call per row.
+func TestListingsList_BatchesAmbiguousHighBidderLookupAcrossRows(t *testing.T) {
+	const viewerToken = "session-viewer"
+	staleHighBidder := "session-previous-bidder"
+	highBidder := viewerToken
+
+	ambiguousA := sampleDomainListing()
+	ambiguousA.ID = "listing-ambiguous-a"
+	ambiguousA.HighBidderSessionID = &staleHighBidder
+
+	ambiguousB := sampleDomainListing()
+	ambiguousB.ID = "listing-ambiguous-b"
+	ambiguousB.HighBidderSessionID = &staleHighBidder
+
+	alreadyWinning := sampleDomainListing()
+	alreadyWinning.ID = "listing-already-winning"
+	alreadyWinning.HighBidderSessionID = &highBidder
+
+	reader := &fakeReader{page: listings.Page{Items: []domain.Listing{ambiguousA, ambiguousB, alreadyWinning}}}
+	viewerLookup := &fakeViewerLookup{
+		ids: map[string]struct{}{ambiguousA.ID: {}, ambiguousB.ID: {}, alreadyWinning.ID: {}},
+		highBidders: map[string]string{
+			ambiguousA.ID: viewerToken, // Redis: actually mine, Postgres just hasn't drained yet
+			// ambiguousB deliberately absent: Redis agrees no one's outbid-corrected it, stays outbid
+		},
+	}
+	h := NewListings(reader, &fakeBidReader{}, viewerLookup)
+
+	req := httptest.NewRequest(http.MethodGet, "/v1/listings", nil)
+	rec := httptest.NewRecorder()
+	withFixedSession(viewerToken, h.List).ServeHTTP(rec, req)
+
+	if viewerLookup.highBidderCalls != 1 {
+		t.Fatalf("HighBidderSessions called %d times, want exactly 1 (batched, not per-row)", viewerLookup.highBidderCalls)
+	}
+	gotIDs := append([]string{}, viewerLookup.lastHighBidderIDs...)
+	sort.Strings(gotIDs)
+	wantIDs := []string{ambiguousA.ID, ambiguousB.ID}
+	if !reflect.DeepEqual(gotIDs, wantIDs) {
+		t.Errorf("HighBidderSessions called with %v, want exactly %v -- the already-winning row must not be included", gotIDs, wantIDs)
+	}
+
+	var body struct {
+		Data []struct {
+			ID     string     `json:"id"`
+			Viewer dto.Viewer `json:"viewer"`
+		} `json:"data"`
+	}
+	if err := json.Unmarshal(rec.Body.Bytes(), &body); err != nil {
+		t.Fatalf("response isn't valid JSON: %v (%s)", err, rec.Body.String())
+	}
+	viewerByID := make(map[string]dto.Viewer, len(body.Data))
+	for _, row := range body.Data {
+		viewerByID[row.ID] = row.Viewer
+	}
+	if got, want := viewerByID[ambiguousA.ID], (dto.Viewer{HasBid: true, IsHighBidder: true, IsOutbid: false}); got != want {
+		t.Errorf("ambiguousA viewer = %+v, want %+v (reconciled to winning)", got, want)
+	}
+	if got, want := viewerByID[ambiguousB.ID], (dto.Viewer{HasBid: true, IsHighBidder: false, IsOutbid: true}); got != want {
+		t.Errorf("ambiguousB viewer = %+v, want %+v (genuine outbid, left alone)", got, want)
+	}
+	if got, want := viewerByID[alreadyWinning.ID], (dto.Viewer{HasBid: true, IsHighBidder: true, IsOutbid: false}); got != want {
+		t.Errorf("alreadyWinning viewer = %+v, want %+v (never ambiguous)", got, want)
 	}
 }
 

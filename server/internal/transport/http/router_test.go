@@ -43,6 +43,10 @@ func (stubViewerLookup) BidListingIDs(context.Context, string) (map[string]struc
 	return nil, nil
 }
 
+func (stubViewerLookup) HighBidderSessions(context.Context, []string) (map[string]string, error) {
+	return nil, nil
+}
+
 type stubBidStore struct{}
 
 func (stubBidStore) PlaceBid(context.Context, string, string, int64) (bidding.Result, error) {

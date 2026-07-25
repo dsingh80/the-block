@@ -44,3 +44,28 @@ func ComputeViewer(l Listing, sessionToken string, bidListingIDs map[string]stru
 	isHighBidder := sessionToken != "" && l.HighBidderSessionID != nil && *l.HighBidderSessionID == sessionToken
 	return Viewer{HasBid: hasBid, IsHighBidder: isHighBidder, IsOutbid: hasBid && !isHighBidder}
 }
+
+// ReconcileHighBidder corrects a HasBid-but-not-high-bidder Viewer using
+// liveHighBidderSessionID -- Redis's own high_bidder_session field, the same
+// one place_bid.lua/buy_now.lua write atomically alongside the SADD that
+// backs HasBid. It exists because l.HighBidderSessionID (what ComputeViewer
+// was given) comes from Postgres, which only reaches consistency once the
+// stream tailer's next tick drains a fresh accept into it -- up to
+// streamTailerInterval behind Redis (guidelines/06-backend-architecture.md,
+// "Draining vs. broadcasting"). HasBid has no such lag (it's answered from
+// Redis directly), so in that window a session can already have HasBid=true
+// for its own just-accepted bid while Postgres's high_bidder_session_id still
+// names the *previous* high bidder -- ComputeViewer alone can't tell that
+// apart from a genuine outbid-by-someone-else, since both look identical from
+// {HasBid: true, IsHighBidder: false}.
+//
+// Only ever turns a false-positive IsOutbid back off -- never the reverse -- so
+// a caller that skips this entirely (the common case: most viewers have no
+// live high bidder to check) is simply left with whatever ComputeViewer
+// already had, never made wrong by omission.
+func (v Viewer) ReconcileHighBidder(liveHighBidderSessionID, sessionToken string) Viewer {
+	if !v.HasBid || v.IsHighBidder || sessionToken == "" || liveHighBidderSessionID != sessionToken {
+		return v
+	}
+	return Viewer{HasBid: true, IsHighBidder: true, IsOutbid: false}
+}

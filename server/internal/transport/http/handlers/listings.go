@@ -3,6 +3,7 @@
 package handlers
 
 import (
+	"context"
 	"net/http"
 	"strconv"
 	"time"
@@ -47,6 +48,37 @@ type Listings struct {
 
 func NewListings(reader listings.Reader, bidReader audit.Reader, viewerLookup bidding.ViewerLookup) *Listings {
 	return &Listings{reader: reader, bidReader: bidReader, viewerLookup: viewerLookup, now: time.Now}
+}
+
+// viewersFor computes each listing's Viewer, then corrects any Postgres-stale
+// false "outbid" via one batched Redis lookup covering just the listings that
+// actually need it -- has_bid true but not the Postgres-recorded high bidder,
+// which is what a session's own just-accepted bid looks like until the stream
+// tailer's next tick drains it (guidelines/06-backend-architecture.md,
+// "Draining vs. broadcasting"). See domain.Viewer.ReconcileHighBidder for why
+// domain.ComputeViewer alone can't tell that apart from a genuine outbid.
+// The common case -- nothing ambiguous on this page -- costs no extra lookup.
+func (h *Listings) viewersFor(ctx context.Context, ls []domain.Listing, sessionToken string, bidListingIDs map[string]struct{}) ([]domain.Viewer, error) {
+	viewers := make([]domain.Viewer, len(ls))
+	var ambiguous []string
+	for i, l := range ls {
+		viewers[i] = domain.ComputeViewer(l, sessionToken, bidListingIDs)
+		if viewers[i].HasBid && !viewers[i].IsHighBidder {
+			ambiguous = append(ambiguous, l.ID)
+		}
+	}
+	if len(ambiguous) == 0 {
+		return viewers, nil
+	}
+
+	live, err := h.viewerLookup.HighBidderSessions(ctx, ambiguous)
+	if err != nil {
+		return nil, err
+	}
+	for i, l := range ls {
+		viewers[i] = viewers[i].ReconcileHighBidder(live[l.ID], sessionToken)
+	}
+	return viewers, nil
 }
 
 // sessionTokenOf reads the resolved session set by middleware.Session -- always
@@ -101,11 +133,16 @@ func (h *Listings) List(w http.ResponseWriter, r *http.Request) {
 		writeError(w, r, err)
 		return
 	}
+	viewers, err := h.viewersFor(r.Context(), page.Items, sessionToken, bidListingIDs)
+	if err != nil {
+		writeError(w, r, err)
+		return
+	}
 
 	now := h.now()
 	summaries := make([]dto.ListingSummary, len(page.Items))
 	for i, l := range page.Items {
-		summaries[i] = dto.NewListingSummary(l, now, domain.ComputeViewer(l, sessionToken, bidListingIDs))
+		summaries[i] = dto.NewListingSummary(l, now, viewers[i])
 	}
 	httputil.WriteJSON(w, http.StatusOK, dto.ListingsPage{
 		Data: summaries,
@@ -116,11 +153,12 @@ func (h *Listings) List(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// Get handles GET /v1/listings/{id}. Reads Postgres only, no Redis overlay for
-// zero-lag price (guidelines/06-backend-architecture.md, "GET /v1/listings/{id}
-// freshness") -- anyone actively viewing gets true-live updates over the
-// WebSocket instead, and this stays consistent with the list endpoint plus
-// portable to a different transport later (D3).
+// Get handles GET /v1/listings/{id}. current_price/bid_count still come from
+// Postgres only, no Redis overlay for zero-lag price (guidelines/06-backend-architecture.md,
+// "GET /v1/listings/{id} freshness") -- anyone actively viewing gets true-live
+// price updates over the WebSocket instead, and this stays consistent with the
+// list endpoint plus portable to a different transport later (D3). viewer is a
+// narrower exception: see viewersFor.
 func (h *Listings) Get(w http.ResponseWriter, r *http.Request) {
 	id, ok := parseListingID(w, r)
 	if !ok {
@@ -139,9 +177,13 @@ func (h *Listings) Get(w http.ResponseWriter, r *http.Request) {
 		writeError(w, r, err)
 		return
 	}
+	viewers, err := h.viewersFor(r.Context(), []domain.Listing{l}, sessionToken, bidListingIDs)
+	if err != nil {
+		writeError(w, r, err)
+		return
+	}
 
-	httputil.WriteJSON(w, http.StatusOK,
-		dto.NewListingSummary(l, h.now(), domain.ComputeViewer(l, sessionToken, bidListingIDs)))
+	httputil.WriteJSON(w, http.StatusOK, dto.NewListingSummary(l, h.now(), viewers[0]))
 }
 
 // BidHistory handles GET /v1/listings/{id}/bids -- the anonymized audit trail
