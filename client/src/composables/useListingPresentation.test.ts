@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { augment, useAugmentedListing } from './useListingPresentation'
 import { useClockStore } from '@/stores/clock'
-import { vehicles, sellerCounts } from '@/data/vehicles'
+import { vehicles } from '@/data/vehicles'
 import type { Vehicle } from '@/types/vehicle'
 import type { BidOverride } from '@/types/listing'
 

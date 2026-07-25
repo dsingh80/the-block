@@ -1,5 +1,5 @@
 import { computed, toValue, type MaybeRefOrGetter } from 'vue'
-import { vehiclesById, vehicles, sellerCounts } from '@/data/vehicles'
+import { vehiclesById, vehicles } from '@/data/vehicles'
 import { useClockStore } from '@/stores/clock'
 import { useBidsStore } from '@/stores/bids'
 import { useWatchlistStore } from '@/stores/watchlist'
