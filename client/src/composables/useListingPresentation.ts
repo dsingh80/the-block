@@ -4,6 +4,7 @@ import { useBidsStore } from '@/stores/bids'
 import { useWatchlistStore } from '@/stores/watchlist'
 import { useCompareStore } from '@/stores/compare'
 import { useInventoryFiltersStore } from '@/stores/inventoryFilters'
+import { useRealtimeSubscription } from '@/composables/useRealtimeSync'
 import { deriveLifecycle } from '@/utils/lifecycle'
 import { getBidIncrement } from '@/utils/bidding'
 import { currency, formatKm } from '@/utils/format'
@@ -240,6 +241,15 @@ export function useAugmentedListing(id: MaybeRefOrGetter<string | undefined>) {
   watchEffect(() => {
     const vehicleId = toValue(id)
     if (vehicleId && !filters.vehiclesById[vehicleId]) void filters.ensureVehicleLoaded(vehicleId)
+  })
+
+  // Keeps this one listing live the same way InventoryView keeps its whole
+  // grid live (guidelines/06-backend-architecture.md, "WebSocket protocol") --
+  // matters most here since a detail page has no polling/refetch of its own
+  // to fall back on between visits.
+  useRealtimeSubscription(() => {
+    const vehicleId = toValue(id)
+    return vehicleId ? [vehicleId] : []
   })
 
   const listing = computed<AugmentedListing | undefined>(() => {

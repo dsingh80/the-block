@@ -5,6 +5,7 @@ import { storeToRefs } from 'pinia'
 import FilterBar from '@/components/inventory/FilterBar.vue'
 import VehicleCard from '@/components/inventory/VehicleCard.vue'
 import { useAugmentedListings } from '@/composables/useListingPresentation'
+import { useRealtimeSubscription } from '@/composables/useRealtimeSync'
 import {
   useInventoryFiltersStore,
   SEARCH_DEBOUNCE_MS,
@@ -19,6 +20,11 @@ const filters = useInventoryFiltersStore()
 const { search, makeFilter, statusFilter, sortBy, ids, hasNextPage, endCursor, loading, error } =
   storeToRefs(filters)
 const { list } = useAugmentedListings()
+
+// Keeps every listing currently in the grid live -- a bid landing on any of
+// them updates its price/badge in place, no refetch needed
+// (guidelines/06-backend-architecture.md, "WebSocket protocol").
+useRealtimeSubscription(() => ids.value)
 
 /** ids is the server's ordering for the current page(s); list is the full known-vehicle cache -- this joins them back into an ordered, augmented array without assuming list's own order. */
 const listings = computed<AugmentedListing[]>(() => {
