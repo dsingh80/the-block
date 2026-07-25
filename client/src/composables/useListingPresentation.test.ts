@@ -33,7 +33,6 @@ function makeVehicle(overrides: Partial<Vehicle> = {}): Vehicle {
     city: 'Toronto',
     auction_start: DEFAULT_AUCTION_START,
     starting_bid: 10000,
-    reserve_price: null,
     buy_now_price: null,
     images: ['a.jpg', 'b.jpg', 'c.jpg'],
     selling_dealership: 'Test Motors',
@@ -152,6 +151,57 @@ describe('augment - damage notes', () => {
     const vehicle = makeVehicle({ damage_notes: ['Scratch on hood', 'Worn tires'] })
     const listing = augment(vehicle, baseCtx())
     expect(listing.damageList).toEqual(['Scratch on hood', 'Worn tires'])
+  })
+})
+
+describe('augment - purchased_at (server-reported early end)', () => {
+  it('treats the listing as ended once purchased_at is set, even well before the fixed-duration boundary', () => {
+    // Only 2h into what would otherwise be a 24h auction -- time-based
+    // derivation alone would still call this "active".
+    const purchasedAt = new Date(new Date(DEFAULT_AUCTION_START).getTime() + 2 * HOUR_MS).toISOString()
+    const vehicle = makeVehicle({ purchased_at: purchasedAt })
+
+    const listing = augment(vehicle, baseCtx({ effectiveNow: new Date(purchasedAt).getTime() + HOUR_MS }))
+
+    expect(listing.lifecycle).toBe('ended')
+    expect(listing.isEnded).toBe(true)
+    expect(listing.canBid).toBe(false)
+  })
+
+  it('shows "Ended Xh ago" measured from the real purchase time, not the fixed-duration assumption', () => {
+    const purchasedAt = new Date(new Date(DEFAULT_AUCTION_START).getTime() + 2 * HOUR_MS).toISOString()
+    const vehicle = makeVehicle({ purchased_at: purchasedAt })
+
+    const listing = augment(
+      vehicle,
+      baseCtx({ effectiveNow: new Date(purchasedAt).getTime() + 3 * HOUR_MS, justBoughtId: null }),
+    )
+
+    expect(listing.timeLabel).toBe('Ended 3h 00m ago')
+  })
+
+  it('only shows "Purchased just now" for the session whose own justBoughtId matches, not any purchased_at', () => {
+    const purchasedAt = new Date(new Date(DEFAULT_AUCTION_START).getTime() + 2 * HOUR_MS).toISOString()
+    const vehicle = makeVehicle({ id: 'someone-elses-purchase', purchased_at: purchasedAt })
+
+    // A different id in justBoughtId -- this session did not buy this listing.
+    const listing = augment(
+      vehicle,
+      baseCtx({ effectiveNow: new Date(purchasedAt).getTime() + HOUR_MS, justBoughtId: 'a-different-listing' }),
+    )
+
+    expect(listing.timeLabel).not.toBe('Purchased just now')
+    expect(listing.justBought).toBe(false)
+  })
+
+  it('does show "Purchased just now" when justBoughtId matches this listing', () => {
+    const vehicle = makeVehicle()
+    const override = makeOverride({ purchased: true })
+
+    const listing = augment(vehicle, baseCtx({ override, justBoughtId: vehicle.id }))
+
+    expect(listing.timeLabel).toBe('Purchased just now')
+    expect(listing.justBought).toBe(true)
   })
 })
 

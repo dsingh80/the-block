@@ -65,7 +65,14 @@ function computeBidStatus(
  * guidelines/03-guardrails.md.
  */
 export function augment(vehicle: Vehicle, ctx: AugmentContext): AugmentedListing {
-  const purchased = ctx.override?.purchased ?? false
+  const purchasedByMe = ctx.override?.purchased ?? false
+  // vehicle.purchased_at is the server's authority on an early end (a Buy Now,
+  // possibly by another session) -- something the client can no longer derive
+  // from auction_start + a fixed duration alone once other sessions can end a
+  // listing early. Local time-based derivation still owns the ordinary
+  // upcoming -> active -> ended-by-time-passing transitions between fetches.
+  const purchasedAtMs = vehicle.purchased_at != null ? new Date(vehicle.purchased_at).getTime() : null
+  const purchased = purchasedByMe || purchasedAtMs != null
   const lifecycle = purchased ? 'ended' : deriveLifecycle(vehicle.auction_start, ctx.effectiveNow)
   const isUpcoming = lifecycle === 'upcoming'
   const isEnded = lifecycle === 'ended'
@@ -90,7 +97,10 @@ export function augment(vehicle: Vehicle, ctx: AugmentContext): AugmentedListing
   const nextBidValue = priceValue + getBidIncrement(priceValue)
 
   const startMs = new Date(vehicle.auction_start).getTime()
-  const endMs = startMs + AUCTION_DURATION_HOURS * HOUR_MS
+  // A purchase's real timestamp stands in for the fixed-24h assumption once
+  // the listing actually ended that way -- otherwise "Ended Xh ago" would be
+  // measured against a duration that was never the reason it ended.
+  const endMs = purchasedAtMs ?? startMs + AUCTION_DURATION_HOURS * HOUR_MS
   const hoursRemaining = isUpcoming
     ? (startMs - ctx.effectiveNow) / HOUR_MS
     : (endMs - ctx.effectiveNow) / HOUR_MS
@@ -100,7 +110,11 @@ export function augment(vehicle: Vehicle, ctx: AugmentContext): AugmentedListing
   if (urgent) timeVariant = 'urgent'
   else if (isUpcoming) timeVariant = 'upcoming'
 
-  const timeLabel = purchased ? 'Purchased just now' : timeLabelFor(lifecycle, hoursRemaining)
+  // "just now" is specifically about *this* session's own completed purchase,
+  // not merely "the listing happens to be ended by a purchase" -- someone
+  // else's earlier Buy Now still gets the ordinary "Ended Xh ago" label.
+  const justBought = ctx.justBoughtId === vehicle.id
+  const timeLabel = justBought ? 'Purchased just now' : timeLabelFor(lifecycle, hoursRemaining)
 
   const badge = computeBadge(lifecycle, hasUserBid, isUserHighBidder, isUserOutbid)
   const bidStatus = computeBidStatus(isUpcoming, isEnded, hasUserBid, isUserHighBidder, isUserOutbid)
@@ -152,7 +166,7 @@ export function augment(vehicle: Vehicle, ctx: AugmentContext): AugmentedListing
 
     showBuyNow: !isEnded && vehicle.buy_now_price != null,
     buyNowFormatted: vehicle.buy_now_price != null ? currency(vehicle.buy_now_price) : null,
-    justBought: ctx.justBoughtId === vehicle.id,
+    justBought,
 
     isWatched: ctx.isWatched,
     watchButtonLabel: ctx.isWatched ? 'Watching ✓' : 'Add to Watchlist',
