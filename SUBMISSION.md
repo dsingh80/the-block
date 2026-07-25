@@ -68,6 +68,7 @@ Test coverage is available with nearly every commit. Every commit has a well-def
 
 ## What I'd Do With More Time
 
+- Fix the bug where you can increase your bid but you receive a "You have been outbid" error.
 - Add anti-snipe measures (extend time on last-minute bid)
 - Sanitize data for things like VIN (used in an external link)
 - True proxy/second-price bidding: a real bidder pool exists now, but a bid still becomes the new price outright rather than an auto-raised maximum competing against other bidders' stored maximums. (you place your max but the max becomes the winning bid if it's high enough)

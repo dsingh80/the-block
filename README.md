@@ -4,30 +4,7 @@ A submission for OPENLANE's **"The Block"** coding challenge — the buyer side 
 
 ## How to Run
 
-Requires **Docker Desktop** (WSL2 backend, on Windows). 
-
-#### Accessing the application
-> Navigate to https://localhost (no port)
-
-#### Starting the application
-```bash
-cd server
-./deploy/docker/setup-ssl-windows.sh   # once per machine
-docker compose up --build
-```
-
-
-`setup-ssl-windows.sh` is a one-time step: it installs [mkcert](https://github.com/FiloSottile/mkcert)'s local CA into the Windows + browser trust stores and writes a browser-trusted cert for `https://localhost` (`mkcert` itself needs installing first if you don't have it — the script prints the `winget` command if it's missing). See [`server/README.md`](server/README.md) for what each step does, `cleanup-ssl-windows.sh`, and running the Go test suites (including the real-Redis/Postgres integration tests) directly without Docker.
-
-The client can also be iterated on in isolation, without the backend running — `npm test`/`npm run lint`/`npm run build` all use a mocked API layer, so they need only `client/`:
-
-```
-cd client
-npm install
-npm test
-```
-
-(Requires **Node 24+**, enforced via `engine-strict`.) Running `npm run dev` standalone starts Vite on its own origin (`http://localhost:5173`) with no backend behind it — useful for pure UI iteration, but bidding/watchlist/inventory calls will fail without the Compose stack running and reached through Caddy's `https://localhost` instead.
+Read SUBMISSION.md
 
 ## Stack
 
@@ -38,12 +15,6 @@ npm test
 - **Tooling:** ESLint + Prettier (hand-configured), Vitest + `@vue/test-utils` + `@pinia/testing` on the client; `gofmt` + `go vet` + `go test` (unit and `testcontainers-go`-backed Redis/Postgres integration tests) on the server
 
 See [`guidelines/`](guidelines/) for the full engineering-conventions writeup behind these choices on both sides of the repo — locked-in stack decisions, design patterns, guardrails, and testing strategy for the client (`00`–`05`), and the equivalent decision log for the backend (`06-backend-architecture.md`: datastore choice, cursor pagination, sessions/CSRF, the WebSocket protocol, and more) — written before the code they govern, so later work in this repo (by me or by an AI agent) has a stated default instead of re-deciding things per feature.
-
-## What I Built
-
-Every screen and interaction actually wired up in the approved design (`Auto Auction Buyer App.dc.html`, ported here from a Claude Design mock): an Inventory grid with search/filter/sort, a Preview Modal reachable from every card, a full Listing Details page (also reachable by direct URL) with condition/vehicle-data/seller sections and a real bidding form, a Compare flow capped at two listings, and a Watchlist drawer with live quick-bid actions. The mock's one unwired button — "Place Bid" on the details page — is fully implemented here, backed by a tiered bid-increment schedule and a store-level guard that revalidates the listing is still active at submit time, not just when the form rendered.
-
-Since then, the buyer side has a real backend behind it (`server/`, `guidelines/06-backend-architecture.md`): a Redis-backed, Lua-scripted atomic bid/buy-now path so concurrent bids from different sessions resolve correctly with no lost updates; a Postgres system of record and audit trail; cursor-paginated, keyset-based infinite scroll over the inventory grid (with the scroll position resumable from the URL); and a live WebSocket feed so a bid landing on any listing you're looking at — from any session — updates its price and your `Winning`/`Outbid` badge in place, with no refresh. Bid submission is retry-safe: a request that's accepted but whose response never reaches the browser (a dropped connection, a backgrounded tab) can be safely resubmitted and returns the original acceptance rather than a confusing rejection. Everything runs behind HTTPS via Caddy in Docker Compose, with the seed dataset synced into Postgres/Redis on every startup without ever touching a listing that already has real bids against it.
 
 ## Notable Decisions
 
@@ -59,19 +30,3 @@ Since then, the buyer side has a real backend behind it (`server/`, `guidelines/
 `cd client && npm test` runs the automated Vitest suite: lifecycle/bidding/grading boundary cases, the `augment()` presentation derivation (including reactivity to the clock), store logic (bid accept/reject paths now driven by a mocked API layer, cursor-paginated fetch/URL-sync, compare's max-2 cap, watchlist highlight timing), realtime message handling against a fake WebSocket, and component behavior for `BidPanel`, `ImageCarousel`, and `InventoryView`'s infinite-scroll sentinel.
 
 `cd server && go test ./...` runs the Go unit suite (domain logic, DTO mapping, middleware, the WS hub against fake connections). `go test -tags=integration ./test/integration/...` additionally runs the real-Redis/Postgres suite via `testcontainers-go` (requires a running Docker daemon) — concurrent-bid correctness (N goroutines racing one listing resolve to a consistent serial ordering with no lost updates), cursor-pagination round-trips across bucket boundaries, and the stream-tailer's drain-to-Postgres behavior.
-
-## What I'd Do With More Time
-
-- Split up the functionality that's currently grouped into `AugmentedListing`. This type is useful because I can guarantee consistency without redundancy and move fast but it's a single type that is way too extensive and likely hard to maintain.
-- Add more data sanitization around values like VIN (used in links)
-- True proxy/second-price bidding: a real bidder pool exists now, but a bid still becomes the new price outright rather than an auto-raised maximum competing against other bidders' stored maximums.
-- Real auto-bidding (submit a ceiling once, let the server raise your bid for you as rivals bid, up to that ceiling) — Redis's atomic operations are already the actual bidding mechanism today, so the infrastructure this would build on already exists.
-- An automated rival-bidder simulation, so `Outbid` is visible without manually opening a second session to bid against yourself.
-- Persistence for watchlist and compare selection (bids and listings already persist for real; these two are still deliberately client-only — see Assumptions and Scope).
-- Anti-sniping measures through time extension
-- WebSocket gap-free reconnect — a reconnect today just re-subscribes to the same listing ids; an event missed while disconnected isn't replayed, and nothing proactively refetches to catch up (only the next unrelated state change that happens to touch that listing, e.g. a filter reset, incidentally corrects it) (`guidelines/06-backend-architecture.md`, "Realtime / WebSocket").
-- Real user accounts and auth — today's sessions are anonymous and opaque by design (see Assumptions and Scope); a `Seller` entity and seller-facing endpoints are a related, larger non-goal (`guidelines/06-backend-architecture.md`, "Non-goals").
-- Multi-instance deployment — the `Broadcaster` interface is built to support a Redis Pub/Sub swap for horizontal scaling, but only a single `app` instance actually runs today.
-- Broader test coverage — end-to-end and visual regression, beyond the current unit/component/integration focus
-- "My Auctions" (Active/Upcoming/Won/Lost) for any SOPs that must occur after an auction is over
-- Printer-friendly styling for listing details page
