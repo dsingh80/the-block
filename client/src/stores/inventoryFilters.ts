@@ -153,6 +153,7 @@ export const useInventoryFiltersStore = defineStore('inventoryFilters', () => {
     ids,
     vehiclesById,
     hasNextPage,
+    endCursor,
     loading,
     error,
     makeOptions,

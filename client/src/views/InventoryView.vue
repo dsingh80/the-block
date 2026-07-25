@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import FilterBar from '@/components/inventory/FilterBar.vue'
@@ -16,7 +16,8 @@ import type { AugmentedListing } from '@/types/listing'
 const route = useRoute()
 const router = useRouter()
 const filters = useInventoryFiltersStore()
-const { search, makeFilter, statusFilter, sortBy, ids, loading, error, hasNextPage } = storeToRefs(filters)
+const { search, makeFilter, statusFilter, sortBy, ids, hasNextPage, endCursor, loading, error } =
+  storeToRefs(filters)
 const { list } = useAugmentedListings()
 
 /** ids is the server's ordering for the current page(s); list is the full known-vehicle cache -- this joins them back into an ordered, augmented array without assuming list's own order. */
@@ -25,13 +26,21 @@ const listings = computed<AugmentedListing[]>(() => {
   return ids.value.map((id) => byId.get(id)).filter((listing): listing is AugmentedListing => !!listing)
 })
 
-function syncUrl() {
+/**
+ * includeCursor is false for a fresh filter change (start over from page one,
+ * no checkpoint) and true after loadMore (reflect the new scroll position so
+ * a reload/copied link resumes near where the user actually is) --
+ * guidelines/06-backend-architecture.md's client-integration phase, the
+ * "resumable checkpoint" half of infinite scroll.
+ */
+function syncUrl(includeCursor: boolean) {
   router.replace({
     query: {
       ...(statusFilter.value !== 'all' ? { status: statusFilter.value } : {}),
       ...(makeFilter.value !== 'all' ? { make: makeFilter.value } : {}),
       ...(search.value.trim() ? { q: search.value.trim() } : {}),
       ...(sortBy.value !== 'ending' ? { sort: sortBy.value } : {}),
+      ...(includeCursor && endCursor.value ? { after: endCursor.value } : {}),
     },
   })
 }
@@ -43,6 +52,14 @@ function syncUrl() {
 // after that initial fetch actually happens.
 const initializing = ref(true)
 
+const sentinelRef = ref<HTMLElement | null>(null)
+let observer: IntersectionObserver | undefined
+
+async function loadMore() {
+  await filters.loadNextPage()
+  syncUrl(true)
+}
+
 onMounted(async () => {
   const q = route.query
   if (typeof q.status === 'string') statusFilter.value = q.status as StatusFilter
@@ -52,6 +69,15 @@ onMounted(async () => {
 
   await filters.reset(typeof q.after === 'string' ? q.after : undefined)
   initializing.value = false
+
+  observer = new IntersectionObserver((entries) => {
+    if (entries.some((entry) => entry.isIntersecting)) void loadMore()
+  })
+  if (sentinelRef.value) observer.observe(sentinelRef.value)
+})
+
+onBeforeUnmount(() => {
+  observer?.disconnect()
 })
 
 let searchDebounce: ReturnType<typeof setTimeout> | undefined
@@ -61,14 +87,14 @@ watch(search, () => {
   clearTimeout(searchDebounce)
   searchDebounce = setTimeout(() => {
     void filters.reset()
-    syncUrl()
+    syncUrl(false)
   }, SEARCH_DEBOUNCE_MS)
 })
 
 watch([makeFilter, statusFilter, sortBy], () => {
   if (initializing.value) return
   void filters.reset()
-  syncUrl()
+  syncUrl(false)
 })
 </script>
 
@@ -92,9 +118,14 @@ watch([makeFilter, statusFilter, sortBy], () => {
       <div>Try clearing the search or selecting a different make.</div>
     </div>
 
-    <div v-else class="inventory-view__grid">
-      <VehicleCard v-for="listing in listings" :key="listing.id" :listing="listing" />
-    </div>
+    <template v-else>
+      <div class="inventory-view__grid">
+        <VehicleCard v-for="listing in listings" :key="listing.id" :listing="listing" />
+      </div>
+      <p v-if="loading" class="inventory-view__loading-more">Loading more…</p>
+    </template>
+
+    <div ref="sentinelRef" class="inventory-view__sentinel" aria-hidden="true"></div>
   </main>
 </template>
 
@@ -161,6 +192,18 @@ watch([makeFilter, statusFilter, sortBy], () => {
   grid-template-columns: repeat(auto-fill, minmax(272px, 1fr));
   gap: 20px;
   margin-top: 22px;
+}
+
+.inventory-view__loading-more {
+  text-align: center;
+  color: var(--color-muted);
+  font-size: 13px;
+  font-weight: 600;
+  margin: 20px 0 0;
+}
+
+.inventory-view__sentinel {
+  height: 1px;
 }
 
 @media (max-width: 640px) {

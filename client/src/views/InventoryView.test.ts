@@ -11,6 +11,24 @@ function emptyPage() {
   return { data: [], page_info: { has_next_page: false, has_previous_page: false } }
 }
 
+/** jsdom has no IntersectionObserver at all -- this stands in for it, and lets a test drive the sentinel by invoking the captured callback directly instead of needing a real observed intersection. */
+class FakeIntersectionObserver {
+  static instances: FakeIntersectionObserver[] = []
+  readonly callback: IntersectionObserverCallback
+  observe = vi.fn()
+  unobserve = vi.fn()
+  disconnect = vi.fn()
+
+  constructor(callback: IntersectionObserverCallback) {
+    this.callback = callback
+    FakeIntersectionObserver.instances.push(this)
+  }
+
+  intersect() {
+    this.callback([{ isIntersecting: true } as IntersectionObserverEntry], this as unknown as IntersectionObserver)
+  }
+}
+
 async function mountAt(initialUrl: string) {
   setActivePinia(createPinia())
   const router = createRouter({
@@ -29,10 +47,13 @@ describe('InventoryView URL sync', () => {
   beforeEach(() => {
     vi.mocked(listingsApi.fetchListings).mockReset().mockResolvedValue(emptyPage())
     vi.mocked(listingsApi.fetchFacets).mockReset().mockResolvedValue({ makes: [] })
+    FakeIntersectionObserver.instances = []
+    vi.stubGlobal('IntersectionObserver', FakeIntersectionObserver)
   })
 
   afterEach(() => {
     vi.useRealTimers()
+    vi.unstubAllGlobals()
   })
 
   it('seeds every filter from the URL on mount and fetches accordingly', async () => {
@@ -103,5 +124,53 @@ describe('InventoryView URL sync', () => {
 
     expect(router.currentRoute.value.query.q).toBe('turbo')
     expect(listingsApi.fetchListings).toHaveBeenCalledWith(expect.objectContaining({ q: 'turbo' }))
+  })
+})
+
+describe('InventoryView infinite-scroll sentinel', () => {
+  beforeEach(() => {
+    vi.mocked(listingsApi.fetchFacets).mockReset().mockResolvedValue({ makes: [] })
+    FakeIntersectionObserver.instances = []
+    vi.stubGlobal('IntersectionObserver', FakeIntersectionObserver)
+  })
+
+  afterEach(() => {
+    vi.unstubAllGlobals()
+  })
+
+  it('observes a sentinel element on mount', async () => {
+    vi.mocked(listingsApi.fetchListings).mockResolvedValue(emptyPage())
+    await mountAt('/inventory')
+
+    expect(FakeIntersectionObserver.instances).toHaveLength(1)
+    expect(FakeIntersectionObserver.instances[0]!.observe).toHaveBeenCalledTimes(1)
+  })
+
+  it('calls loadNextPage when the sentinel intersects, and reflects the new cursor in the URL', async () => {
+    vi.mocked(listingsApi.fetchListings).mockResolvedValueOnce({
+      data: [],
+      page_info: { has_next_page: true, has_previous_page: false, end_cursor: 'page-1-cursor' },
+    })
+    const { router } = await mountAt('/inventory')
+
+    vi.mocked(listingsApi.fetchListings).mockResolvedValueOnce({
+      data: [],
+      page_info: { has_next_page: false, has_previous_page: true, end_cursor: 'page-2-cursor' },
+    })
+    FakeIntersectionObserver.instances[0]!.intersect()
+    await flushPromises()
+
+    expect(listingsApi.fetchListings).toHaveBeenLastCalledWith(expect.objectContaining({ after: 'page-1-cursor' }))
+    expect(router.currentRoute.value.query.after).toBe('page-2-cursor')
+  })
+
+  it('disconnects the observer on unmount', async () => {
+    vi.mocked(listingsApi.fetchListings).mockResolvedValue(emptyPage())
+    const { wrapper } = await mountAt('/inventory')
+    const instance = FakeIntersectionObserver.instances[0]!
+
+    wrapper.unmount()
+
+    expect(instance.disconnect).toHaveBeenCalledTimes(1)
   })
 })
