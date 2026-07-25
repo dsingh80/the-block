@@ -67,12 +67,19 @@
 
   /* Z-index scale — keeps the app's floating layers ordered by
      construction instead of ad hoc per-component numbers. */
-  --z-header: 60;
-  --z-sticky-column: 70;
+  --z-header: 70;
+  --z-sticky-column: 60;
   --z-watchlist-drawer: 85;
   --z-watchlist-tab: 86;
   --z-compare-bar: 90;
   --z-preview-modal: 100;
   --z-compare-modal: 110;
   --z-tooltip: 120;
+  --z-confirm-modal: 130;
+
+  /* AppHeader's rendered height (position: sticky; top: 0) -- scroll-margin-top
+     compensation so a scrollIntoView target doesn't tuck under it. Measured
+     directly against the real rendered header (51px) plus a couple px of
+     breathing room. */
+  --header-height: 54px;
 }

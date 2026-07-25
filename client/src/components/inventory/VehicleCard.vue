@@ -25,7 +25,7 @@ function toggleCompare() {
 </script>
 
 <template>
-  <div class="vehicle-card">
+  <div class="vehicle-card" :data-listing-id="listing.id">
     <div class="vehicle-card__media" @click="openPreview">
       <img
         v-if="listing.images[0] && !imageFailed"

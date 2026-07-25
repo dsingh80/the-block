@@ -38,6 +38,7 @@ export interface AugmentedListing {
   isUpcoming: boolean
   isEnded: boolean
   canBid: boolean
+  canRaiseBid: boolean
 
   mileageLabel: string
   locationLabel: string

@@ -23,6 +23,11 @@ export default tseslint.config(
       // positions) — no-undef is redundant here and has known false
       // positives on TS-only syntax, per typescript-eslint's own docs.
       'no-undef': 'off',
+      // A leading underscore is the standard way to mark a destructured
+      // binding as deliberately unused (e.g. `const { viewer: _viewer,
+      // ...rest } = x` to omit one key while keeping the rest) --
+      // recognize that convention instead of flagging every such omission.
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
     },
   },
   eslintConfigPrettier,

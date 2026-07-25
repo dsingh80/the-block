@@ -34,3 +34,20 @@ export function timeLabelFor(lifecycle: Lifecycle, hoursRemaining: number): stri
   }
   return `Ended ${formatDuration(-hoursRemaining)} ago`
 }
+
+/**
+ * Short relative-time label for "how long ago", not a countdown --
+ * same d/h/m bucketing as formatDuration but no floor-at-1, since an
+ * elapsed duration legitimately starts at zero. `elapsedMs` is clamped to
+ * >= 0 so a clock read landing a tick before its own timestamp still reads
+ * "just now" instead of negative.
+ */
+export function timeSince(elapsedMs: number): string {
+  const minutes = Math.floor(Math.max(elapsedMs, 0) / 60000)
+  if (minutes < 1) return 'just now'
+  if (minutes < 60) return `${minutes}m ago`
+  const hours = Math.floor(minutes / 60)
+  if (hours < 24) return `${hours}h ago`
+  const days = Math.floor(hours / 24)
+  return `${days}d ago`
+}

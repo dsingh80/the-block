@@ -36,9 +36,11 @@ Bids, watchlist, and compare selection all live in global Pinia stores, not comp
 
 `inventoryFilters` is also a store rather than local view state, for a narrower but concrete reason: Vue Router unmounts `InventoryView` when navigating to `/inventory/:id`, so plain local `ref`s for search/filter/sort would silently reset on every round trip through a listing's detail page. A store survives that unmount.
 
-## 4. No adapter layer yet — but know where one goes
+## 4. `services/api/` is the one adapter layer
 
-There's nothing external to wrap at v1 (no API, no WebSocket, no real backend). If/when `server/` becomes a real backend, API calls should go through a thin `services/api/` layer — components and stores should call a typed service function, never `fetch`/`axios` directly — so swapping mock data for a real endpoint later is a one-file change in `services/`, not a grep across every store.
+`server/` is a real backend now (`guidelines/06-backend-architecture.md`), reached through a thin `services/api/` layer — components and stores call a typed service function (`fetchListings`, `placeBid`, ...), never `fetch` directly, so a wire-format or endpoint change is a one-file change in `services/api/`, not a grep across every store. `stores/inventoryFilters.ts` is the store that actually calls it for reads (`reset`/`loadNextPage`/`ensureVehicleLoaded`) and doubles as the app's vehicle cache (`vehiclesById`, accumulated across every fetch, never cleared on a filter change) so `useAugmentedListings()`/`useAugmentedListing()` — and by extension watchlist/compare, which need to render a listing regardless of whether it's in the *current* filtered page — don't need their own fetch logic. `stores/bids.ts` calls it for writes (`placeBid`/`buyNow`).
+
+`services/api/ws.ts` is this same layer's realtime half: one shared `RealtimeConnection`, never a raw `WebSocket` constructed by a component. `composables/useRealtimeSync.ts` is the seam between that connection and the stores — `handleRealtimeMessage` writes an incoming event into `vehiclesById`/`bids.overrides` exactly like a REST response would, and `useRealtimeSubscription(ids)` is what a view or `useAugmentedListing` calls to keep whatever ids it currently cares about live for the lifetime of its effect scope. Subscriptions are ref-counted inside `RealtimeConnection`, not tracked as a per-caller Set, since more than one caller can independently want the same listing subscribed at once (the inventory grid and an open Preview Modal, say) — a caller's `unsubscribe` only ever reaches the server once every other subscriber has also let go.
 
 ## 5. `main.ts` is the composition root
 

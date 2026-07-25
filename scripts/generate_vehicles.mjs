@@ -13,7 +13,34 @@ function mulberry32(seed) {
   };
 }
 
-const rng = mulberry32(42);
+function parseSeedArg() {
+  const arg = process.argv.find((a) => a.startsWith("--seed="));
+  // Date.now() alone can collide if two runs happen within the same millisecond
+  // (e.g. back-to-back in a test); process.pid always differs between separate
+  // node invocations, so combining them keeps back-to-back default runs distinct.
+  if (!arg) return Date.now() + process.pid;
+  const raw = arg.slice("--seed=".length);
+  const parsed = Number(raw);
+  if (!Number.isFinite(parsed)) {
+    throw new Error(`--seed must be a number, got "${raw}"`);
+  }
+  return parsed;
+}
+
+function parseOutDirArg() {
+  const arg = process.argv.find((a) => a.startsWith("--out-dir="));
+  return arg ? arg.slice("--out-dir=".length) : null;
+}
+
+// Randomized by default (was a hardcoded 42) so re-running this script produces a
+// genuinely different set of vehicle ids each time -- server/'s insert-only-new
+// reconciliation (guidelines/06-backend-architecture.md) only ever has anything new
+// to find if the generator's output actually changes between runs. Pass
+// --seed=<n> to reproduce a specific prior run exactly (e.g. for a test fixture).
+const seed = parseSeedArg();
+const rng = mulberry32(seed);
+console.log(`generate_vehicles: seed=${seed} (pass --seed=${seed} to reproduce this exact run)`);
+
 const CURRENT_YEAR = new Date().getFullYear();
 const AUCTION_HOURS = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
 const PROVINCE_WEIGHTS = {
@@ -266,6 +293,19 @@ function weightedChoice(weightMap) {
 
 function roundToNearest500(value) {
   return Math.round(value / 500) * 500;
+}
+
+// Deliberately not crypto.randomUUID(): that's a cryptographically random source
+// entirely independent of the seeded rng(), so --seed=<n> wouldn't actually
+// reproduce a prior run's ids -- discovered via generate_vehicles.test.mjs's
+// same-seed-same-output test, not just by inspection. Building the UUID's bytes
+// from rand() instead makes --seed cover every field, ids included.
+function seededUUID() {
+  const bytes = Array.from({ length: 16 }, () => Math.floor(rand() * 256));
+  bytes[6] = (bytes[6] & 0x0f) | 0x40; // version 4
+  bytes[8] = (bytes[8] & 0x3f) | 0x80; // variant 10xx
+  const hex = bytes.map((b) => b.toString(16).padStart(2, "0")).join("");
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
 }
 
 function generateVin() {
@@ -522,7 +562,7 @@ function generateVehicle(index) {
   const imageCount = randInt(3, 6);
 
   return {
-    id: crypto.randomUUID(),
+    id: seededUUID(),
     vin: generateVin(),
     year,
     make,
@@ -570,15 +610,19 @@ function summarize(vehicles) {
 
 const vehicles = Array.from({ length: 200 }, (_, index) => generateVehicle(index));
 const scriptDir = dirname(fileURLToPath(import.meta.url));
-const outputPath = resolve(scriptDir, "../data/vehicles.json");
+const outDirOverride = parseOutDirArg();
 
-mkdirSync(dirname(outputPath), { recursive: true });
-writeFileSync(outputPath, `${JSON.stringify(vehicles, null, 2)}\n`);
-
-// going to hardcode this path here since data should be loaded from the backend anyway
-// it's fine for testing right now
-const clientOutputPath = resolve(scriptDir, "../client/src/data/vehicles.json");
-mkdirSync(dirname(outputPath), { recursive: true });
-writeFileSync(clientOutputPath, `${JSON.stringify(vehicles, null, 2)}\n`);
+if (outDirOverride) {
+  // Test-only escape hatch (generate_vehicles.test.mjs) so a test run never
+  // overwrites the real committed dataset -- writes a single vehicles.json into
+  // an arbitrary directory instead of the two hardcoded real output paths below.
+  const outputPath = resolve(outDirOverride, "vehicles.json");
+  mkdirSync(dirname(outputPath), { recursive: true });
+  writeFileSync(outputPath, `${JSON.stringify(vehicles, null, 2)}\n`);
+} else {
+  const outputPath = resolve(scriptDir, "../data/vehicles.json");
+  mkdirSync(dirname(outputPath), { recursive: true });
+  writeFileSync(outputPath, `${JSON.stringify(vehicles, null, 2)}\n`);
+}
 
 console.log(JSON.stringify(summarize(vehicles), null, 2));

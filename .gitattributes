@@ -1,0 +1,4 @@
+# Shell scripts must always check out with LF -- a CRLF shebang line
+# (`#!/usr/bin/env bash\r`) breaks on a strict/real Linux bash, which matters
+# here since these scripts run inside Docker/CI as well as Git Bash on Windows.
+*.sh text eol=lf

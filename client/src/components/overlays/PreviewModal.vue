@@ -26,8 +26,8 @@ function handleBackdropClick(event: MouseEvent) {
   if (event.target === event.currentTarget) close()
 }
 
-function buyNow() {
-  if (listing.value) bids.buyNow(listing.value.id)
+async function buyNow() {
+  if (listing.value) await bids.buyNow(listing.value.id)
 }
 
 function goDetails() {

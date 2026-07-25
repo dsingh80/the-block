@@ -1,9 +1,10 @@
-import { computed, toValue, type MaybeRefOrGetter } from 'vue'
-import { vehiclesById, vehicles, sellerCounts } from '@/data/vehicles'
+import { computed, toValue, watchEffect, type MaybeRefOrGetter } from 'vue'
 import { useClockStore } from '@/stores/clock'
 import { useBidsStore } from '@/stores/bids'
 import { useWatchlistStore } from '@/stores/watchlist'
 import { useCompareStore } from '@/stores/compare'
+import { useInventoryFiltersStore } from '@/stores/inventoryFilters'
+import { useRealtimeSubscription } from '@/composables/useRealtimeSync'
 import { deriveLifecycle } from '@/utils/lifecycle'
 import { getBidIncrement } from '@/utils/bidding'
 import { currency, formatKm } from '@/utils/format'
@@ -65,7 +66,14 @@ function computeBidStatus(
  * guidelines/03-guardrails.md.
  */
 export function augment(vehicle: Vehicle, ctx: AugmentContext): AugmentedListing {
-  const purchased = ctx.override?.purchased ?? false
+  const purchasedByMe = ctx.override?.purchased ?? false
+  // vehicle.purchased_at is the server's authority on an early end (a Buy Now,
+  // possibly by another session) -- something the client can no longer derive
+  // from auction_start + a fixed duration alone once other sessions can end a
+  // listing early. Local time-based derivation still owns the ordinary
+  // upcoming -> active -> ended-by-time-passing transitions between fetches.
+  const purchasedAtMs = vehicle.purchased_at != null ? new Date(vehicle.purchased_at).getTime() : null
+  const purchased = purchasedByMe || purchasedAtMs != null
   const lifecycle = purchased ? 'ended' : deriveLifecycle(vehicle.auction_start, ctx.effectiveNow)
   const isUpcoming = lifecycle === 'upcoming'
   const isEnded = lifecycle === 'ended'
@@ -74,6 +82,10 @@ export function augment(vehicle: Vehicle, ctx: AugmentContext): AugmentedListing
   const hasUserBid = ctx.override?.hasUserBid ?? false
   const isUserHighBidder = ctx.override?.isUserHighBidder ?? false
   const isUserOutbid = ctx.override?.isUserOutbid ?? false
+  // Already the high bidder -> no legitimate reason to raise your own max proxy
+  // bid, so every bid-entry surface (BidPanel, WatchlistDrawer's quick-bid,
+  // the shared ctaLabel/ctaVariant below) gates on this instead of canBid.
+  const canRaiseBid = canBid && !isUserHighBidder
 
   const priceValue = ctx.override?.currentPrice ?? vehicle.current_bid ?? vehicle.starting_bid
   const bidCount = ctx.override?.bidCount ?? vehicle.bid_count
@@ -90,7 +102,10 @@ export function augment(vehicle: Vehicle, ctx: AugmentContext): AugmentedListing
   const nextBidValue = priceValue + getBidIncrement(priceValue)
 
   const startMs = new Date(vehicle.auction_start).getTime()
-  const endMs = startMs + AUCTION_DURATION_HOURS * HOUR_MS
+  // A purchase's real timestamp stands in for the fixed-24h assumption once
+  // the listing actually ended that way -- otherwise "Ended Xh ago" would be
+  // measured against a duration that was never the reason it ended.
+  const endMs = purchasedAtMs ?? startMs + AUCTION_DURATION_HOURS * HOUR_MS
   const hoursRemaining = isUpcoming
     ? (startMs - ctx.effectiveNow) / HOUR_MS
     : (endMs - ctx.effectiveNow) / HOUR_MS
@@ -100,15 +115,24 @@ export function augment(vehicle: Vehicle, ctx: AugmentContext): AugmentedListing
   if (urgent) timeVariant = 'urgent'
   else if (isUpcoming) timeVariant = 'upcoming'
 
-  const timeLabel = purchased ? 'Purchased just now' : timeLabelFor(lifecycle, hoursRemaining)
+  // "just now" is specifically about *this* session's own completed purchase,
+  // not merely "the listing happens to be ended by a purchase" -- someone
+  // else's earlier Buy Now still gets the ordinary "Ended Xh ago" label.
+  const justBought = ctx.justBoughtId === vehicle.id
+  const timeLabel = justBought ? 'Purchased just now' : timeLabelFor(lifecycle, hoursRemaining)
 
   const badge = computeBadge(lifecycle, hasUserBid, isUserHighBidder, isUserOutbid)
   const bidStatus = computeBidStatus(isUpcoming, isEnded, hasUserBid, isUserHighBidder, isUserOutbid)
 
-  const ctaLabel = isEnded ? 'View Result' : hasUserBid ? 'Place New Bid' : 'View Auction'
+  const ctaLabel = isEnded
+    ? 'View Result'
+    : hasUserBid && !isUserHighBidder
+      ? 'Place New Bid'
+      : 'View Auction'
   let ctaVariant: CtaVariant = 'primary'
   if (isEnded) ctaVariant = 'outline-navy'
   else if (isUpcoming) ctaVariant = 'outline-accent'
+  else if (isUserHighBidder) ctaVariant = 'outline-navy'
 
   return {
     id: vehicle.id,
@@ -118,6 +142,7 @@ export function augment(vehicle: Vehicle, ctx: AugmentContext): AugmentedListing
     isUpcoming,
     isEnded,
     canBid,
+    canRaiseBid,
 
     mileageLabel: formatKm(vehicle.odometer_km),
     locationLabel: `${vehicle.city}, ${vehicle.province}`,
@@ -152,7 +177,7 @@ export function augment(vehicle: Vehicle, ctx: AugmentContext): AugmentedListing
 
     showBuyNow: !isEnded && vehicle.buy_now_price != null,
     buyNowFormatted: vehicle.buy_now_price != null ? currency(vehicle.buy_now_price) : null,
-    justBought: ctx.justBoughtId === vehicle.id,
+    justBought,
 
     isWatched: ctx.isWatched,
     watchButtonLabel: ctx.isWatched ? 'Watching ✓' : 'Add to Watchlist',
@@ -185,31 +210,62 @@ function buildContext(
   }
 }
 
-/** Reactive list of every vehicle in the dataset, augmented. Must stay a computed() — it reads the clock store, which is what makes badges/status flip live as time passes. */
+/**
+ * Reactive list of every vehicle known so far (guidelines/06-backend-architecture.md's
+ * client-integration phase): inventoryFilters.vehiclesById accumulates across
+ * every inventory page fetched and every single-listing fetch, so watchlist/
+ * compare (which need to render a listing regardless of whether it's in the
+ * *current* filtered inventory page) keep working without their own fetch
+ * logic. Must stay a computed() — it reads the clock store, which is what
+ * makes badges/status flip live as time passes.
+ */
 export function useAugmentedListings() {
   const clock = useClockStore()
   const bids = useBidsStore()
   const watchlist = useWatchlistStore()
   const compare = useCompareStore()
+  const filters = useInventoryFiltersStore()
 
   const list = computed<AugmentedListing[]>(() =>
-    vehicles.map((vehicle) => augment(vehicle, buildContext(vehicle.id, clock, bids, watchlist, compare))),
+    Object.values(filters.vehiclesById).map((vehicle) =>
+      augment(vehicle, buildContext(vehicle.id, clock, bids, watchlist, compare)),
+    ),
   )
 
   return { list }
 }
 
-/** Reactive single augmented listing for a (possibly reactive) id — used by ListingDetailsView, the Preview Modal, and Compare Modal. */
+/**
+ * Reactive single augmented listing for a (possibly reactive) id — used by
+ * ListingDetailsView, the Preview Modal, and Compare Modal. Triggers a fetch
+ * for an id not already known (a direct/bookmarked link to a listing never
+ * paginated into view) via inventoryFilters.ensureVehicleLoaded.
+ */
 export function useAugmentedListing(id: MaybeRefOrGetter<string | undefined>) {
   const clock = useClockStore()
   const bids = useBidsStore()
   const watchlist = useWatchlistStore()
   const compare = useCompareStore()
+  const filters = useInventoryFiltersStore()
+
+  watchEffect(() => {
+    const vehicleId = toValue(id)
+    if (vehicleId && !filters.vehiclesById[vehicleId]) void filters.ensureVehicleLoaded(vehicleId)
+  })
+
+  // Keeps this one listing live the same way InventoryView keeps its whole
+  // grid live (guidelines/06-backend-architecture.md, "WebSocket protocol") --
+  // matters most here since a detail page has no polling/refetch of its own
+  // to fall back on between visits.
+  useRealtimeSubscription(() => {
+    const vehicleId = toValue(id)
+    return vehicleId ? [vehicleId] : []
+  })
 
   const listing = computed<AugmentedListing | undefined>(() => {
     const vehicleId = toValue(id)
     if (!vehicleId) return undefined
-    const vehicle = vehiclesById.get(vehicleId)
+    const vehicle = filters.vehiclesById[vehicleId]
     if (!vehicle) return undefined
     return augment(vehicle, buildContext(vehicle.id, clock, bids, watchlist, compare))
   })

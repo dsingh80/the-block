@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { useInventoryFiltersStore, type StatusFilter } from '@/stores/inventoryFilters'
-import { MAKE_OPTIONS } from '@/data/vehicles'
 
 const filters = useInventoryFiltersStore()
-const { search, makeFilter, statusFilter, sortBy } = storeToRefs(filters)
+const { search, makeFilter, statusFilter, sortBy, makeOptions } = storeToRefs(filters)
 
 const statusChips: { value: StatusFilter; label: string }[] = [
   { value: 'all', label: 'All' },
@@ -30,7 +29,7 @@ const statusChips: { value: StatusFilter; label: string }[] = [
       <label class="sr-only" for="inventory-make">Make</label>
       <select id="inventory-make" v-model="makeFilter">
         <option value="all">All Makes</option>
-        <option v-for="make in MAKE_OPTIONS" :key="make" :value="make">{{ make }}</option>
+        <option v-for="make in makeOptions" :key="make" :value="make">{{ make }}</option>
       </select>
     </div>
 

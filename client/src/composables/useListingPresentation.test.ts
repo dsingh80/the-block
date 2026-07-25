@@ -2,13 +2,20 @@ import { describe, expect, it } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { augment, useAugmentedListing } from './useListingPresentation'
 import { useClockStore } from '@/stores/clock'
-import { vehicles, sellerCounts } from '@/data/vehicles'
+import { useInventoryFiltersStore } from '@/stores/inventoryFilters'
 import type { Vehicle } from '@/types/vehicle'
 import type { BidOverride } from '@/types/listing'
 
 const HOUR_MS = 60 * 60 * 1000
 const DEFAULT_AUCTION_START = '2026-01-01T12:00:00.000Z'
+const DEFAULT_AUCTION_END = '2026-01-02T12:00:00.000Z'
 
+/**
+ * `status` isn't actually read by augment() below -- lifecycle is derived
+ * client-side from auction_start + the clock (see augment()'s own comment on
+ * vehicle.purchased_at) -- so its fixture value here is just for type
+ * conformance with the real (always-populated) API shape, not behavior.
+ */
 function makeVehicle(overrides: Partial<Vehicle> = {}): Vehicle {
   return {
     id: 'test-vehicle',
@@ -32,14 +39,16 @@ function makeVehicle(overrides: Partial<Vehicle> = {}): Vehicle {
     province: 'Ontario',
     city: 'Toronto',
     auction_start: DEFAULT_AUCTION_START,
+    auction_end: DEFAULT_AUCTION_END,
+    status: 'active',
     starting_bid: 10000,
-    reserve_price: null,
     buy_now_price: null,
     images: ['a.jpg', 'b.jpg', 'c.jpg'],
     selling_dealership: 'Test Motors',
     lot: 'A-0001',
     current_bid: null,
     bid_count: 0,
+    purchased_at: null,
     ...overrides,
   }
 }
@@ -142,6 +151,48 @@ describe('augment - badge', () => {
   })
 })
 
+describe('augment - canRaiseBid', () => {
+  it('is true for an active listing the user has not bid on', () => {
+    const listing = augment(makeVehicle(), baseCtx())
+    expect(listing.canRaiseBid).toBe(true)
+  })
+
+  it('is true for an active listing where the user has bid but is outbid', () => {
+    const override = makeOverride({ isUserOutbid: true })
+    const listing = augment(makeVehicle(), baseCtx({ override }))
+    expect(listing.canRaiseBid).toBe(true)
+  })
+
+  it('is false for an active listing where the user is already the high bidder', () => {
+    const override = makeOverride({ isUserHighBidder: true })
+    const listing = augment(makeVehicle(), baseCtx({ override }))
+    expect(listing.canBid).toBe(true)
+    expect(listing.canRaiseBid).toBe(false)
+  })
+
+  it('is false once the listing has ended, even if the user was high bidder', () => {
+    const endedNow = new Date(DEFAULT_AUCTION_START).getTime() + 25 * HOUR_MS
+    const override = makeOverride({ isUserHighBidder: true })
+    const listing = augment(makeVehicle(), baseCtx({ effectiveNow: endedNow, override }))
+    expect(listing.canRaiseBid).toBe(false)
+  })
+})
+
+describe('augment - ctaLabel', () => {
+  it('is "Place New Bid" when the user has bid and been outbid', () => {
+    const override = makeOverride({ isUserOutbid: true })
+    const listing = augment(makeVehicle(), baseCtx({ override }))
+    expect(listing.ctaLabel).toBe('Place New Bid')
+  })
+
+  it('is "View Auction", not "Place New Bid", when the user is already the high bidder', () => {
+    const override = makeOverride({ isUserHighBidder: true })
+    const listing = augment(makeVehicle(), baseCtx({ override }))
+    expect(listing.ctaLabel).toBe('View Auction')
+    expect(listing.ctaVariant).toBe('outline-navy')
+  })
+})
+
 describe('augment - damage notes', () => {
   it('falls back to a no-damage sentence when damage_notes is empty', () => {
     const listing = augment(makeVehicle({ damage_notes: [] }), baseCtx())
@@ -155,10 +206,63 @@ describe('augment - damage notes', () => {
   })
 })
 
+describe('augment - purchased_at (server-reported early end)', () => {
+  it('treats the listing as ended once purchased_at is set, even well before the fixed-duration boundary', () => {
+    // Only 2h into what would otherwise be a 24h auction -- time-based
+    // derivation alone would still call this "active".
+    const purchasedAt = new Date(new Date(DEFAULT_AUCTION_START).getTime() + 2 * HOUR_MS).toISOString()
+    const vehicle = makeVehicle({ purchased_at: purchasedAt })
+
+    const listing = augment(vehicle, baseCtx({ effectiveNow: new Date(purchasedAt).getTime() + HOUR_MS }))
+
+    expect(listing.lifecycle).toBe('ended')
+    expect(listing.isEnded).toBe(true)
+    expect(listing.canBid).toBe(false)
+  })
+
+  it('shows "Ended Xh ago" measured from the real purchase time, not the fixed-duration assumption', () => {
+    const purchasedAt = new Date(new Date(DEFAULT_AUCTION_START).getTime() + 2 * HOUR_MS).toISOString()
+    const vehicle = makeVehicle({ purchased_at: purchasedAt })
+
+    const listing = augment(
+      vehicle,
+      baseCtx({ effectiveNow: new Date(purchasedAt).getTime() + 3 * HOUR_MS, justBoughtId: null }),
+    )
+
+    expect(listing.timeLabel).toBe('Ended 3h 00m ago')
+  })
+
+  it('only shows "Purchased just now" for the session whose own justBoughtId matches, not any purchased_at', () => {
+    const purchasedAt = new Date(new Date(DEFAULT_AUCTION_START).getTime() + 2 * HOUR_MS).toISOString()
+    const vehicle = makeVehicle({ id: 'someone-elses-purchase', purchased_at: purchasedAt })
+
+    // A different id in justBoughtId -- this session did not buy this listing.
+    const listing = augment(
+      vehicle,
+      baseCtx({ effectiveNow: new Date(purchasedAt).getTime() + HOUR_MS, justBoughtId: 'a-different-listing' }),
+    )
+
+    expect(listing.timeLabel).not.toBe('Purchased just now')
+    expect(listing.justBought).toBe(false)
+  })
+
+  it('does show "Purchased just now" when justBoughtId matches this listing', () => {
+    const vehicle = makeVehicle()
+    const override = makeOverride({ purchased: true })
+
+    const listing = augment(vehicle, baseCtx({ override, justBoughtId: vehicle.id }))
+
+    expect(listing.timeLabel).toBe('Purchased just now')
+    expect(listing.justBought).toBe(true)
+  })
+})
+
 describe('useAugmentedListing reactivity', () => {
   it('flips lifecycle live as the clock store advances past the end boundary', () => {
     setActivePinia(createPinia())
-    const vehicle = vehicles[0]
+    const vehicle = makeVehicle()
+    const filters = useInventoryFiltersStore()
+    filters.vehiclesById[vehicle.id] = vehicle // seed the cache directly -- no network fetch in this test
     const clock = useClockStore()
     clock.effectiveNow = new Date(vehicle.auction_start).getTime() + HOUR_MS
 
@@ -167,5 +271,11 @@ describe('useAugmentedListing reactivity', () => {
 
     clock.effectiveNow = new Date(vehicle.auction_start).getTime() + 25 * HOUR_MS
     expect(listing.value?.lifecycle).toBe('ended')
+  })
+
+  it('returns undefined for an id not yet in the vehicle cache, without throwing', () => {
+    setActivePinia(createPinia())
+    const { listing } = useAugmentedListing(() => 'never-fetched-id')
+    expect(listing.value).toBeUndefined()
   })
 })
