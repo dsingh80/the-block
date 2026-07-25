@@ -1,0 +1,110 @@
+name: the-block
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: theblock
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    # Never publish a host port for this -- only Caddy is externally reachable
+    # (guidelines/06-backend-architecture.md, "SOC2 principles mapping").
+
+  redis:
+    image: redis:7-alpine
+    # appendfsync always (not the default everysec): closes most of the "bid
+    # accepted, Redis crashes before the periodic flush" gap
+    # (guidelines/06-backend-architecture.md, "Data layer") -- negligible fsync
+    # cost at this system's realistic bid volume.
+    command: ["redis-server", "--appendonly", "yes", "--appendfsync", "always"]
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # One-shot init service: migrations + insert-only-new dataset sync + Redis
+  # state priming, on every `docker compose up`, not just the first
+  # (guidelines/06-backend-architecture.md, "Data lifecycle"). `app` only
+  # starts once this exits 0.
+  reconcile:
+    build:
+      context: .
+      dockerfile: deploy/docker/Dockerfile
+    command: ["reconcile"]
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/theblock?sslmode=disable
+      REDIS_ADDR: redis:6379
+      # Bind-mounted, not baked into the image, specifically so regenerating
+      # data/vehicles.json on the host and re-running `docker compose up`
+      # picks it up without an image rebuild -- that's what actually exercises
+      # the insert-only-new reconciliation path in practice.
+      VEHICLES_DATA_PATH: /data/vehicles.json
+    volumes:
+      - ../data:/data:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  app:
+    build:
+      context: .
+      dockerfile: deploy/docker/Dockerfile
+    command: ["api"]
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/theblock?sslmode=disable
+      REDIS_ADDR: redis:6379
+      PORT: "8080"
+      PUBLIC_ORIGIN: https://localhost
+    depends_on:
+      reconcile:
+        condition: service_completed_successfully
+    # Docker's own json-file driver is the log persistence/rotation mechanism
+    # (guidelines/06-backend-architecture.md, "Logging") -- app itself only
+    # ever writes JSON lines to stdout, no rotation library, no volume mount
+    # for logs at all.
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+  # Runs the existing Vite dev server as-is -- not part of this round's scope
+  # (client integration is a later phase), just reachable through Caddy so the
+  # "one origin for client + API" architecture is provable end-to-end today.
+  client:
+    image: node:24-alpine
+    working_dir: /app
+    command: ["sh", "-c", "npm install && npm run dev -- --host"]
+    volumes:
+      - ../client:/app
+      - client-node-modules:/app/node_modules
+
+  caddy:
+    image: caddy:2-alpine
+    ports:
+      - "443:443"
+    volumes:
+      - ./deploy/docker/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./deploy/docker/certs:/etc/caddy/certs:ro
+      - caddy-data:/data
+    depends_on:
+      - app
+      - client
+
+volumes:
+  postgres-data:
+  redis-data:
+  caddy-data:
+  client-node-modules:
