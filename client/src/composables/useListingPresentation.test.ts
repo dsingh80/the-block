@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { augment, useAugmentedListing } from './useListingPresentation'
 import { useClockStore } from '@/stores/clock'
-import { vehicles } from '@/data/vehicles'
+import { useInventoryFiltersStore } from '@/stores/inventoryFilters'
 import type { Vehicle } from '@/types/vehicle'
 import type { BidOverride } from '@/types/listing'
 
@@ -208,7 +208,9 @@ describe('augment - purchased_at (server-reported early end)', () => {
 describe('useAugmentedListing reactivity', () => {
   it('flips lifecycle live as the clock store advances past the end boundary', () => {
     setActivePinia(createPinia())
-    const vehicle = vehicles[0]
+    const vehicle = makeVehicle()
+    const filters = useInventoryFiltersStore()
+    filters.vehiclesById[vehicle.id] = vehicle // seed the cache directly -- no network fetch in this test
     const clock = useClockStore()
     clock.effectiveNow = new Date(vehicle.auction_start).getTime() + HOUR_MS
 
@@ -217,5 +219,11 @@ describe('useAugmentedListing reactivity', () => {
 
     clock.effectiveNow = new Date(vehicle.auction_start).getTime() + 25 * HOUR_MS
     expect(listing.value?.lifecycle).toBe('ended')
+  })
+
+  it('returns undefined for an id not yet in the vehicle cache, without throwing', () => {
+    setActivePinia(createPinia())
+    const { listing } = useAugmentedListing(() => 'never-fetched-id')
+    expect(listing.value).toBeUndefined()
   })
 })

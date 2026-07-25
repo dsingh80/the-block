@@ -1,10 +1,10 @@
+import type { FuelType, TitleStatus } from '@/types/vehicle'
+import type { Lifecycle } from '@/types/listing'
+
 /**
- * Wire shapes for server/'s JSON responses -- deliberately separate from
- * types/vehicle.ts's `Vehicle` for now (that gets reconciled with these in a
- * later commit, guidelines/06-backend-architecture.md's client-integration
- * phase). Field names match the server's DTOs exactly (snake_case), since
- * these are what `JSON.parse` actually produces -- mapping to camelCase
- * happens at the store layer, not here.
+ * Wire shapes for server/'s JSON responses. Field names match the server's
+ * DTOs exactly (snake_case), since these are what `JSON.parse` actually
+ * produces -- mapping to camelCase happens at the store layer, not here.
  */
 
 export interface ApiViewer {
@@ -32,16 +32,16 @@ export interface ApiListingSummary {
   transmission: string
   drivetrain: string
   odometer_km: number
-  fuel_type: string
+  fuel_type: FuelType
   condition_grade: number
   condition_report: string
   damage_notes: string[]
-  title_status: string
+  title_status: TitleStatus
   province: string
   city: string
   auction_start: string
   auction_end: string
-  status: 'upcoming' | 'active' | 'ended'
+  status: Lifecycle
   starting_bid: number
   buy_now_price: number | null
   images: string[]

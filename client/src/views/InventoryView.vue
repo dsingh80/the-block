@@ -1,52 +1,74 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import FilterBar from '@/components/inventory/FilterBar.vue'
 import VehicleCard from '@/components/inventory/VehicleCard.vue'
 import { useAugmentedListings } from '@/composables/useListingPresentation'
-import { useInventoryFiltersStore } from '@/stores/inventoryFilters'
+import {
+  useInventoryFiltersStore,
+  SEARCH_DEBOUNCE_MS,
+  type SortOption,
+  type StatusFilter,
+} from '@/stores/inventoryFilters'
 import type { AugmentedListing } from '@/types/listing'
 
-const { list } = useAugmentedListings()
+const route = useRoute()
+const router = useRouter()
 const filters = useInventoryFiltersStore()
-const { search, makeFilter, statusFilter, sortBy } = storeToRefs(filters)
+const { search, makeFilter, statusFilter, sortBy, ids, loading, error, hasNextPage } = storeToRefs(filters)
+const { list } = useAugmentedListings()
 
-/** Active (soonest-ending first) -> upcoming (soonest-starting first) -> ended. The mock's 8 hardcoded listings never needed a cross-lifecycle tiebreak for "ending soonest." */
-function sortKey(listing: AugmentedListing): number {
-  if (listing.lifecycle === 'active') return listing.hoursRemaining
-  if (listing.lifecycle === 'upcoming') return listing.hoursRemaining + 24
-  return Infinity
+/** ids is the server's ordering for the current page(s); list is the full known-vehicle cache -- this joins them back into an ordered, augmented array without assuming list's own order. */
+const listings = computed<AugmentedListing[]>(() => {
+  const byId = new Map(list.value.map((listing) => [listing.id, listing]))
+  return ids.value.map((id) => byId.get(id)).filter((listing): listing is AugmentedListing => !!listing)
+})
+
+function syncUrl() {
+  router.replace({
+    query: {
+      ...(statusFilter.value !== 'all' ? { status: statusFilter.value } : {}),
+      ...(makeFilter.value !== 'all' ? { make: makeFilter.value } : {}),
+      ...(search.value.trim() ? { q: search.value.trim() } : {}),
+      ...(sortBy.value !== 'ending' ? { sort: sortBy.value } : {}),
+    },
+  })
 }
 
-const filteredListings = computed(() => {
-  const query = search.value.trim().toLowerCase()
+// Guards the watcher below from firing during the URL -> store seed in
+// onMounted -- that seed is followed by its own explicit reset() (with the
+// URL's checkpoint cursor, if any), so the watcher's own filter-changed
+// reset (which never knows about a resume cursor) must stay silent until
+// after that initial fetch actually happens.
+const initializing = ref(true)
 
-  const filtered = list.value.filter((listing) => {
-    if (statusFilter.value !== 'all' && listing.lifecycle !== statusFilter.value) return false
-    if (makeFilter.value !== 'all' && listing.vehicle.make !== makeFilter.value) return false
-    if (query) {
-      const haystack = [
-        listing.vehicle.year,
-        listing.vehicle.make,
-        listing.vehicle.model,
-        listing.vehicle.trim,
-        listing.vehicle.vin,
-        listing.vehicle.selling_dealership,
-      ]
-        .join(' ')
-        .toLowerCase()
-      if (!haystack.includes(query)) return false
-    }
-    return true
-  })
+onMounted(async () => {
+  const q = route.query
+  if (typeof q.status === 'string') statusFilter.value = q.status as StatusFilter
+  if (typeof q.make === 'string') makeFilter.value = q.make
+  if (typeof q.q === 'string') search.value = q.q
+  if (typeof q.sort === 'string') sortBy.value = q.sort as SortOption
 
-  const sorted = [...filtered]
-  if (sortBy.value === 'ending') sorted.sort((a, b) => sortKey(a) - sortKey(b))
-  else if (sortBy.value === 'price-low') sorted.sort((a, b) => a.priceValue - b.priceValue)
-  else if (sortBy.value === 'price-high') sorted.sort((a, b) => b.priceValue - a.priceValue)
-  else if (sortBy.value === 'year') sorted.sort((a, b) => b.vehicle.year - a.vehicle.year)
+  await filters.reset(typeof q.after === 'string' ? q.after : undefined)
+  initializing.value = false
+})
 
-  return sorted
+let searchDebounce: ReturnType<typeof setTimeout> | undefined
+
+watch(search, () => {
+  if (initializing.value) return
+  clearTimeout(searchDebounce)
+  searchDebounce = setTimeout(() => {
+    void filters.reset()
+    syncUrl()
+  }, SEARCH_DEBOUNCE_MS)
+})
+
+watch([makeFilter, statusFilter, sortBy], () => {
+  if (initializing.value) return
+  void filters.reset()
+  syncUrl()
 })
 </script>
 
@@ -54,18 +76,24 @@ const filteredListings = computed(() => {
   <main class="inventory-view">
     <div class="inventory-view__header">
       <h1>Inventory</h1>
-      <p>{{ filteredListings.length }} auctions match your search</p>
+      <p>{{ listings.length }} auction{{ listings.length === 1 ? '' : 's' }} loaded{{ hasNextPage ? ', more available' : '' }}</p>
     </div>
 
     <FilterBar />
 
-    <div v-if="filteredListings.length === 0" class="inventory-view__empty">
+    <p v-if="error" class="inventory-view__error" role="alert">{{ error }}</p>
+
+    <div v-if="listings.length === 0 && loading" class="inventory-view__empty">
+      <div class="inventory-view__empty-title">Loading auctions…</div>
+    </div>
+
+    <div v-else-if="listings.length === 0" class="inventory-view__empty">
       <div class="inventory-view__empty-title">No auctions match those filters</div>
       <div>Try clearing the search or selecting a different make.</div>
     </div>
 
     <div v-else class="inventory-view__grid">
-      <VehicleCard v-for="listing in filteredListings" :key="listing.id" :listing="listing" />
+      <VehicleCard v-for="listing in listings" :key="listing.id" :listing="listing" />
     </div>
   </main>
 </template>
@@ -99,6 +127,16 @@ const filteredListings = computed(() => {
   margin: 0;
   font-size: 14px;
   color: var(--color-muted);
+}
+
+.inventory-view__error {
+  background: var(--color-red-bg, #fdecec);
+  color: var(--color-red-text);
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin: 0 0 16px;
+  font-size: 14px;
+  font-weight: 600;
 }
 
 .inventory-view__empty {

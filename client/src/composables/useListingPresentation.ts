@@ -1,9 +1,9 @@
-import { computed, toValue, type MaybeRefOrGetter } from 'vue'
-import { vehiclesById, vehicles } from '@/data/vehicles'
+import { computed, toValue, watchEffect, type MaybeRefOrGetter } from 'vue'
 import { useClockStore } from '@/stores/clock'
 import { useBidsStore } from '@/stores/bids'
 import { useWatchlistStore } from '@/stores/watchlist'
 import { useCompareStore } from '@/stores/compare'
+import { useInventoryFiltersStore } from '@/stores/inventoryFilters'
 import { deriveLifecycle } from '@/utils/lifecycle'
 import { getBidIncrement } from '@/utils/bidding'
 import { currency, formatKm } from '@/utils/format'
@@ -199,31 +199,53 @@ function buildContext(
   }
 }
 
-/** Reactive list of every vehicle in the dataset, augmented. Must stay a computed() — it reads the clock store, which is what makes badges/status flip live as time passes. */
+/**
+ * Reactive list of every vehicle known so far (guidelines/06-backend-architecture.md's
+ * client-integration phase): inventoryFilters.vehiclesById accumulates across
+ * every inventory page fetched and every single-listing fetch, so watchlist/
+ * compare (which need to render a listing regardless of whether it's in the
+ * *current* filtered inventory page) keep working without their own fetch
+ * logic. Must stay a computed() — it reads the clock store, which is what
+ * makes badges/status flip live as time passes.
+ */
 export function useAugmentedListings() {
   const clock = useClockStore()
   const bids = useBidsStore()
   const watchlist = useWatchlistStore()
   const compare = useCompareStore()
+  const filters = useInventoryFiltersStore()
 
   const list = computed<AugmentedListing[]>(() =>
-    vehicles.map((vehicle) => augment(vehicle, buildContext(vehicle.id, clock, bids, watchlist, compare))),
+    Object.values(filters.vehiclesById).map((vehicle) =>
+      augment(vehicle, buildContext(vehicle.id, clock, bids, watchlist, compare)),
+    ),
   )
 
   return { list }
 }
 
-/** Reactive single augmented listing for a (possibly reactive) id — used by ListingDetailsView, the Preview Modal, and Compare Modal. */
+/**
+ * Reactive single augmented listing for a (possibly reactive) id — used by
+ * ListingDetailsView, the Preview Modal, and Compare Modal. Triggers a fetch
+ * for an id not already known (a direct/bookmarked link to a listing never
+ * paginated into view) via inventoryFilters.ensureVehicleLoaded.
+ */
 export function useAugmentedListing(id: MaybeRefOrGetter<string | undefined>) {
   const clock = useClockStore()
   const bids = useBidsStore()
   const watchlist = useWatchlistStore()
   const compare = useCompareStore()
+  const filters = useInventoryFiltersStore()
+
+  watchEffect(() => {
+    const vehicleId = toValue(id)
+    if (vehicleId && !filters.vehiclesById[vehicleId]) void filters.ensureVehicleLoaded(vehicleId)
+  })
 
   const listing = computed<AugmentedListing | undefined>(() => {
     const vehicleId = toValue(id)
     if (!vehicleId) return undefined
-    const vehicle = vehiclesById.get(vehicleId)
+    const vehicle = filters.vehiclesById[vehicleId]
     if (!vehicle) return undefined
     return augment(vehicle, buildContext(vehicle.id, clock, bids, watchlist, compare))
   })
