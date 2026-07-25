@@ -125,6 +125,32 @@ func TestListPage_EndingSortCrossesBuckets(t *testing.T) {
 	}
 }
 
+func TestListPage_CanceledContextReturnsWrappedError(t *testing.T) {
+	ctx := context.Background()
+	pool := newPoolAndMigrate(t)
+	reader := pgstore.NewListingReader(pool)
+
+	item := priceListing("d5000000-0000-0000-0000-000000000001", "CANCELVIN001", 10_000)
+	if _, err := pgstore.InsertNewListings(ctx, pool, []domain.Listing{item}); err != nil {
+		t.Fatalf("InsertNewListings: %v", err)
+	}
+
+	canceledCtx, cancel := context.WithCancel(context.Background())
+	cancel()
+
+	t.Run("sort=ending (the bucketed query path)", func(t *testing.T) {
+		if _, err := reader.ListPage(canceledCtx, listings.PageRequest{Sort: listings.SortEnding, First: 10}); err == nil {
+			t.Error("expected an error for ListPage(sort=ending) called with an already-canceled context, got nil")
+		}
+	})
+
+	t.Run("sort=price-low (the simple single-column query path)", func(t *testing.T) {
+		if _, err := reader.ListPage(canceledCtx, listings.PageRequest{Sort: listings.SortPriceLow, First: 10}); err == nil {
+			t.Error("expected an error for ListPage(sort=price-low) called with an already-canceled context, got nil")
+		}
+	})
+}
+
 func TestListPage_FingerprintMismatchRejected(t *testing.T) {
 	ctx := context.Background()
 	pool := newPoolAndMigrate(t)

@@ -25,6 +25,12 @@ type Hub struct {
 	broadcaster    realtime.Broadcaster
 	allowedOrigins map[string]struct{}
 	upgrader       websocket.Upgrader
+
+	// pingInterval/pongWait default to the package constants above; only ever
+	// overridden by this package's own tests (unexported, no setter) to
+	// exercise a real ping/pong tick without an actual 30s wait.
+	pingInterval time.Duration
+	pongWait     time.Duration
 }
 
 // NewHub builds a Hub. allowedOrigins is the WS handshake's Origin allow-list
@@ -32,7 +38,12 @@ type Hub struct {
 // reliably cover the WS handshake the way they cover ordinary requests, so
 // Origin is checked explicitly as a second layer.
 func NewHub(broadcaster realtime.Broadcaster, allowedOrigins []string) *Hub {
-	h := &Hub{broadcaster: broadcaster, allowedOrigins: make(map[string]struct{}, len(allowedOrigins))}
+	h := &Hub{
+		broadcaster:    broadcaster,
+		allowedOrigins: make(map[string]struct{}, len(allowedOrigins)),
+		pingInterval:   pingInterval,
+		pongWait:       pongWait,
+	}
 	for _, o := range allowedOrigins {
 		h.allowedOrigins[o] = struct{}{}
 	}
@@ -68,9 +79,9 @@ func (h *Hub) Upgrade(w http.ResponseWriter, r *http.Request) {
 func (h *Hub) serve(conn *websocket.Conn, c *Connection) {
 	defer h.broadcaster.Unsubscribe(c, c.SubscribedListingIDs()...)
 
-	_ = conn.SetReadDeadline(time.Now().Add(pongWait))
+	_ = conn.SetReadDeadline(time.Now().Add(h.pongWait))
 	conn.SetPongHandler(func(string) error {
-		return conn.SetReadDeadline(time.Now().Add(pongWait))
+		return conn.SetReadDeadline(time.Now().Add(h.pongWait))
 	})
 
 	done := make(chan struct{})
@@ -87,7 +98,7 @@ func (h *Hub) serve(conn *websocket.Conn, c *Connection) {
 }
 
 func (h *Hub) pingLoop(conn *websocket.Conn, done <-chan struct{}) {
-	ticker := time.NewTicker(pingInterval)
+	ticker := time.NewTicker(h.pingInterval)
 	defer ticker.Stop()
 	for {
 		select {

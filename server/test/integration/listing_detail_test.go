@@ -154,3 +154,15 @@ func TestBidReader_ListForListing_RespectsLimitAndListingScope(t *testing.T) {
 		t.Fatalf("got = %+v, want only listing b's own bid, not listing a's", scoped)
 	}
 }
+
+func TestBidReader_ListForListing_CanceledContextReturnsError(t *testing.T) {
+	pool := newPoolAndMigrate(t)
+	reader := pgstore.NewBidReader(pool)
+
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+
+	if _, err := reader.ListForListing(ctx, "any-id", 10); err == nil {
+		t.Fatal("expected an error for ListForListing called with an already-canceled context, got nil")
+	}
+}

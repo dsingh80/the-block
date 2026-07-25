@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/redis/go-redis/v9"
 
 	"github.com/dsingh80/the-block/server/internal/domain"
 	"github.com/dsingh80/the-block/server/internal/platform/inmemory"
@@ -154,6 +155,73 @@ func TestStreamTailer_DrainAndRestart(t *testing.T) {
 		t.Fatalf("Tick (idle, no new entries): %v", err)
 	}
 	assertBidRows(t, ctx, pool, listing.ID, 5, []int64{21_000, 21_500, 22_000, 22_500, 50_000})
+}
+
+func TestStreamTailer_Tick_EmptyDatabaseIsANoOp(t *testing.T) {
+	ctx := context.Background()
+	pool := newPoolAndMigrate(t) // migrated, but zero listings inserted
+	rdb := startRedis(t)
+
+	tailer := redisstore.NewStreamTailer(rdb, pool, inmemory.NewBroadcaster())
+	if err := tailer.Tick(ctx); err != nil {
+		t.Errorf("Tick() on an empty listings table = %v, want nil", err)
+	}
+}
+
+func TestStreamTailer_Tick_CanceledContextReturnsWrappedError(t *testing.T) {
+	ctx := context.Background()
+	pool := newPoolAndMigrate(t)
+	rdb := startRedis(t)
+
+	listing := sampleListing("88888888-8888-8888-8888-888888888888", "VINTAILERCANCEL")
+	if _, err := pgstore.InsertNewListings(ctx, pool, []domain.Listing{listing}); err != nil {
+		t.Fatalf("InsertNewListings: %v", err)
+	}
+
+	tailer := redisstore.NewStreamTailer(rdb, pool, inmemory.NewBroadcaster())
+	canceledCtx, cancel := context.WithCancel(context.Background())
+	cancel()
+
+	if err := tailer.Tick(canceledCtx); err == nil {
+		t.Error("expected an error for Tick called with an already-canceled context, got nil")
+	}
+}
+
+// TestStreamTailer_Tick_MalformedStreamEntryIsLoggedAndSkipped covers
+// processEntry's field-parsing errors -- unexported, so only reachable through
+// Tick itself. A malformed entry can only get onto a stream via a bug in the
+// Lua accept path (never through this test's normal BidStore calls), so this
+// writes one directly with XAdd to simulate that. Tick must not crash or
+// propagate the per-entry error (a good ~200 other listings' entries in the
+// same tick shouldn't be lost over one bad entry) -- it should log and move on,
+// leaving no partial/corrupt row behind for the entry that failed to parse.
+func TestStreamTailer_Tick_MalformedStreamEntryIsLoggedAndSkipped(t *testing.T) {
+	ctx := context.Background()
+	pool := newPoolAndMigrate(t)
+	rdb := startRedis(t)
+
+	listing := sampleListing("99999999-8888-8888-8888-888888888888", "VINTAILERBAD")
+	if _, err := pgstore.InsertNewListings(ctx, pool, []domain.Listing{listing}); err != nil {
+		t.Fatalf("InsertNewListings: %v", err)
+	}
+
+	err := rdb.XAdd(ctx, &redis.XAddArgs{
+		Stream: redisstore.ListingStreamKey(listing.ID),
+		Values: map[string]any{
+			"bid_id": "bad-bid-1", "type": "bid", "session_id": "session-a",
+			"amount": "not-a-number", "bid_count": "1", "accepted_at_ms": time.Now().UnixMilli(),
+		},
+	}).Err()
+	if err != nil {
+		t.Fatalf("XAdd malformed entry: %v", err)
+	}
+
+	tailer := redisstore.NewStreamTailer(rdb, pool, inmemory.NewBroadcaster())
+	if err := tailer.Tick(ctx); err != nil {
+		t.Fatalf("Tick() = %v, want nil (a per-entry parse failure must be logged and skipped, not propagated)", err)
+	}
+
+	assertBidRows(t, ctx, pool, listing.ID, 0, nil)
 }
 
 func assertBidRows(t *testing.T, ctx context.Context, pool *pgxpool.Pool, listingID string, wantCount int, wantAmountsInOrder []int64) {

@@ -67,4 +67,15 @@ func TestRateLimiter_Allow(t *testing.T) {
 			t.Fatalf("1st request after the window reset: ok=%v err=%v, want true/nil", ok, err)
 		}
 	})
+
+	t.Run("a canceled context surfaces as a wrapped error, not a hang", func(t *testing.T) {
+		limiter := redisstore.NewRateLimiter(rdb, 3, time.Minute)
+
+		canceledCtx, cancel := context.WithCancel(context.Background())
+		cancel()
+
+		if _, err := limiter.Allow(canceledCtx, "session-canceled", "bid"); err == nil {
+			t.Error("expected an error for Allow called with an already-canceled context, got nil")
+		}
+	})
 }

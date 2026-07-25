@@ -1,0 +1,33 @@
+[
+  {
+    "id": "bad-vehicle-1",
+    "vin": "CG2UAF4T8LRBBVWJY",
+    "year": 2025,
+    "make": "Mazda",
+    "model": "CX-5",
+    "trim": "Turbo",
+    "body_style": "SUV",
+    "exterior_color": "Blue",
+    "interior_color": "Light Grey",
+    "engine": "2.5L I4",
+    "transmission": "automatic",
+    "drivetrain": "FWD",
+    "odometer_km": 24534,
+    "fuel_type": "gasoline",
+    "condition_grade": 4,
+    "condition_report": "Very clean vehicle inside and out.",
+    "damage_notes": [],
+    "title_status": "clean",
+    "province": "Ontario",
+    "city": "Mississauga",
+    "auction_start": "not-a-valid-date",
+    "starting_bid": 20500,
+    "reserve_price": 29000,
+    "buy_now_price": null,
+    "images": ["https://placehold.co/800x600"],
+    "selling_dealership": "Highway 7 Auto Sales",
+    "lot": "A-0001",
+    "current_bid": 21000,
+    "bid_count": 11
+  }
+]

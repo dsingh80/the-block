@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -60,6 +61,34 @@ func TestSession_FirstRequestIssuesACorrectlyFlaggedCookie(t *testing.T) {
 	}
 	if sessInHandler.Token != c.Value {
 		t.Errorf("handler saw session token %q, want it to match the issued cookie %q", sessInHandler.Token, c.Value)
+	}
+}
+
+// erroringSessionStore always fails Touch -- simulates Redis being unreachable.
+type erroringSessionStore struct{ err error }
+
+func (f erroringSessionStore) Touch(_ context.Context, _ string) (domain.Session, bool, error) {
+	return domain.Session{}, false, f.err
+}
+
+func TestSession_StoreErrorReturns500WithoutCallingNext(t *testing.T) {
+	nextCalled := false
+	next := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		nextCalled = true
+	})
+
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
+	rec := httptest.NewRecorder()
+	Session(erroringSessionStore{err: errors.New("redis down")})(next).ServeHTTP(rec, req)
+
+	if rec.Code != http.StatusInternalServerError {
+		t.Errorf("status = %d, want 500 when store.Touch errors", rec.Code)
+	}
+	if len(rec.Result().Cookies()) != 0 {
+		t.Errorf("got %d Set-Cookie headers, want 0 when session resolution failed", len(rec.Result().Cookies()))
+	}
+	if nextCalled {
+		t.Error("next handler was called, want the chain to stop on a store error")
 	}
 }
 

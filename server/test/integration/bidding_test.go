@@ -157,6 +157,18 @@ func TestBidStore_PlaceBid(t *testing.T) {
 		}
 	})
 
+	t.Run("a canceled context surfaces as a wrapped error, not a hang", func(t *testing.T) {
+		listingID := "listing-canceled-ctx"
+		primeListingState(t, rdb, listingID, 1_000, 0, activeStart, activeEnd)
+
+		canceledCtx, cancel := context.WithCancel(context.Background())
+		cancel()
+
+		if _, err := store.PlaceBid(canceledCtx, listingID, "session-a", 1_100); err == nil {
+			t.Error("expected an error for PlaceBid called with an already-canceled context, got nil")
+		}
+	})
+
 	t.Run("an accepted bid is recorded in the session's bids set (backs viewer.has_bid)", func(t *testing.T) {
 		listingID := "listing-session-set"
 		primeListingState(t, rdb, listingID, 1_000, 0, activeStart, activeEnd)
@@ -266,6 +278,15 @@ func TestBidStore_BidListingIDs(t *testing.T) {
 		}
 		if len(ids) != 2 {
 			t.Errorf("ids = %v, want exactly 2 entries (not session-other's bid too)", ids)
+		}
+	})
+
+	t.Run("a canceled context surfaces as a wrapped error, not a hang", func(t *testing.T) {
+		canceledCtx, cancel := context.WithCancel(context.Background())
+		cancel()
+
+		if _, err := store.BidListingIDs(canceledCtx, "session-viewer"); err == nil {
+			t.Error("expected an error for BidListingIDs called with an already-canceled context, got nil")
 		}
 	})
 }

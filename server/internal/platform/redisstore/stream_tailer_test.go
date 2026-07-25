@@ -31,3 +31,34 @@ func TestStreamTailer_Run_ReturnsPromptlyOnContextCancellation(t *testing.T) {
 		t.Fatal("Run() did not return within 1s of context cancellation")
 	}
 }
+
+// parseFieldInt64 is pure -- the real malformed-stream-entry scenario it
+// guards against (a bad field actually reaching processEntry through Tick) is
+// covered by test/integration's TestStreamTailer_Tick_MalformedStreamEntryIsLoggedAndSkipped,
+// which needs a real Redis; this only covers the parsing helper in isolation.
+func TestParseFieldInt64(t *testing.T) {
+	t.Run("a numeric string parses", func(t *testing.T) {
+		got, err := parseFieldInt64("21500")
+		if err != nil || got != 21_500 {
+			t.Errorf("parseFieldInt64(\"21500\") = (%v, %v), want (21500, nil)", got, err)
+		}
+	})
+
+	t.Run("a non-string value (Redis field values are always strings) is rejected", func(t *testing.T) {
+		if _, err := parseFieldInt64(21_500); err == nil {
+			t.Error("expected an error for a non-string field value, got nil")
+		}
+	})
+
+	t.Run("a non-numeric string is rejected", func(t *testing.T) {
+		if _, err := parseFieldInt64("not-a-number"); err == nil {
+			t.Error("expected an error for a non-numeric string, got nil")
+		}
+	})
+
+	t.Run("nil is rejected", func(t *testing.T) {
+		if _, err := parseFieldInt64(nil); err == nil {
+			t.Error("expected an error for a nil field value, got nil")
+		}
+	})
+}

@@ -3,6 +3,7 @@ package middleware
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"log/slog"
 	"net/http"
 	"net/http/httptest"
@@ -65,6 +66,20 @@ func TestAccessLog_DefaultsTo200WhenHandlerNeverCallsWriteHeader(t *testing.T) {
 			t.Errorf("status = %v, want %d (implicit)", line["status"], http.StatusOK)
 		}
 	})
+}
+
+// TestStatusRecorderHijack_NotSupportedWhenUnderlyingWriterCant guards the
+// other half of Hijack's branch: httptest.NewRecorder() never implements
+// http.Hijacker, so wrapping one must forward that absence as
+// http.ErrNotSupported rather than panicking on a failed type assertion.
+func TestStatusRecorderHijack_NotSupportedWhenUnderlyingWriterCant(t *testing.T) {
+	rec := &statusRecorder{ResponseWriter: httptest.NewRecorder()}
+
+	_, _, err := rec.Hijack()
+
+	if !errors.Is(err, http.ErrNotSupported) {
+		t.Errorf("Hijack() error = %v, want %v", err, http.ErrNotSupported)
+	}
 }
 
 // TestAccessLog_PreservesHijackForWebSocketUpgrades guards against a real

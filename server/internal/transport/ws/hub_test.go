@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"strings"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -166,6 +167,54 @@ func TestHub_PublishedEventReachesSubscribedConnection(t *testing.T) {
 	}
 	if msg.ListingID != "listing-1" || msg.CurrentBid != 21_500 || !msg.HighBidderIsYou {
 		t.Errorf("message = %+v, want listing-1/21500/high_bidder_is_you=true", msg)
+	}
+}
+
+func TestHub_UnrecognizedMessageTypeReturnsInvalidMessageError(t *testing.T) {
+	hub := NewHub(inmemory.NewBroadcaster(), nil)
+	conn := dial(t, newTestServer(t, hub, "session-a"), "")
+
+	if err := conn.WriteJSON(clientMessage{Type: "bogus"}); err != nil {
+		t.Fatalf("WriteJSON: %v", err)
+	}
+
+	conn.SetReadDeadline(time.Now().Add(3 * time.Second))
+	var errMsg errorMessage
+	if err := conn.ReadJSON(&errMsg); err != nil {
+		t.Fatalf("ReadJSON: %v", err)
+	}
+	if errMsg.Type != "error" || errMsg.Code != "invalid_message" {
+		t.Errorf("error message = %+v, want code=invalid_message", errMsg)
+	}
+}
+
+// TestHub_PingLoopPingsAndServerHandlesThePongBack drives a real ping/pong
+// round trip: the server's pingLoop fires (pingInterval shrunk to make this
+// fast instead of waiting on the real 30s production value), the client's
+// gorilla/websocket transport answers automatically-registered-Pong, and the
+// server's own SetPongHandler closure (hub.go's serve) runs as a side effect
+// of its blocked ReadJSON call processing that control frame -- exactly the
+// keepalive mechanism guidelines/06-backend-architecture.md documents under
+// "Keepalive". Neither side's handler is reachable by asserting on any
+// return value (SetReadDeadline has none worth checking), so this asserts on
+// the one observable side effect: the client's own registered PingHandler
+// actually fired.
+func TestHub_PingLoopPingsAndServerHandlesThePongBack(t *testing.T) {
+	hub := NewHub(inmemory.NewBroadcaster(), nil)
+	hub.pingInterval = 20 * time.Millisecond
+	conn := dial(t, newTestServer(t, hub, "session-a"), "")
+
+	var pinged atomic.Bool
+	conn.SetPingHandler(func(appData string) error {
+		pinged.Store(true)
+		return conn.WriteControl(gorillaws.PongMessage, nil, time.Now().Add(time.Second))
+	})
+
+	conn.SetReadDeadline(time.Now().Add(500 * time.Millisecond))
+	_, _, _ = conn.ReadMessage() // swallows the ping via the handler above, then times out -- expected, no data frame is ever sent
+
+	if !pinged.Load() {
+		t.Error("client never received a ping from the server's pingLoop within 500ms")
 	}
 }
 

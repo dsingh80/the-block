@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"log/slog"
 	"net/http"
 	"net/http/httptest"
@@ -179,6 +180,23 @@ func TestBidsPlace_RateLimitedReturns429WithRetryAfterWithoutCallingStore(t *tes
 	}
 	if store.placeCalls != 0 {
 		t.Errorf("PlaceBid called %d times, want 0 -- rate limiting must short-circuit before touching the store", store.placeCalls)
+	}
+}
+
+func TestBidsPlace_RateLimiterErrorReturns500WithoutCallingStore(t *testing.T) {
+	store := &fakeBidStore{}
+	h := NewBids(store, &fakeRateLimiter{err: errors.New("redis down")})
+
+	req := httptest.NewRequest(http.MethodPost, "/v1/listings/"+sampleListingUUID+"/bids", strings.NewReader(`{"amount": 21500}`))
+	req.SetPathValue("id", sampleListingUUID)
+	rec := httptest.NewRecorder()
+	h.Place(rec, req)
+
+	if rec.Code != http.StatusInternalServerError {
+		t.Errorf("status = %d, want 500 when RateLimiter.Allow errors", rec.Code)
+	}
+	if store.placeCalls != 0 {
+		t.Errorf("PlaceBid called %d times, want 0 -- a rate-limiter error must short-circuit before touching the store", store.placeCalls)
 	}
 }
 

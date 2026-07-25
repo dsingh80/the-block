@@ -235,6 +235,20 @@ func TestListingsList_ReaderErrorReturns500(t *testing.T) {
 	}
 }
 
+func TestListingsList_ViewerLookupErrorReturns500(t *testing.T) {
+	reader := &fakeReader{all: []domain.Listing{sampleDomainListing()}}
+	viewerLookup := &fakeViewerLookup{err: errors.New("redis down")}
+	h := NewListings(reader, &fakeBidReader{}, viewerLookup)
+
+	req := httptest.NewRequest(http.MethodGet, "/v1/listings", nil)
+	rec := httptest.NewRecorder()
+	h.List(rec, req)
+
+	if rec.Code != http.StatusInternalServerError {
+		t.Errorf("status = %d, want 500 when BidListingIDs errors", rec.Code)
+	}
+}
+
 func TestListingsList_InvalidCursorMapsTo400(t *testing.T) {
 	reader := &fakeReader{err: domain.ErrInvalidCursor}
 	h := NewListings(reader, &fakeBidReader{}, &fakeViewerLookup{})
@@ -256,6 +270,19 @@ func TestListingsList_InvalidCursorMapsTo400(t *testing.T) {
 	}
 	if body.Error.Code != "invalid_cursor" {
 		t.Errorf("error.code = %q, want %q", body.Error.Code, "invalid_cursor")
+	}
+}
+
+func TestListingsFacets_ReaderErrorReturns500(t *testing.T) {
+	reader := &fakeReader{err: errors.New("boom")}
+	h := NewListings(reader, &fakeBidReader{}, &fakeViewerLookup{})
+
+	req := httptest.NewRequest(http.MethodGet, "/v1/listings/facets", nil)
+	rec := httptest.NewRecorder()
+	h.Facets(rec, req)
+
+	if rec.Code != http.StatusInternalServerError {
+		t.Errorf("status = %d, want 500 when DistinctMakes errors", rec.Code)
 	}
 }
 
@@ -316,6 +343,22 @@ func TestListingsGet_ReturnsListingWithViewer(t *testing.T) {
 	want := dto.Viewer{HasBid: true, IsHighBidder: true, IsOutbid: false}
 	if body.Viewer != want {
 		t.Errorf("viewer = %+v, want %+v", body.Viewer, want)
+	}
+}
+
+func TestListingsGet_ViewerLookupErrorReturns500(t *testing.T) {
+	listing := sampleDomainListingWithUUID()
+	reader := &fakeReader{all: []domain.Listing{listing}}
+	viewerLookup := &fakeViewerLookup{err: errors.New("redis down")}
+	h := NewListings(reader, &fakeBidReader{}, viewerLookup)
+
+	req := httptest.NewRequest(http.MethodGet, "/v1/listings/"+sampleListingUUID, nil)
+	req.SetPathValue("id", sampleListingUUID)
+	rec := httptest.NewRecorder()
+	h.Get(rec, req)
+
+	if rec.Code != http.StatusInternalServerError {
+		t.Errorf("status = %d, want 500 when BidListingIDs errors", rec.Code)
 	}
 }
 
@@ -385,6 +428,22 @@ func TestListingsBidHistory_ReturnsAnonymizedHistoryNewestFirst(t *testing.T) {
 	}
 }
 
+func TestListingsBidHistory_BidReaderErrorReturns500(t *testing.T) {
+	listing := sampleDomainListingWithUUID()
+	reader := &fakeReader{all: []domain.Listing{listing}}
+	bidReader := &fakeBidReader{err: errors.New("pg down")}
+	h := NewListings(reader, bidReader, &fakeViewerLookup{})
+
+	req := httptest.NewRequest(http.MethodGet, "/v1/listings/"+sampleListingUUID+"/bids", nil)
+	req.SetPathValue("id", sampleListingUUID)
+	rec := httptest.NewRecorder()
+	h.BidHistory(rec, req)
+
+	if rec.Code != http.StatusInternalServerError {
+		t.Errorf("status = %d, want 500 when ListForListing errors", rec.Code)
+	}
+}
+
 func TestListingsBidHistory_UnknownIdReturns404WithoutQueryingBids(t *testing.T) {
 	reader := &fakeReader{}
 	bidReader := &fakeBidReader{}
@@ -415,5 +474,26 @@ func TestListingsBidHistory_MalformedIdReturns404(t *testing.T) {
 
 	if rec.Code != http.StatusNotFound {
 		t.Errorf("status = %d, want 404 for a malformed id", rec.Code)
+	}
+}
+
+func TestParsePageSize(t *testing.T) {
+	cases := []struct {
+		name string
+		raw  string
+		want int
+	}{
+		{"empty falls back to the default", "", defaultPageSize},
+		{"a valid positive integer is used as-is", "10", 10},
+		{"non-numeric input falls back to the default", "abc", defaultPageSize},
+		{"zero falls back to the default", "0", defaultPageSize},
+		{"negative falls back to the default", "-5", defaultPageSize},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			if got := parsePageSize(tc.raw); got != tc.want {
+				t.Errorf("parsePageSize(%q) = %d, want %d", tc.raw, got, tc.want)
+			}
+		})
 	}
 }

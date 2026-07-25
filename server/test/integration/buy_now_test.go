@@ -107,4 +107,17 @@ func TestBidStore_BuyNow(t *testing.T) {
 			t.Errorf("BidCount after an identical retry = %d, want 1 (must not double-count)", second.BidCount)
 		}
 	})
+
+	t.Run("a canceled context surfaces as a wrapped error, not a hang", func(t *testing.T) {
+		listingID := "buynow-canceled-ctx"
+		primeListingState(t, rdb, listingID, 20_500, 0, activeStart, activeEnd)
+		setBuyNowPrice(t, rdb, listingID, 32_000)
+
+		canceledCtx, cancel := context.WithCancel(context.Background())
+		cancel()
+
+		if _, err := store.BuyNow(canceledCtx, listingID, "session-a"); err == nil {
+			t.Error("expected an error for BuyNow called with an already-canceled context, got nil")
+		}
+	})
 }

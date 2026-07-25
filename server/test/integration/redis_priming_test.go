@@ -4,7 +4,9 @@ package integration
 
 import (
 	"context"
+	"strconv"
 	"testing"
+	"time"
 
 	"github.com/dsingh80/the-block/server/internal/domain"
 	"github.com/dsingh80/the-block/server/internal/platform/pgstore"
@@ -96,6 +98,45 @@ func TestPrimeListingState(t *testing.T) {
 		}
 		if vals[0] != "41000" || vals[1] != "3" {
 			t.Errorf("current_price/bid_count = %v/%v, want 41000/3 (recovered from Postgres, not reset to starting_bid/0)", vals[0], vals[1])
+		}
+	})
+
+	t.Run("buy_now_price, purchased_at, and a high bidder are only primed when actually set", func(t *testing.T) {
+		buyNowPrice := int64(35_000)
+		highBidder := "session-high-bidder"
+		purchasedAt := time.Now().Add(-time.Minute)
+		l := sampleListing("77777777-5555-5555-5555-555555555555", "VINPRIME03")
+		l.BuyNowPrice = &buyNowPrice
+		l.HighBidderSessionID = &highBidder
+		l.PurchasedAt = &purchasedAt
+
+		key := redisstore.ListingStateKey(l.ID)
+		if err := redisstore.PrimeListingState(ctx, rdb, l); err != nil {
+			t.Fatalf("PrimeListingState: %v", err)
+		}
+
+		vals, err := rdb.HMGet(ctx, key, "buy_now_price", "high_bidder_session", "purchased_at_ms").Result()
+		if err != nil {
+			t.Fatalf("HMGet: %v", err)
+		}
+		if vals[0] != "35000" {
+			t.Errorf("buy_now_price = %v, want 35000", vals[0])
+		}
+		if vals[1] != highBidder {
+			t.Errorf("high_bidder_session = %v, want %q", vals[1], highBidder)
+		}
+		wantPurchasedAtMs := strconv.FormatInt(purchasedAt.UnixMilli(), 10)
+		if vals[2] != wantPurchasedAtMs {
+			t.Errorf("purchased_at_ms = %v, want %s", vals[2], wantPurchasedAtMs)
+		}
+	})
+
+	t.Run("a canceled context surfaces as a wrapped error, not a hang", func(t *testing.T) {
+		canceledCtx, cancel := context.WithCancel(context.Background())
+		cancel()
+
+		if err := redisstore.PrimeListingState(canceledCtx, rdb, fromPostgres); err == nil {
+			t.Error("expected an error for PrimeListingState called with an already-canceled context, got nil")
 		}
 	})
 }

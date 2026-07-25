@@ -16,6 +16,12 @@ func TestDomainErrorIs(t *testing.T) {
 		}
 	})
 
+	t.Run("does not match a non-DomainError, even one wrapping a DomainError code coincidentally", func(t *testing.T) {
+		if errors.Is(ErrNotFound, errors.New("not_found")) {
+			t.Error("expected a *DomainError to never match a plain error, regardless of its message text")
+		}
+	})
+
 	t.Run("two distinct BidTooLow instances still match by code, not pointer identity", func(t *testing.T) {
 		a := NewBidTooLowError(21_100)
 		b := NewBidTooLowError(999_999) // different Details, same Code
@@ -30,4 +36,10 @@ func TestDomainErrorIs(t *testing.T) {
 			t.Errorf("expected Details[minimum] = 21100, got %v", a.Details["minimum"])
 		}
 	})
+}
+
+func TestDomainErrorError(t *testing.T) {
+	if got := ErrBidTooLow.Error(); got != "bid_too_low" {
+		t.Errorf("Error() = %q, want the bare code %q", got, "bid_too_low")
+	}
 }

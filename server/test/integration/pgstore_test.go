@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"sort"
+	"strings"
 	"testing"
 	"time"
 
@@ -55,6 +56,19 @@ func TestListingReader_Get(t *testing.T) {
 		_, err := reader.Get(ctx, "00000000-0000-0000-0000-000000000000")
 		if !errors.Is(err, domain.ErrNotFound) {
 			t.Errorf("Get(unknown id) error = %v, want domain.ErrNotFound", err)
+		}
+	})
+
+	t.Run("a canceled context is a wrapped error, not domain.ErrNotFound", func(t *testing.T) {
+		canceledCtx, cancel := context.WithCancel(context.Background())
+		cancel()
+
+		_, err := reader.Get(canceledCtx, "00000000-0000-0000-0000-000000000000")
+		if err == nil {
+			t.Fatal("expected an error for Get called with an already-canceled context, got nil")
+		}
+		if errors.Is(err, domain.ErrNotFound) {
+			t.Error("a canceled context must not be mistaken for domain.ErrNotFound -- it's a query failure, not a real empty result")
 		}
 	})
 
@@ -138,6 +152,42 @@ func TestInsertNewListings_InsertOnlyNew(t *testing.T) {
 			t.Errorf("listing a after reconcile = current_price=%d bid_count=%d, want the live-bid values (55555, 7) untouched", got.CurrentPrice, got.BidCount)
 		}
 	})
+}
+
+// TestInsertNewListings_ConstraintViolationIsWrappedWithTheOffendingID exercises
+// insertOneIfMissing's real-error path (as opposed to the ON CONFLICT DO NOTHING
+// no-op path TestInsertNewListings_InsertOnlyNew covers) -- a genuine constraint
+// violation, not a duplicate id, must still surface as an error rather than be
+// silently swallowed the way an existing-row conflict is.
+func TestInsertNewListings_ConstraintViolationIsWrappedWithTheOffendingID(t *testing.T) {
+	ctx := context.Background()
+	pool := newPoolAndMigrate(t)
+
+	bad := sampleListing("55555555-5555-5555-5555-555555555555", "VINBAD5555")
+	bad.FuelType = "not-a-real-fuel" // violates the fuel_type CHECK constraint (migration 0001)
+
+	_, err := pgstore.InsertNewListings(ctx, pool, []domain.Listing{bad})
+	if err == nil {
+		t.Fatal("expected an error for a fuel_type CHECK constraint violation, got nil")
+	}
+	if !strings.Contains(err.Error(), bad.ID) {
+		t.Errorf("error = %q, want it to identify the offending listing id (%s)", err.Error(), bad.ID)
+	}
+}
+
+// TestInsertNewListings_CanceledContextFailsToBeginTx covers the tx.Begin
+// error path -- distinct from a constraint violation (above), which fails
+// inside an already-open transaction.
+func TestInsertNewListings_CanceledContextFailsToBeginTx(t *testing.T) {
+	pool := newPoolAndMigrate(t)
+
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+
+	_, err := pgstore.InsertNewListings(ctx, pool, []domain.Listing{sampleListing("66666666-6666-6666-6666-666666666666", "VINCANCEL")})
+	if err == nil {
+		t.Fatal("expected an error for InsertNewListings called with an already-canceled context, got nil")
+	}
 }
 
 // listAll runs a large-enough single ListPage call to behave like an
@@ -239,6 +289,15 @@ func TestListingReader_FilterSemanticsAndDistinctMakes(t *testing.T) {
 			t.Errorf("makes = %v, want exactly [Mazda, Toyota]", makes)
 		}
 	})
+
+	t.Run("DistinctMakes with a canceled context returns a wrapped error", func(t *testing.T) {
+		canceledCtx, cancel := context.WithCancel(context.Background())
+		cancel()
+
+		if _, err := reader.DistinctMakes(canceledCtx); err == nil {
+			t.Error("expected an error for DistinctMakes called with an already-canceled context, got nil")
+		}
+	})
 }
 
 // ListAll is cmd/reconcile's own read of what it just inserted, feeding the
@@ -281,6 +340,15 @@ func TestListingReader_ListAll(t *testing.T) {
 		}
 		if got[0].ID != first.ID || got[1].ID != middle.ID || got[2].ID != last.ID {
 			t.Errorf("ids = [%s, %s, %s], want ascending [%s, %s, %s]", got[0].ID, got[1].ID, got[2].ID, first.ID, middle.ID, last.ID)
+		}
+	})
+
+	t.Run("a canceled context returns a wrapped error", func(t *testing.T) {
+		canceledCtx, cancel := context.WithCancel(context.Background())
+		cancel()
+
+		if _, err := reader.ListAll(canceledCtx); err == nil {
+			t.Error("expected an error for ListAll called with an already-canceled context, got nil")
 		}
 	})
 }

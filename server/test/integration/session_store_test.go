@@ -100,4 +100,39 @@ func TestSessionStore_Touch(t *testing.T) {
 			t.Error("expected a new token after expiry, got the same one back")
 		}
 	})
+
+	t.Run("a canceled context creating a new session surfaces as a wrapped error", func(t *testing.T) {
+		canceledCtx, cancel := context.WithCancel(context.Background())
+		cancel()
+
+		if _, _, err := store.Touch(canceledCtx, ""); err == nil {
+			t.Error("expected an error creating a session with an already-canceled context, got nil")
+		}
+	})
+
+	t.Run("a canceled context refreshing an existing token surfaces as a wrapped error", func(t *testing.T) {
+		original, _, err := store.Touch(ctx, "")
+		if err != nil {
+			t.Fatalf("Touch (create): %v", err)
+		}
+
+		canceledCtx, cancel := context.WithCancel(context.Background())
+		cancel()
+
+		if _, _, err := store.Touch(canceledCtx, original.Token); err == nil {
+			t.Error("expected an error refreshing an existing token with an already-canceled context, got nil")
+		}
+	})
+
+	t.Run("a corrupted created_at_ms value surfaces as a wrapped parse error", func(t *testing.T) {
+		const token = "session-with-corrupted-created-at"
+		err := rdb.HSet(ctx, redisstore.SessionKey(token), "created_at_ms", "not-a-number").Err()
+		if err != nil {
+			t.Fatalf("prime corrupted session: %v", err)
+		}
+
+		if _, _, err := store.Touch(ctx, token); err == nil {
+			t.Error("expected an error for a session with a non-numeric created_at_ms, got nil")
+		}
+	})
 }
