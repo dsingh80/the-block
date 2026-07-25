@@ -240,3 +240,47 @@ func TestListingReader_FilterSemanticsAndDistinctMakes(t *testing.T) {
 		}
 	})
 }
+
+// ListAll is cmd/reconcile's own read of what it just inserted, feeding the
+// Redis state-priming loop (guidelines/06-backend-architecture.md, "Data
+// lifecycle") -- Get's own tests already prove a single row (including its
+// Postgres-derived auction_end) round-trips correctly, so this covers what's
+// unique to ListAll instead: returning every row, ordered by id, and behaving
+// on an empty table, none of which a single-row Get exercises.
+func TestListingReader_ListAll(t *testing.T) {
+	ctx := context.Background()
+	pool := newPoolAndMigrate(t)
+	reader := pgstore.NewListingReader(pool)
+
+	t.Run("empty table returns no rows and no error", func(t *testing.T) {
+		got, err := reader.ListAll(ctx)
+		if err != nil {
+			t.Fatalf("ListAll: %v", err)
+		}
+		if len(got) != 0 {
+			t.Errorf("ListAll() on an empty table = %+v, want none", got)
+		}
+	})
+
+	t.Run("returns every row ordered by id, regardless of insertion order", func(t *testing.T) {
+		last := sampleListing("f0000000-0000-0000-0000-000000000000", "VINFFF000")
+		first := sampleListing("10000000-0000-0000-0000-000000000000", "VIN111000")
+		middle := sampleListing("50000000-0000-0000-0000-000000000000", "VIN555000")
+		// Inserted out of id order on purpose -- ListAll's own ORDER BY must be
+		// what produces ascending output, not insertion order happening to agree.
+		if _, err := pgstore.InsertNewListings(ctx, pool, []domain.Listing{last, first, middle}); err != nil {
+			t.Fatalf("InsertNewListings: %v", err)
+		}
+
+		got, err := reader.ListAll(ctx)
+		if err != nil {
+			t.Fatalf("ListAll: %v", err)
+		}
+		if len(got) != 3 {
+			t.Fatalf("ListAll() returned %d rows, want 3", len(got))
+		}
+		if got[0].ID != first.ID || got[1].ID != middle.ID || got[2].ID != last.ID {
+			t.Errorf("ids = [%s, %s, %s], want ascending [%s, %s, %s]", got[0].ID, got[1].ID, got[2].ID, first.ID, middle.ID, last.ID)
+		}
+	})
+}

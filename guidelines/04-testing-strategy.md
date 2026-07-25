@@ -17,7 +17,7 @@ No mocking needed for any of these — they're plain, synchronous, pure function
 
 Using `@pinia/testing`'s `createTestingPinia()` per test (a fresh store instance, not hand-rolled reset logic between tests):
 
-- `stores/bids.ts` — `placeBid` accepts a valid amount and updates `currentPrice`/`bidCount`/`hasUserBid`/`isUserHighBidder`; rejects an amount below the tiered minimum with a typed error; rejects a bid on a listing that's no longer active (this is the guardrail from `03-guardrails.md` — it needs a real test, not just a doc claiming it exists).
+- `stores/bids.ts` — `placeBid`/`buyNow` are async now, calling a mocked `services/api/listings` (`vi.mock('@/services/api/listings')`) rather than mutating state directly: a valid amount resolves and populates `overrides[id]` from the mocked response's `viewer` object (not from what the client computed), a too-low amount or an inactive listing is rejected locally *without the mock ever being called* (the client-side pre-check from `03-guardrails.md`), and a mocked API rejection surfaces its message through the same typed `{ok:false, error}` shape as a local rejection.
 - `stores/compare.ts` — `toggle()` adds up to 2 ids and is a no-op on a 3rd.
 - `stores/watchlist.ts` — `toggle()` flips membership and drives the highlight-timing state correctly.
 
@@ -39,6 +39,15 @@ Using `@pinia/testing`'s `createTestingPinia()` per test (a fresh store instance
 
 A component like `GradePill` that only maps a prop to a class doesn't need its own test file — it's exercised indirectly by any component test that mounts it as a child.
 
+### 5. Test-double patterns for the network/router/realtime surfaces
+
+Established once `server/` became real and the client started talking to it (`02-design-patterns.md` #4) — the defaults for anything new that needs one of these:
+
+- **The API layer**: `vi.mock('@/services/api/listings')` at the top of the file, then `vi.mocked(listingsApi.fetchListings).mockResolvedValue(...)`/`mockRejectedValue(...)` per test. Every store/component test that exercises a code path calling `services/api/` uses this — never a real `fetch`.
+- **A router-dependent view** (URL-seeded filters, `router.replace` on a filter change): `createRouter({history: createMemoryHistory(), routes: [...]})`, `await router.push(url)`, `await router.isReady()`, then `mount(View, {global: {plugins: [router]}})`. First established for `InventoryView.test.ts`; no prior pattern existed for a router-dependent component before that.
+- **`IntersectionObserver`** (the infinite-scroll sentinel): jsdom has no native implementation at all. A small `FakeIntersectionObserver` class capturing its constructor callback and exposing a manual `.intersect()` method, installed via `vi.stubGlobal('IntersectionObserver', FakeIntersectionObserver)`.
+- **The WebSocket connection**: two different levels depending on what's under test. `services/api/ws.ts`'s own `RealtimeConnection` is tested against a `FakeWebSocket` class (`vi.stubGlobal('WebSocket', FakeWebSocket)`) that can `.open()`/`.close()`/`.message(payload)` on demand — this is what proved the ref-counted subscribe/unsubscribe behavior (two callers wanting the same listing id, one letting go must not kill the other's subscription) and the reconnect-with-backoff timing (`vi.useFakeTimers()`). Anything that just *consumes* the connection (`composables/useRealtimeSync.ts`) instead mocks the whole module (`vi.mock('@/services/api/ws', () => ({realtimeConnection: {subscribe: vi.fn(), ...}}))`) and drives `useRealtimeSubscription` inside a plain Vue `effectScope()` (no component needed) to assert the subscribe/unsubscribe calls a changing id list produces, including on `scope.stop()`.
+
 ## What "done" looks like for a new store/composable/component
 
 Before a commit lands: pure logic has unit tests; a store with reject-able actions has both an accept-path and a reject-path test; anything that touches `augment()`'s output has at least one assertion against it. If a category is genuinely not applicable (e.g. a types-only commit, or a purely presentational component with no branching), that's fine — but say so in the commit/PR description rather than silently omitting it.
@@ -47,7 +56,7 @@ Before a commit lands: pure logic has unit tests; a store with reject-able actio
 
 - **End-to-end / browser tests (Playwright, etc.)** — noted as a "what I'd do with more time" item in the README rather than built now. Confirmed scope decision, not an oversight.
 - **Visual regression / snapshot testing** — this app's fidelity to the design mock is verified by manual comparison during implementation, not an automated pixel-diff pipeline.
-- **Load/concurrency tests** — there's no concurrency to test. This is a single-user client-side app; nothing here shares mutable state across simultaneous requests the way a backend worker pool would.
+- **Load/concurrency tests, client-side** — nothing in `client/` shares mutable state across simultaneous requests the way a backend worker pool would, so there's no client-side equivalent to test. This is scoped to the client specifically: the server *does* have real concurrency now (multiple sessions racing a bid on one listing), and that's very much tested — see `06-backend-architecture.md`'s own test suite, particularly the dedicated `PlaceBid` concurrency-correctness test (N goroutines racing bids, asserting the outcome matches some serial ordering with no lost updates).
 
 ## CI gate (even before any actual CI config exists)
 
