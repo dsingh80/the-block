@@ -623,12 +623,6 @@ if (outDirOverride) {
   const outputPath = resolve(scriptDir, "../data/vehicles.json");
   mkdirSync(dirname(outputPath), { recursive: true });
   writeFileSync(outputPath, `${JSON.stringify(vehicles, null, 2)}\n`);
-
-  // going to hardcode this path here since data should be loaded from the backend anyway
-  // it's fine for testing right now
-  const clientOutputPath = resolve(scriptDir, "../client/src/data/vehicles.json");
-  mkdirSync(dirname(outputPath), { recursive: true });
-  writeFileSync(clientOutputPath, `${JSON.stringify(vehicles, null, 2)}\n`);
 }
 
 console.log(JSON.stringify(summarize(vehicles), null, 2));

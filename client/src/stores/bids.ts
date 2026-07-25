@@ -1,10 +1,10 @@
 import { reactive, ref } from 'vue'
 import { defineStore } from 'pinia'
-import { vehiclesById } from '@/data/vehicles'
 import { deriveLifecycle } from '@/utils/lifecycle'
 import { getBidIncrement } from '@/utils/bidding'
 import { currency } from '@/utils/format'
 import { useClockStore } from './clock'
+import { useInventoryFiltersStore } from './inventoryFilters'
 import { placeBid as apiPlaceBid, buyNow as apiBuyNow } from '@/services/api/listings'
 import { ApiError } from '@/services/api/client'
 import type { ApiBidAccept } from '@/services/api/types'
@@ -44,7 +44,7 @@ export const useBidsStore = defineStore('bids', () => {
   function currentPriceFor(id: string): number {
     const override = overrides[id]
     if (override) return override.currentPrice
-    const vehicle = vehiclesById.get(id)
+    const vehicle = useInventoryFiltersStore().vehiclesById[id]
     return vehicle ? (vehicle.current_bid ?? vehicle.starting_bid) : 0
   }
 
@@ -57,7 +57,7 @@ export const useBidsStore = defineStore('bids', () => {
    * response, not from what the client asked for.
    */
   async function placeBid(id: string, amount: number): Promise<BidResult> {
-    const vehicle = vehiclesById.get(id)
+    const vehicle = useInventoryFiltersStore().vehiclesById[id]
     if (!vehicle) return { ok: false, error: 'Vehicle not found.' }
 
     const clock = useClockStore()
@@ -81,7 +81,7 @@ export const useBidsStore = defineStore('bids', () => {
   }
 
   async function buyNow(id: string): Promise<BidResult> {
-    const vehicle = vehiclesById.get(id)
+    const vehicle = useInventoryFiltersStore().vehiclesById[id]
     if (!vehicle) return { ok: false, error: 'Vehicle not found.' }
     if (vehicle.buy_now_price == null) {
       return { ok: false, error: 'This listing has no Buy Now price.' }

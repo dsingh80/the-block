@@ -3,14 +3,52 @@ import { mount, flushPromises } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import BidPanel from './BidPanel.vue'
 import { useClockStore } from '@/stores/clock'
+import { useInventoryFiltersStore } from '@/stores/inventoryFilters'
 import { augment } from '@/composables/useListingPresentation'
-import { vehicles } from '@/data/vehicles'
 import { getBidIncrement } from '@/utils/bidding'
 import * as listingsApi from '@/services/api/listings'
+import type { Vehicle } from '@/types/vehicle'
 
 const HOUR_MS = 60 * 60 * 1000
 
 vi.mock('@/services/api/listings')
+
+function vehicleFixture(overrides: Partial<Vehicle> = {}): Vehicle {
+  return {
+    id: 'vehicle-1',
+    vin: 'TESTVIN0000000001',
+    year: 2022,
+    make: 'Toyota',
+    model: 'Camry',
+    trim: 'SE',
+    body_style: 'sedan',
+    exterior_color: 'Black',
+    interior_color: 'Black',
+    engine: '2.5L I4',
+    transmission: 'automatic',
+    drivetrain: 'FWD',
+    odometer_km: 40000,
+    fuel_type: 'gasoline',
+    condition_grade: 4.2,
+    condition_report: 'Good condition.',
+    damage_notes: [],
+    title_status: 'clean',
+    province: 'Ontario',
+    city: 'Toronto',
+    auction_start: '2026-01-01T12:00:00Z',
+    auction_end: '2026-01-02T12:00:00Z',
+    status: 'active',
+    starting_bid: 10000,
+    buy_now_price: null,
+    images: [],
+    selling_dealership: 'Test Motors',
+    lot: 'A-0001',
+    current_bid: 20000,
+    bid_count: 5,
+    purchased_at: null,
+    ...overrides,
+  }
+}
 
 function mountActive() {
   // stubActions: false so placeBid runs its real logic — this component's
@@ -18,7 +56,11 @@ function mountActive() {
   // network call underneath it is mocked instead (@/services/api/listings),
   // not the store action itself.
   const pinia = createTestingPinia({ stubActions: false, createSpy: vi.fn })
-  const vehicle = vehicles[0]
+  const vehicle = vehicleFixture()
+  // bids.ts reads a vehicle's own price/lifecycle from the live inventory
+  // cache, not a static import -- seed it the same way a real fetched page
+  // (or ensureVehicleLoaded) would.
+  useInventoryFiltersStore().vehiclesById[vehicle.id] = vehicle
   const clock = useClockStore()
   clock.effectiveNow = new Date(vehicle.auction_start).getTime() + HOUR_MS
 

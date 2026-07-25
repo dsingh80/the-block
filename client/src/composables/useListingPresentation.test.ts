@@ -8,7 +8,14 @@ import type { BidOverride } from '@/types/listing'
 
 const HOUR_MS = 60 * 60 * 1000
 const DEFAULT_AUCTION_START = '2026-01-01T12:00:00.000Z'
+const DEFAULT_AUCTION_END = '2026-01-02T12:00:00.000Z'
 
+/**
+ * `status` isn't actually read by augment() below -- lifecycle is derived
+ * client-side from auction_start + the clock (see augment()'s own comment on
+ * vehicle.purchased_at) -- so its fixture value here is just for type
+ * conformance with the real (always-populated) API shape, not behavior.
+ */
 function makeVehicle(overrides: Partial<Vehicle> = {}): Vehicle {
   return {
     id: 'test-vehicle',
@@ -32,6 +39,8 @@ function makeVehicle(overrides: Partial<Vehicle> = {}): Vehicle {
     province: 'Ontario',
     city: 'Toronto',
     auction_start: DEFAULT_AUCTION_START,
+    auction_end: DEFAULT_AUCTION_END,
+    status: 'active',
     starting_bid: 10000,
     buy_now_price: null,
     images: ['a.jpg', 'b.jpg', 'c.jpg'],
@@ -39,6 +48,7 @@ function makeVehicle(overrides: Partial<Vehicle> = {}): Vehicle {
     lot: 'A-0001',
     current_bid: null,
     bid_count: 0,
+    purchased_at: null,
     ...overrides,
   }
 }

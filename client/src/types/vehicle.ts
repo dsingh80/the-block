@@ -5,12 +5,12 @@ export type TitleStatus = 'clean' | 'rebuilt' | 'salvage'
 
 /**
  * Mirrors server/'s ListingSummary DTO (guidelines/06-backend-architecture.md)
- * once fetched from the real API. `auction_end`/`status`/`purchased_at` are
- * optional because the static seed data (data/vehicles.json, used only until
- * the static-import-removal commit) never populates them -- the server
- * computes/derives all three, the generator script has no equivalent. No
- * `reserve_price` at all: the server never sends it either
- * (guidelines/06-backend-architecture.md, "reserve_price").
+ * -- every Vehicle in the app is now sourced from the real API
+ * (services/api/types.ts's ApiListingSummary, minus `viewer`), so
+ * `auction_end`/`status`/`purchased_at` are as required here as they are
+ * there; the server always computes/derives all three. No `reserve_price` at
+ * all: the server never sends it either (guidelines/06-backend-architecture.md,
+ * "reserve_price").
  */
 export interface Vehicle {
   id: string
@@ -34,8 +34,8 @@ export interface Vehicle {
   province: string
   city: string
   auction_start: string
-  auction_end?: string
-  status?: Lifecycle
+  auction_end: string
+  status: Lifecycle
   starting_bid: number
   buy_now_price: number | null
   images: string[]
@@ -43,5 +43,5 @@ export interface Vehicle {
   lot: string
   current_bid: number | null
   bid_count: number
-  purchased_at?: string | null
+  purchased_at: string | null
 }
