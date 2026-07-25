@@ -21,7 +21,7 @@ function parseAmount(raw: string): number {
  * bids.placeBid itself, which re-derives the minimum and re-checks the
  * listing is still active. See guidelines/03-guardrails.md.
  */
-function submitBid() {
+async function submitBid() {
   error.value = null
   success.value = null
 
@@ -36,7 +36,7 @@ function submitBid() {
     return
   }
 
-  const result = bids.placeBid(props.listing.id, amount)
+  const result = await bids.placeBid(props.listing.id, amount)
   if (!result.ok) {
     error.value = result.error
     return

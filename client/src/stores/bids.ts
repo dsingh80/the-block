@@ -5,9 +5,32 @@ import { deriveLifecycle } from '@/utils/lifecycle'
 import { getBidIncrement } from '@/utils/bidding'
 import { currency } from '@/utils/format'
 import { useClockStore } from './clock'
+import { placeBid as apiPlaceBid, buyNow as apiBuyNow } from '@/services/api/listings'
+import { ApiError } from '@/services/api/client'
+import type { ApiBidAccept } from '@/services/api/types'
 import type { BidOverride } from '@/types/listing'
 
 export type BidResult = { ok: true } | { ok: false; error: string }
+
+function overrideFromAccept(
+  accepted: ApiBidAccept,
+  purchased: boolean,
+  purchasedAt: number | null,
+): BidOverride {
+  return {
+    currentPrice: accepted.current_bid,
+    bidCount: accepted.bid_count,
+    hasUserBid: accepted.viewer.has_bid,
+    isUserHighBidder: accepted.viewer.is_high_bidder,
+    isUserOutbid: accepted.viewer.is_outbid,
+    purchased,
+    purchasedAt,
+  }
+}
+
+function messageFor(err: unknown): string {
+  return err instanceof ApiError ? err.message : 'Something went wrong. Please try again.'
+}
 
 /**
  * The single global, always-subscribed source of truth for the user's
@@ -25,19 +48,15 @@ export const useBidsStore = defineStore('bids', () => {
     return vehicle ? (vehicle.current_bid ?? vehicle.starting_bid) : 0
   }
 
-  function currentBidCountFor(id: string): number {
-    const override = overrides[id]
-    if (override) return override.bidCount
-    return vehiclesById.get(id)?.bid_count ?? 0
-  }
-
   /**
-   * The real validation gate — re-derives the minimum from the tiered
-   * schedule and re-checks the listing is still active right now, not just
-   * at whatever moment a BidPanel happened to render. See
-   * guidelines/03-guardrails.md.
+   * The client-side checks below are fast UX feedback only, so a doomed
+   * request never even reaches the network — the server's Lua accept path is
+   * what actually validates and accepts/rejects (guidelines/06-backend-architecture.md,
+   * "Idempotency"; guidelines/03-guardrails.md's "validate at the boundary,
+   * trust nothing else"). `overrides[id]` is populated from the server's
+   * response, not from what the client asked for.
    */
-  function placeBid(id: string, amount: number): BidResult {
+  async function placeBid(id: string, amount: number): Promise<BidResult> {
     const vehicle = vehiclesById.get(id)
     if (!vehicle) return { ok: false, error: 'Vehicle not found.' }
 
@@ -52,36 +71,30 @@ export const useBidsStore = defineStore('bids', () => {
       return { ok: false, error: `Enter at least ${currency(minimum)}.` }
     }
 
-    overrides[id] = {
-      currentPrice: amount,
-      bidCount: currentBidCountFor(id) + 1,
-      hasUserBid: true,
-      isUserHighBidder: true,
-      isUserOutbid: false,
-      purchased: overrides[id]?.purchased ?? false,
-      purchasedAt: overrides[id]?.purchasedAt ?? null,
+    try {
+      const accepted = await apiPlaceBid(id, amount)
+      overrides[id] = overrideFromAccept(accepted, overrides[id]?.purchased ?? false, overrides[id]?.purchasedAt ?? null)
+      return { ok: true }
+    } catch (err) {
+      return { ok: false, error: messageFor(err) }
     }
-    return { ok: true }
   }
 
-  function buyNow(id: string): BidResult {
+  async function buyNow(id: string): Promise<BidResult> {
     const vehicle = vehiclesById.get(id)
     if (!vehicle) return { ok: false, error: 'Vehicle not found.' }
     if (vehicle.buy_now_price == null) {
       return { ok: false, error: 'This listing has no Buy Now price.' }
     }
 
-    overrides[id] = {
-      currentPrice: vehicle.buy_now_price,
-      bidCount: currentBidCountFor(id) + 1,
-      hasUserBid: true,
-      isUserHighBidder: true,
-      isUserOutbid: false,
-      purchased: true,
-      purchasedAt: Date.now(),
+    try {
+      const accepted = await apiBuyNow(id)
+      overrides[id] = overrideFromAccept(accepted, true, Date.parse(accepted.accepted_at))
+      justBoughtId.value = id
+      return { ok: true }
+    } catch (err) {
+      return { ok: false, error: messageFor(err) }
     }
-    justBoughtId.value = id
-    return { ok: true }
   }
 
   return { overrides, justBoughtId, placeBid, buyNow }

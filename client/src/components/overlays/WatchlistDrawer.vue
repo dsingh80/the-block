@@ -22,8 +22,8 @@ function openListing(id: string) {
   router.push(`/inventory/${id}`)
 }
 
-function quickBid(listing: AugmentedListing) {
-  bids.placeBid(listing.id, listing.nextBidValue)
+async function quickBid(listing: AugmentedListing) {
+  await bids.placeBid(listing.id, listing.nextBidValue)
 }
 </script>
 
