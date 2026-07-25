@@ -2,3 +2,4 @@ export const AUCTION_DURATION_HOURS = 24
 export const URGENT_THRESHOLD_HOURS = 3
 export const WATCHLIST_HIGHLIGHT_MS = 1600
 export const CLOCK_TICK_MS = 30_000
+export const BID_UPDATE_HIGHLIGHT_MS = 2000

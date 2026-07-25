@@ -40,6 +40,53 @@ button {
   }
 }
 
+/* The scroll-up skeleton placeholders' pulse (VehicleCardSkeleton.vue). */
+@keyframes skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* BidPanel's price pop when the current bid changes (WS broadcast or this session's own accepted bid). */
+@keyframes bid-price-flash {
+  0% {
+    color: var(--color-accent);
+    transform: scale(1.08);
+  }
+  100% {
+    color: var(--color-navy);
+    transform: scale(1);
+  }
+}
+
+/* BidPanel's "New bid" badge fade-out, paired with bid-price-flash above. */
+@keyframes bid-badge-fade {
+  0%,
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* The badge's pulsing dot, looping for as long as the badge is visible. */
+@keyframes bid-dot-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(1.3);
+  }
+}
+
 /* Single reused node driven by the `v-tooltip` directive (@/directives/tooltip). */
 .v-tooltip-bubble {
   position: fixed;

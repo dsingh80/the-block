@@ -82,6 +82,10 @@ export function augment(vehicle: Vehicle, ctx: AugmentContext): AugmentedListing
   const hasUserBid = ctx.override?.hasUserBid ?? false
   const isUserHighBidder = ctx.override?.isUserHighBidder ?? false
   const isUserOutbid = ctx.override?.isUserOutbid ?? false
+  // Already the high bidder -> no legitimate reason to raise your own max proxy
+  // bid, so every bid-entry surface (BidPanel, WatchlistDrawer's quick-bid,
+  // the shared ctaLabel/ctaVariant below) gates on this instead of canBid.
+  const canRaiseBid = canBid && !isUserHighBidder
 
   const priceValue = ctx.override?.currentPrice ?? vehicle.current_bid ?? vehicle.starting_bid
   const bidCount = ctx.override?.bidCount ?? vehicle.bid_count
@@ -120,10 +124,15 @@ export function augment(vehicle: Vehicle, ctx: AugmentContext): AugmentedListing
   const badge = computeBadge(lifecycle, hasUserBid, isUserHighBidder, isUserOutbid)
   const bidStatus = computeBidStatus(isUpcoming, isEnded, hasUserBid, isUserHighBidder, isUserOutbid)
 
-  const ctaLabel = isEnded ? 'View Result' : hasUserBid ? 'Place New Bid' : 'View Auction'
+  const ctaLabel = isEnded
+    ? 'View Result'
+    : hasUserBid && !isUserHighBidder
+      ? 'Place New Bid'
+      : 'View Auction'
   let ctaVariant: CtaVariant = 'primary'
   if (isEnded) ctaVariant = 'outline-navy'
   else if (isUpcoming) ctaVariant = 'outline-accent'
+  else if (isUserHighBidder) ctaVariant = 'outline-navy'
 
   return {
     id: vehicle.id,
@@ -133,6 +142,7 @@ export function augment(vehicle: Vehicle, ctx: AugmentContext): AugmentedListing
     isUpcoming,
     isEnded,
     canBid,
+    canRaiseBid,
 
     mileageLabel: formatKm(vehicle.odometer_km),
     locationLabel: `${vehicle.city}, ${vehicle.province}`,

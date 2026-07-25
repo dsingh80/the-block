@@ -1,3 +1,4 @@
+import { nextTick } from 'vue'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { mount, flushPromises } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
@@ -6,6 +7,7 @@ import { useClockStore } from '@/stores/clock'
 import { useInventoryFiltersStore } from '@/stores/inventoryFilters'
 import { augment } from '@/composables/useListingPresentation'
 import { getBidIncrement } from '@/utils/bidding'
+import { BID_UPDATE_HIGHLIGHT_MS } from '@/utils/constants'
 import * as listingsApi from '@/services/api/listings'
 import type { Vehicle } from '@/types/vehicle'
 
@@ -50,7 +52,7 @@ function vehicleFixture(overrides: Partial<Vehicle> = {}): Vehicle {
   }
 }
 
-function mountActive() {
+function mountActive(overrides: { isUserHighBidder?: boolean } = {}) {
   // stubActions: false so placeBid runs its real logic — this component's
   // whole job is to be a thin wrapper around that real validation gate. The
   // network call underneath it is mocked instead (@/services/api/listings),
@@ -66,7 +68,17 @@ function mountActive() {
 
   const listing = augment(vehicle, {
     effectiveNow: clock.effectiveNow,
-    override: undefined,
+    override: overrides.isUserHighBidder
+      ? {
+          currentPrice: vehicle.current_bid ?? vehicle.starting_bid,
+          bidCount: vehicle.bid_count,
+          hasUserBid: true,
+          isUserHighBidder: true,
+          isUserOutbid: false,
+          purchased: false,
+          purchasedAt: null,
+        }
+      : undefined,
     justBoughtId: null,
     isWatched: false,
     isCompareSelected: false,
@@ -143,6 +155,9 @@ describe('BidPanel', () => {
   it('rejects an empty submission without calling the store', async () => {
     const { wrapper } = mountActive()
 
+    // The field is prepopulated with the tiered minimum by default -- clear
+    // it to exercise the empty-input guard a user hits after deleting it.
+    await wrapper.find('#bid-amount').setValue('')
     await wrapper.find('.bid-panel__submit').trigger('click')
     await flushPromises()
 
@@ -183,5 +198,118 @@ describe('BidPanel', () => {
 
     expect(wrapper.find('[role="alert"]').text()).toBe('Your bid is below the current minimum.')
     expect(wrapper.find('[role="status"]').exists()).toBe(false)
+  })
+
+  it('prepopulates the bid amount with the tiered minimum instead of starting empty', () => {
+    const { wrapper, vehicle } = mountActive()
+    const current = vehicle.current_bid ?? vehicle.starting_bid
+    const minimum = current + getBidIncrement(current)
+
+    expect((wrapper.find('#bid-amount').element as HTMLInputElement).value).toBe(String(minimum))
+  })
+
+  it('still shows the bid form, plus a winning note, when the user is already the high bidder', () => {
+    const { wrapper } = mountActive({ isUserHighBidder: true })
+
+    expect(wrapper.find('#bid-amount').exists()).toBe(true)
+    expect(wrapper.find('.bid-panel__submit').exists()).toBe(true)
+    expect(wrapper.find('.bid-panel__winning').text()).toBe(
+      'You have the highest bid — you can still raise it below.',
+    )
+  })
+
+  it('asks for confirmation instead of bidding immediately when the user is already the high bidder', async () => {
+    const { wrapper } = mountActive({ isUserHighBidder: true })
+
+    await wrapper.find('.bid-panel__submit').trigger('click')
+    await flushPromises()
+
+    expect(wrapper.find('.bid-panel__confirm').exists()).toBe(true)
+    expect(wrapper.find('[role="dialog"]').text()).toContain(
+      'You are already the winning bidder. Would you still like to raise your bid?',
+    )
+    expect(listingsApi.placeBid).not.toHaveBeenCalled()
+  })
+
+  it('places the raised bid once the confirmation is accepted', async () => {
+    const { wrapper, vehicle } = mountActive({ isUserHighBidder: true })
+    const current = vehicle.current_bid ?? vehicle.starting_bid
+    const minimum = current + getBidIncrement(current)
+    vi.mocked(listingsApi.placeBid).mockResolvedValue({
+      bid_id: 'bid-1',
+      current_bid: minimum,
+      bid_count: (vehicle.bid_count ?? 0) + 1,
+      accepted_at: '2026-01-01T00:00:00Z',
+      viewer: { has_bid: true, is_high_bidder: true, is_outbid: false },
+    })
+
+    await wrapper.find('.bid-panel__submit').trigger('click')
+    await wrapper.find('.bid-panel__confirm-yes').trigger('click')
+    await flushPromises()
+
+    expect(listingsApi.placeBid).toHaveBeenCalledWith(vehicle.id, minimum)
+    expect(wrapper.find('.bid-panel__confirm').exists()).toBe(false)
+    expect(wrapper.find('[role="status"]').exists()).toBe(true)
+  })
+
+  it('cancels without bidding when the confirmation is declined', async () => {
+    const { wrapper } = mountActive({ isUserHighBidder: true })
+
+    await wrapper.find('.bid-panel__submit').trigger('click')
+    await wrapper.find('.bid-panel__confirm-no').trigger('click')
+    await flushPromises()
+
+    expect(wrapper.find('.bid-panel__confirm').exists()).toBe(false)
+    expect(listingsApi.placeBid).not.toHaveBeenCalled()
+  })
+
+  it('flashes a "New bid" indicator when the current bid changes, then clears it after the highlight window', async () => {
+    vi.useFakeTimers()
+    const { wrapper, vehicle, clock } = mountActive()
+
+    expect(wrapper.find('.bid-panel__update-badge').exists()).toBe(false)
+
+    const current = vehicle.current_bid ?? vehicle.starting_bid
+    const bumped = augment(vehicle, {
+      effectiveNow: clock.effectiveNow,
+      override: {
+        currentPrice: current + getBidIncrement(current),
+        bidCount: (vehicle.bid_count ?? 0) + 1,
+        hasUserBid: false,
+        isUserHighBidder: false,
+        isUserOutbid: false,
+        purchased: false,
+        purchasedAt: null,
+      },
+      justBoughtId: null,
+      isWatched: false,
+      isCompareSelected: false,
+      compareDisabledAdd: false,
+    })
+    await wrapper.setProps({ listing: bumped })
+
+    expect(wrapper.find('.bid-panel__update-badge').exists()).toBe(true)
+
+    vi.advanceTimersByTime(BID_UPDATE_HIGHLIGHT_MS)
+    await nextTick()
+    expect(wrapper.find('.bid-panel__update-badge').exists()).toBe(false)
+
+    vi.useRealTimers()
+  })
+
+  it('does not flash on initial mount, only on a later change', () => {
+    const { wrapper } = mountActive()
+    expect(wrapper.find('.bid-panel__update-badge').exists()).toBe(false)
+  })
+
+  it('shows a live "time since" label next to the bid count that advances with the clock', async () => {
+    const { wrapper, clock } = mountActive()
+
+    expect(wrapper.find('.bid-panel__last-bid').text()).toContain('just now')
+
+    clock.effectiveNow += 5 * 60 * 1000
+    await nextTick()
+
+    expect(wrapper.find('.bid-panel__last-bid').text()).toContain('5m ago')
   })
 })

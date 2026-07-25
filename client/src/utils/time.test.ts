@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { formatDuration, timeLabelFor } from './time'
+import { formatDuration, timeLabelFor, timeSince } from './time'
 
 describe('formatDuration', () => {
   it('shows minutes only under an hour', () => {
@@ -27,5 +27,28 @@ describe('timeLabelFor', () => {
 
   it('labels an ended listing using the negated remaining hours', () => {
     expect(timeLabelFor('ended', -3)).toBe('Ended 3h 00m ago')
+  })
+})
+
+describe('timeSince', () => {
+  it('reads as "just now" under a minute', () => {
+    expect(timeSince(0)).toBe('just now')
+    expect(timeSince(59_000)).toBe('just now')
+  })
+
+  it('clamps a negative elapsed time to "just now" instead of going negative', () => {
+    expect(timeSince(-5000)).toBe('just now')
+  })
+
+  it('shows whole minutes under an hour', () => {
+    expect(timeSince(5 * 60_000)).toBe('5m ago')
+  })
+
+  it('shows whole hours under a day', () => {
+    expect(timeSince(3 * 60 * 60_000)).toBe('3h ago')
+  })
+
+  it('shows whole days at 24h and above', () => {
+    expect(timeSince(2 * 24 * 60 * 60_000)).toBe('2d ago')
   })
 })

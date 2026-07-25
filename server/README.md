@@ -10,8 +10,11 @@ Requires Docker Desktop (WSL2 backend, on Windows). From this directory:
 
 ```
 ./deploy/docker/setup-ssl-windows.sh   # once per machine
-docker compose up
+docker compose up --build
 ```
+
+> App will be accessible on https://localhost (no port)
+
 
 `docker compose up` builds and starts, in order: `postgres` and `redis`; the one-shot `reconcile` service (applies Postgres migrations, then syncs `../data/vehicles.json` into Postgres and Redis, insert-only-new by id — `guidelines/06-backend-architecture.md`, "Data lifecycle"); then `app` (the API) and `client` (the existing Vite dev server); then `caddy`, which is the only service that actually publishes a host port. Open `https://localhost` — Caddy reverse-proxies `/v1/*` (REST and the `/v1/ws` WebSocket upgrade alike — `gorilla/websocket` upgrades transparently through `reverse_proxy`) and `/healthcheck` to `app`, and everything else to `client`, all on one origin (this is what keeps the session cookie's `SameSite=Lax` protection meaningful — a split origin would force `SameSite=None`).
 
@@ -40,18 +43,3 @@ go test -tags=integration ./test/integration/...
 ```
 
 This is what proves concurrent-bid correctness (N goroutines racing bids on one listing resolve to a consistent serial ordering, exactly one Postgres row per accepted bid, no duplicates or gaps after the stream tailer drains), the cursor-pagination walk (forward/backward round-trips, including across the "ending soonest" sort's bucket boundaries), and the WebSocket upgrade path end-to-end.
-
-## Layout
-
-Hexagonal/ports-and-adapters, no speculative scaffolding for transports that don't exist yet (`guidelines/06-backend-architecture.md`, "Code organization" and "Non-goals"):
-
-```
-cmd/api/          long-running binary: HTTP + WebSocket listener
-cmd/reconcile/    Compose init step: migrations + insert-only-new dataset sync + Redis state priming
-internal/domain/  pure Go, no net/http or storage deps: listing/bid/session types, lifecycle + bid-increment rules
-internal/usecase/ port interfaces + orchestration, split by concern (listings, bidding, audit, sessions, health, realtime)
-internal/platform/  redisstore/, pgstore/, inmemory/ (the default Broadcaster), seeddata/ (parses data/vehicles.json for cmd/reconcile), config/, logging/
-internal/transport/ dto/ (transport-agnostic wire structs), http/ (router, middleware, handlers), httputil/ (shared response writers), ws/ (hub, connection, protocol)
-test/integration/  real Redis + Postgres tests via testcontainers-go
-deploy/docker/     Dockerfile, Caddyfile, the SSL setup/cleanup scripts, certs/ (generated, gitignored)
-```

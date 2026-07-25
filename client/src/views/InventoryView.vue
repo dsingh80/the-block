@@ -1,14 +1,18 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import FilterBar from '@/components/inventory/FilterBar.vue'
 import VehicleCard from '@/components/inventory/VehicleCard.vue'
+import VehicleCardSkeleton from '@/components/inventory/VehicleCardSkeleton.vue'
 import { useAugmentedListings } from '@/composables/useListingPresentation'
 import { useRealtimeSubscription } from '@/composables/useRealtimeSync'
+import { prependPreservingScroll, scrollToResults, waitForScrollSettle } from '@/composables/useScrollAnchor'
 import {
   useInventoryFiltersStore,
+  PAGE_SIZE,
   SEARCH_DEBOUNCE_MS,
+  SCROLL_SYNC_DEBOUNCE_MS,
   type SortOption,
   type StatusFilter,
 } from '@/stores/inventoryFilters'
@@ -17,8 +21,21 @@ import type { AugmentedListing } from '@/types/listing'
 const route = useRoute()
 const router = useRouter()
 const filters = useInventoryFiltersStore()
-const { search, makeFilter, statusFilter, sortBy, ids, hasNextPage, endCursor, loading, error } =
-  storeToRefs(filters)
+const {
+  search,
+  makeFilter,
+  statusFilter,
+  sortBy,
+  ids,
+  hasNextPage,
+  endCursor,
+  hasPreviousPage,
+  startCursor,
+  loading,
+  loadingPrevious,
+  error,
+  checkpoints,
+} = storeToRefs(filters)
 const { list } = useAugmentedListings()
 
 // Keeps every listing currently in the grid live -- a bid landing on any of
@@ -33,20 +50,22 @@ const listings = computed<AugmentedListing[]>(() => {
 })
 
 /**
- * includeCursor is false for a fresh filter change (start over from page one,
- * no checkpoint) and true after loadMore (reflect the new scroll position so
- * a reload/copied link resumes near where the user actually is) --
- * guidelines/06-backend-architecture.md's client-integration phase, the
- * "resumable checkpoint" half of infinite scroll.
+ * Writes whichever cursor is passed as the URL's resume checkpoint, omitting
+ * it entirely when none is passed (a fresh filter change -- start over from
+ * page one, no checkpoint) -- guidelines/06-backend-architecture.md's
+ * client-integration phase, the "resumable checkpoint" half of infinite
+ * scroll. Called immediately with the new edge cursor from loadMore/
+ * loadPrevious, and lazily from syncUrlFromScrollPosition while the user
+ * browses already-loaded content with no new fetch happening.
  */
-function syncUrl(includeCursor: boolean) {
+function syncUrl(cursor?: string) {
   router.replace({
     query: {
       ...(statusFilter.value !== 'all' ? { status: statusFilter.value } : {}),
       ...(makeFilter.value !== 'all' ? { make: makeFilter.value } : {}),
       ...(search.value.trim() ? { q: search.value.trim() } : {}),
       ...(sortBy.value !== 'ending' ? { sort: sortBy.value } : {}),
-      ...(includeCursor && endCursor.value ? { after: endCursor.value } : {}),
+      ...(cursor ? { after: cursor } : {}),
     },
   })
 }
@@ -59,11 +78,52 @@ function syncUrl(includeCursor: boolean) {
 const initializing = ref(true)
 
 const sentinelRef = ref<HTMLElement | null>(null)
+const topSentinelRef = ref<HTMLElement | null>(null)
+const realGridRef = ref<HTMLElement | null>(null)
 let observer: IntersectionObserver | undefined
+let topObserver: IntersectionObserver | undefined
 
 async function loadMore() {
   await filters.loadNextPage()
-  syncUrl(true)
+  syncUrl(endCursor.value)
+}
+
+async function loadPrevious() {
+  const scroller = document.scrollingElement
+  if (scroller) await prependPreservingScroll(scroller, () => filters.loadPreviousPage())
+  else await filters.loadPreviousPage()
+  syncUrl(startCursor.value)
+}
+
+let scrollSyncDebounce: ReturnType<typeof setTimeout> | undefined
+
+/**
+ * Best-effort URL sync while browsing already-loaded content, not just when
+ * a new fetch happens -- finds whichever loaded checkpoint is nearest the
+ * top of the viewport and writes its cursor, so a refresh resumes near
+ * wherever the user currently is. Deliberately lazy/debounced (checkpoints
+ * are one per ~PAGE_SIZE items, not pixel-precise) rather than an
+ * IntersectionObserver -- there's no large/growing set of elements to watch
+ * efficiently here, just a handful of positions to check once scrolling
+ * stops.
+ */
+function syncUrlFromScrollPosition() {
+  clearTimeout(scrollSyncDebounce)
+  scrollSyncDebounce = setTimeout(() => {
+    const headerBuffer = 80
+    const topById = new Map<string, number>()
+    document.querySelectorAll<HTMLElement>('[data-listing-id]').forEach((card) => {
+      const id = card.dataset.listingId
+      if (id) topById.set(id, card.getBoundingClientRect().top)
+    })
+
+    let current: string | undefined
+    for (const checkpoint of checkpoints.value) {
+      const top = topById.get(checkpoint.id)
+      if (top !== undefined && top <= headerBuffer) current = checkpoint.cursor
+    }
+    if (current) syncUrl(current)
+  }, SCROLL_SYNC_DEBOUNCE_MS)
 }
 
 onMounted(async () => {
@@ -80,10 +140,42 @@ onMounted(async () => {
     if (entries.some((entry) => entry.isIntersecting)) void loadMore()
   })
   if (sentinelRef.value) observer.observe(sentinelRef.value)
+
+  // Only meaningful once the real grid actually exists (it's inside the
+  // v-else results branch), so wait a tick for reset()'s DOM update to land
+  // before touching realGridRef -- unlike sentinelRef/topSentinelRef, which
+  // are unconditional and already valid before reset() ever resolves.
+  if (hasPreviousPage.value) {
+    await nextTick()
+    if (realGridRef.value) {
+      scrollToResults(realGridRef.value)
+      await waitForScrollSettle(document.scrollingElement ?? window)
+    }
+  }
+
+  // rootMargin extends the detection zone upward so a backward fetch can
+  // start before the sentinel is literally on-screen -- the placeholders are
+  // meant to rarely actually be seen. Not observed until here, after the
+  // settle-scroll above has genuinely finished: observing any earlier could
+  // sample "intersecting" while that animation is still mid-flight (still at
+  // or near scrollTop 0), firing loadPrevious before the user ever scrolled
+  // and fighting the animation with prependPreservingScroll's own scrollTop
+  // adjustment.
+  topObserver = new IntersectionObserver(
+    (entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) void loadPrevious()
+    },
+    { rootMargin: '600px 0px 0px 0px' },
+  )
+  if (topSentinelRef.value) topObserver.observe(topSentinelRef.value)
+
+  window.addEventListener('scroll', syncUrlFromScrollPosition, { passive: true })
 })
 
 onBeforeUnmount(() => {
   observer?.disconnect()
+  topObserver?.disconnect()
+  window.removeEventListener('scroll', syncUrlFromScrollPosition)
 })
 
 let searchDebounce: ReturnType<typeof setTimeout> | undefined
@@ -93,14 +185,14 @@ watch(search, () => {
   clearTimeout(searchDebounce)
   searchDebounce = setTimeout(() => {
     void filters.reset()
-    syncUrl(false)
+    syncUrl()
   }, SEARCH_DEBOUNCE_MS)
 })
 
 watch([makeFilter, statusFilter, sortBy], () => {
   if (initializing.value) return
   void filters.reset()
-  syncUrl(false)
+  syncUrl()
 })
 </script>
 
@@ -112,6 +204,8 @@ watch([makeFilter, statusFilter, sortBy], () => {
     </div>
 
     <FilterBar />
+
+    <div ref="topSentinelRef" class="inventory-view__sentinel" aria-hidden="true"></div>
 
     <p v-if="error" class="inventory-view__error" role="alert">{{ error }}</p>
 
@@ -125,7 +219,12 @@ watch([makeFilter, statusFilter, sortBy], () => {
     </div>
 
     <template v-else>
-      <div class="inventory-view__grid">
+      <div v-if="hasPreviousPage" class="inventory-view__grid inventory-view__grid--skeleton" aria-hidden="true">
+        <VehicleCardSkeleton v-for="n in PAGE_SIZE" :key="n" />
+      </div>
+      <p v-if="loadingPrevious" class="inventory-view__loading-more">Loading earlier…</p>
+
+      <div ref="realGridRef" class="inventory-view__grid">
         <VehicleCard v-for="listing in listings" :key="listing.id" :listing="listing" />
       </div>
       <p v-if="loading" class="inventory-view__loading-more">Loading more…</p>
@@ -198,6 +297,7 @@ watch([makeFilter, statusFilter, sortBy], () => {
   grid-template-columns: repeat(auto-fill, minmax(272px, 1fr));
   gap: 20px;
   margin-top: 22px;
+  scroll-margin-top: var(--header-height);
 }
 
 .inventory-view__loading-more {

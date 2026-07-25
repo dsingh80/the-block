@@ -4,15 +4,18 @@ A submission for OPENLANE's **"The Block"** coding challenge — the buyer side 
 
 ## How to Run
 
-Requires **Docker Desktop** (WSL2 backend, on Windows). The whole stack — Postgres, Redis, the Go API, the Vite dev server, and Caddy for local HTTPS — runs from `server/`:
+Requires **Docker Desktop** (WSL2 backend, on Windows). 
 
-```
+#### Accessing the application
+> Navigate to https://localhost (no port)
+
+#### Starting the application
+```bash
 cd server
-./deploy/docker/setup-ssl-windows.sh   # once per machine -- see server/README.md
-docker compose up
+./deploy/docker/setup-ssl-windows.sh   # once per machine
+docker compose up --build
 ```
 
-Open `https://localhost`. Caddy serves the client and reverse-proxies the API under the same origin, so there's nothing else to configure — the first request issues a session cookie and every bid/watch/compare action from then on talks to the real backend. `https://localhost/healthcheck` reports Redis/Postgres reachability directly.
 
 `setup-ssl-windows.sh` is a one-time step: it installs [mkcert](https://github.com/FiloSottile/mkcert)'s local CA into the Windows + browser trust stores and writes a browser-trusted cert for `https://localhost` (`mkcert` itself needs installing first if you don't have it — the script prints the `winget` command if it's missing). See [`server/README.md`](server/README.md) for what each step does, `cleanup-ssl-windows.sh`, and running the Go test suites (including the real-Redis/Postgres integration tests) directly without Docker.
 
@@ -25,16 +28,6 @@ npm test
 ```
 
 (Requires **Node 24+**, enforced via `engine-strict`.) Running `npm run dev` standalone starts Vite on its own origin (`http://localhost:5173`) with no backend behind it — useful for pure UI iteration, but bidding/watchlist/inventory calls will fail without the Compose stack running and reached through Caddy's `https://localhost` instead.
-
-## Assumptions and Scope
-
-- **24-hour auction duration.** The dataset's `auction_start` has no matching end time, and the source requirements only specify a start. 24 hours is an explicit, unconfirmed assumption — now stored as data (`listings.auction_duration_sec`, default 86400), not hardcoded, so changing it later is an `UPDATE`, not a migration (`guidelines/06-backend-architecture.md`, "Data layer").
-- **Bidding, listings, and the audit trail persist for real**; watchlist, compare selection, and filter/sort/search inputs are still deliberately client-only and reset on refresh — those never had a stated need to survive a reload, unlike a placed bid.
-- **Rival bidding is real, but nothing bids on its own.** Any two sessions (two browsers, or a normal tab + incognito) are genuinely independent bidders now — the Lua accept path (`guidelines/06-backend-architecture.md`, "Data layer") resolves concurrent bids atomically and correctly. There's still no automated opponent placing bids for you, so seeing `Outbid` in a single session means opening a second one and bidding there.
-- **Sessions are anonymous.** An opaque cookie-backed session id, not a real account — no login, no password, no identity that survives switching browsers/devices. This is a stated non-goal, not an oversight (`guidelines/06-backend-architecture.md`, "Non-goals").
-- **`reserve_price` is in the dataset but intentionally not shown** — buyers don't see reserve amounts in a real auction either. This is now an actual trust boundary, not just client-side discipline: the server's buyer-facing `ListingSummary` DTO has no such field to serialize in the first place (`guidelines/06-backend-architecture.md`, "API design"), so nothing hitting the API directly can read it either.
-- **Watchlist starts empty.** No hand-picked seed data.
-- **Money is a whole number everywhere** (the `server/` backend and its Postgres schema included) — every cost in this domain is flat, with no decimal-prone fees or taxes, so there are no cents anywhere: `starting_bid`, `current_bid`, bid increments, all whole integers. If fractional currency is ever needed, the two migration paths are (a) switch the column/application type to a decimal type, or (b) keep integers and scale by 100, treating the last two digits as cents — either way, deliberately not a silent default.
 
 ## Stack
 

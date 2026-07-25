@@ -23,6 +23,7 @@ function openListing(id: string) {
 }
 
 async function quickBid(listing: AugmentedListing) {
+  if (!listing.canRaiseBid) return
   await bids.placeBid(listing.id, listing.nextBidValue)
 }
 </script>
@@ -95,8 +96,13 @@ async function quickBid(listing: AugmentedListing) {
                 </div>
               </div>
               <div class="watchlist-drawer__row-actions">
-                <button type="button" class="watchlist-drawer__quick-bid" @click="quickBid(item)">
-                  Bid {{ item.nextBidFormatted }}
+                <button
+                  type="button"
+                  class="watchlist-drawer__quick-bid"
+                  :disabled="!item.canRaiseBid"
+                  @click="quickBid(item)"
+                >
+                  {{ item.canRaiseBid ? `Bid ${item.nextBidFormatted}` : 'Highest Bid' }}
                 </button>
                 <button type="button" class="watchlist-drawer__view" @click="openListing(item.id)">
                   View
@@ -365,6 +371,11 @@ async function quickBid(listing: AugmentedListing) {
   border-radius: 6px;
   cursor: pointer;
   white-space: nowrap;
+}
+
+.watchlist-drawer__quick-bid:disabled {
+  background: var(--color-muted);
+  cursor: not-allowed;
 }
 
 .watchlist-drawer__view {

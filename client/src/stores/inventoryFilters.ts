@@ -8,13 +8,21 @@ import type { ApiListingSummary } from '@/services/api/types'
 export type SortOption = 'ending' | 'price-low' | 'price-high' | 'year'
 export type StatusFilter = 'all' | 'upcoming' | 'active' | 'ended'
 
-const PAGE_SIZE = 24
+export const PAGE_SIZE = 24
 /** How long InventoryView waits after the last keystroke before refetching on a search change. */
 export const SEARCH_DEBOUNCE_MS = 300
+/** How long InventoryView waits after scrolling stops before syncing the URL's resume cursor to the current scroll position. */
+export const SCROLL_SYNC_DEBOUNCE_MS = 500
 
 function toVehicle(item: ApiListingSummary): Vehicle {
   const { viewer: _viewer, ...vehicle } = item
   return vehicle
+}
+
+/** One fetched batch's leading id and the `after` cursor that resumes forward starting near it -- see loadPreviousPage's own comment for why a backward page's own start cursor works here too. */
+interface PageCheckpoint {
+  id: string
+  cursor: string | undefined
 }
 
 /**
@@ -41,9 +49,14 @@ export const useInventoryFiltersStore = defineStore('inventoryFilters', () => {
   const vehiclesById = reactive<Record<string, Vehicle>>({})
   const hasNextPage = ref(false)
   const endCursor = ref<string | undefined>(undefined)
+  const hasPreviousPage = ref(false)
+  const startCursor = ref<string | undefined>(undefined)
   const loading = ref(false)
+  const loadingPrevious = ref(false)
   const error = ref<string | null>(null)
   const makeOptions = ref<string[]>([])
+  /** One entry per fetched batch, ordered to match `ids` -- what InventoryView's scroll-position URL sync walks to find the resume cursor for wherever the user currently is. */
+  const checkpoints = ref<PageCheckpoint[]>([])
 
   /** Fire-and-forget on first use of this store -- the filter dropdown's options don't need to block anything else. */
   async function loadFacets() {
@@ -67,6 +80,19 @@ export const useInventoryFiltersStore = defineStore('inventoryFilters', () => {
     const bids = useBidsStore()
     for (const item of items) {
       vehiclesById[item.id] = toVehicle(item)
+      const existing = bids.overrides[item.id]
+      // listings.high_bidder_session_id/bid_count only reach Postgres once the
+      // async stream tailer drains them (guidelines/06-backend-architecture.md,
+      // "Draining vs. broadcasting") -- has_bid, by contrast, is answered from
+      // Redis and is immediately consistent. Right after this session's own
+      // accepted bid, a refetch landing inside that drain window would
+      // describe an already-superseded snapshot (has_bid true, is_high_bidder
+      // still the pre-drain value) and silently flip a correct "you're
+      // winning" override back to "outbid". bid_count is a version number
+      // already in the data -- never let an older snapshot regress an
+      // override this session's own placeBid/buyNow (or a WS confirmation)
+      // has already moved past.
+      if (existing && item.bid_count < existing.bidCount) continue
       if (item.viewer.has_bid) {
         bids.overrides[item.id] = {
           currentPrice: item.current_bid ?? item.starting_bid,
@@ -81,15 +107,21 @@ export const useInventoryFiltersStore = defineStore('inventoryFilters', () => {
     }
   }
 
-  function currentParams(after?: string) {
+  function baseParams() {
     return {
       status: statusFilter.value === 'all' ? undefined : statusFilter.value,
       make: makeFilter.value === 'all' ? undefined : makeFilter.value,
       q: search.value.trim() || undefined,
       sort: sortBy.value,
-      first: PAGE_SIZE,
-      after,
     }
+  }
+
+  function currentParams(after?: string) {
+    return { ...baseParams(), first: PAGE_SIZE, after }
+  }
+
+  function previousParams(before?: string) {
+    return { ...baseParams(), last: PAGE_SIZE, before }
   }
 
   /** Fetches page one for the current filters, replacing `ids` entirely. */
@@ -102,6 +134,9 @@ export const useInventoryFiltersStore = defineStore('inventoryFilters', () => {
       ids.value = page.data.map((item) => item.id)
       hasNextPage.value = page.page_info.has_next_page
       endCursor.value = page.page_info.end_cursor
+      hasPreviousPage.value = page.page_info.has_previous_page
+      startCursor.value = page.page_info.start_cursor
+      checkpoints.value = page.data.length > 0 ? [{ id: page.data[0]!.id, cursor: after }] : []
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Something went wrong loading listings.'
     } finally {
@@ -115,15 +150,49 @@ export const useInventoryFiltersStore = defineStore('inventoryFilters', () => {
     loading.value = true
     error.value = null
     try {
-      const page = await fetchListings(currentParams(endCursor.value))
+      const cursorUsed = endCursor.value
+      const page = await fetchListings(currentParams(cursorUsed))
       cacheAndReconcile(page.data)
       ids.value = [...ids.value, ...page.data.map((item) => item.id)]
       hasNextPage.value = page.page_info.has_next_page
       endCursor.value = page.page_info.end_cursor
+      if (page.data.length > 0) {
+        checkpoints.value = [...checkpoints.value, { id: page.data[0]!.id, cursor: cursorUsed }]
+      }
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Something went wrong loading more listings.'
     } finally {
       loading.value = false
+    }
+  }
+
+  /**
+   * Fetches the page immediately before the current start cursor and
+   * prepends it -- a no-op while already loading, once exhausted, or if a
+   * previous page is indicated but there's no cursor to actually resume from
+   * (an empty page's has_previous_page can be true with start_cursor unset,
+   * since the server only sets start_cursor `if len(rows) > 0`). Safe to call
+   * repeatedly -- each call re-checks hasPreviousPage/startCursor against the
+   * latest response, so InventoryView can keep offering to load earlier
+   * pages until it's genuinely exhausted with no extra state on its side.
+   */
+  async function loadPreviousPage() {
+    if (loadingPrevious.value || !hasPreviousPage.value || !startCursor.value) return
+    loadingPrevious.value = true
+    error.value = null
+    try {
+      const page = await fetchListings(previousParams(startCursor.value))
+      cacheAndReconcile(page.data)
+      ids.value = [...page.data.map((item) => item.id), ...ids.value]
+      hasPreviousPage.value = page.page_info.has_previous_page
+      startCursor.value = page.page_info.start_cursor
+      if (page.data.length > 0) {
+        checkpoints.value = [{ id: page.data[0]!.id, cursor: page.page_info.start_cursor }, ...checkpoints.value]
+      }
+    } catch (err) {
+      error.value = err instanceof Error ? err.message : 'Something went wrong loading earlier listings.'
+    } finally {
+      loadingPrevious.value = false
     }
   }
 
@@ -154,11 +223,16 @@ export const useInventoryFiltersStore = defineStore('inventoryFilters', () => {
     vehiclesById,
     hasNextPage,
     endCursor,
+    hasPreviousPage,
+    startCursor,
     loading,
+    loadingPrevious,
     error,
     makeOptions,
+    checkpoints,
     reset,
     loadNextPage,
+    loadPreviousPage,
     ensureVehicleLoaded,
     searchSeller,
   }

@@ -151,6 +151,48 @@ describe('augment - badge', () => {
   })
 })
 
+describe('augment - canRaiseBid', () => {
+  it('is true for an active listing the user has not bid on', () => {
+    const listing = augment(makeVehicle(), baseCtx())
+    expect(listing.canRaiseBid).toBe(true)
+  })
+
+  it('is true for an active listing where the user has bid but is outbid', () => {
+    const override = makeOverride({ isUserOutbid: true })
+    const listing = augment(makeVehicle(), baseCtx({ override }))
+    expect(listing.canRaiseBid).toBe(true)
+  })
+
+  it('is false for an active listing where the user is already the high bidder', () => {
+    const override = makeOverride({ isUserHighBidder: true })
+    const listing = augment(makeVehicle(), baseCtx({ override }))
+    expect(listing.canBid).toBe(true)
+    expect(listing.canRaiseBid).toBe(false)
+  })
+
+  it('is false once the listing has ended, even if the user was high bidder', () => {
+    const endedNow = new Date(DEFAULT_AUCTION_START).getTime() + 25 * HOUR_MS
+    const override = makeOverride({ isUserHighBidder: true })
+    const listing = augment(makeVehicle(), baseCtx({ effectiveNow: endedNow, override }))
+    expect(listing.canRaiseBid).toBe(false)
+  })
+})
+
+describe('augment - ctaLabel', () => {
+  it('is "Place New Bid" when the user has bid and been outbid', () => {
+    const override = makeOverride({ isUserOutbid: true })
+    const listing = augment(makeVehicle(), baseCtx({ override }))
+    expect(listing.ctaLabel).toBe('Place New Bid')
+  })
+
+  it('is "View Auction", not "Place New Bid", when the user is already the high bidder', () => {
+    const override = makeOverride({ isUserHighBidder: true })
+    const listing = augment(makeVehicle(), baseCtx({ override }))
+    expect(listing.ctaLabel).toBe('View Auction')
+    expect(listing.ctaVariant).toBe('outline-navy')
+  })
+})
+
 describe('augment - damage notes', () => {
   it('falls back to a no-damage sentence when damage_notes is empty', () => {
     const listing = augment(makeVehicle({ damage_notes: [] }), baseCtx())

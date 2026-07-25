@@ -165,7 +165,12 @@ func (r *ListingReader) listSimplePage(ctx context.Context, filter listings.Filt
 
 	where, args := filterWhere(filter, 1)
 	if extraPredicate != "" {
-		where = append(where, extraPredicate)
+		// Parenthesized so a predicate containing OR (endingBuckets[2]: "purchased_at
+		// IS NOT NULL OR auction_end <= now()") stays a single self-contained group once
+		// joined with " AND " below -- SQL's AND binds tighter than OR, so an unparenthesized
+		// OR here would silently detach from the status/make/search clauses instead of
+		// being scoped by them.
+		where = append(where, "("+extraPredicate+")")
 	}
 
 	if cur != nil {

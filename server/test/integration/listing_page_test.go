@@ -125,6 +125,60 @@ func TestListPage_EndingSortCrossesBuckets(t *testing.T) {
 	}
 }
 
+// TestListPage_EndingSortStatusFilterExcludesOtherBuckets proves a status
+// filter narrows every bucket of the sort=ending walk, not just the one it
+// names -- the ended bucket's predicate ("purchased_at IS NOT NULL OR
+// auction_end <= now()") is an OR, and joining it into the WHERE clause
+// unparenthesized let it detach from the status/make/search clauses via
+// SQL's AND-before-OR precedence, so an ended listing satisfied that bare
+// disjunct and leaked into every status filter's results regardless of which
+// one was selected (guidelines/06-backend-architecture.md, "Ending soonest" sort).
+func TestListPage_EndingSortStatusFilterExcludesOtherBuckets(t *testing.T) {
+	ctx := context.Background()
+	pool := newPoolAndMigrate(t)
+	reader := pgstore.NewListingReader(pool)
+	now := time.Now()
+
+	active1 := sampleListing("c1000000-0000-0000-0000-000000000001", "STFVIN001")
+	active1.AuctionStart, active1.AuctionDuration = now.Add(-time.Hour), 2*time.Hour
+
+	upcoming1 := sampleListing("c1000000-0000-0000-0000-000000000002", "STFVIN002")
+	upcoming1.AuctionStart, upcoming1.AuctionDuration = now.Add(time.Hour), 24*time.Hour
+
+	ended1 := sampleListing("c1000000-0000-0000-0000-000000000003", "STFVIN003")
+	ended1.AuctionStart, ended1.AuctionDuration = now.Add(-48*time.Hour), 24*time.Hour
+
+	if _, err := pgstore.InsertNewListings(ctx, pool, []domain.Listing{active1, upcoming1, ended1}); err != nil {
+		t.Fatalf("InsertNewListings: %v", err)
+	}
+
+	cases := []struct {
+		status string
+		want   string
+	}{
+		{"active", "STFVIN001"},
+		{"upcoming", "STFVIN002"},
+		{"ended", "STFVIN003"},
+	}
+	for _, tc := range cases {
+		t.Run("status="+tc.status, func(t *testing.T) {
+			page, err := reader.ListPage(ctx, listings.PageRequest{
+				Sort: listings.SortEnding, Filter: listings.Filter{Status: tc.status}, First: 10,
+			})
+			if err != nil {
+				t.Fatalf("ListPage: %v", err)
+			}
+			if len(page.Items) != 1 || page.Items[0].VIN != tc.want {
+				var got []string
+				for _, l := range page.Items {
+					got = append(got, l.VIN)
+				}
+				t.Fatalf("status=%s -> %v, want exactly [%s]", tc.status, got, tc.want)
+			}
+		})
+	}
+}
+
 func TestListPage_CanceledContextReturnsWrappedError(t *testing.T) {
 	ctx := context.Background()
 	pool := newPoolAndMigrate(t)
